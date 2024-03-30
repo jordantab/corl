@@ -4,6 +4,7 @@ import os
 import pandas as pd
 import time
 import glob
+import concurrent.futures
 
 
 def run_cpp_code_with_file_input(code: str, input_file_path: str) -> str:
@@ -40,19 +41,32 @@ def eval_output(output: str, expected_output_file: str) -> bool:
         expected_output = expected_file.read()
         return output.strip() == expected_output.strip()
     
+def run_single_test_case(code, input_file):
+    expected_output_file = input_file.replace('input', 'output')
+    actual_output, runtime = run_cpp_code_with_file_input(code, input_file)
+    if runtime == -1 or not eval_output(actual_output, expected_output_file):
+        return False, input_file
+    return True, input_file
+    
+def run_tcs(code: str, sample_output_folder: str, hidden_output_folder: str) -> bool:
+    start_time = time.time()
+    folders = [sample_output_folder, hidden_output_folder]
+    test_cases = []
 
-def run_tcs(code: str, sample_output_folder: str, hidden_output_folder) -> bool:
-    for folder in [sample_output_folder, hidden_output_folder]:
+    for folder in folders:
         input_files = glob.glob(os.path.join(folder, "input.*.txt"))
         for input_file in input_files:
-            # print('processing:', input_file)
-            expected_output_file = input_file.replace('input', 'output')  # Assuming expected output file naming convention
-            actual_output, time = run_cpp_code_with_file_input(code, input_file)
-            # print(time)
-            if actual_output is None or not eval_output(actual_output, expected_output_file):
-                print('Failed on test case', input_file)
-                return False
+            test_cases.append((code, input_file))
+
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        results = executor.map(lambda p: run_single_test_case(*p), test_cases)
     
+    for result, input_file in results:
+        if not result:
+            print(f'Failed on test case {input_file}')
+            return False
+    end_time = time.time()
+    print(f"total time for all test cases: {end_time - start_time:.2f} seconds")
     return True
 
 
