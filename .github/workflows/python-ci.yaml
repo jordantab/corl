@@ -18,6 +18,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install pre-commit
+
+      - name: Clean pre-commit cache
+        run: pre-commit clean
 
       - name: Run pre-commit
         run: pre-commit run --all-files --show-diff-on-failure
