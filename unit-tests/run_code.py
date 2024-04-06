@@ -5,9 +5,15 @@ import pandas as pd
 import time
 import glob
 import concurrent.futures
+from typing import Tuple
 
 
-def run_cpp_code_with_file_input(code: str, input_file_path: str) -> str:
+DEFAULT_DATASET = "../datasets/improvement_pairs_additional_metadata.csv"
+PUBLIC_TEST_CASES_FOLDER = "../datasets/codenet/public_test_cases/"
+HIDDEN_TEST_CASES_FOLDER = "../datasets/codenet2/generated_test_cases/"
+
+
+def run_cpp_code_with_file_input(code: str, input_file_path: str) -> Tuple[str, float]:
     # Create a temporary directory to hold the C++ file and executable
     with tempfile.TemporaryDirectory() as temp_dir:
         cpp_file_path = os.path.join(temp_dir, "code.cpp")
@@ -21,7 +27,7 @@ def run_cpp_code_with_file_input(code: str, input_file_path: str) -> str:
         compile_process = subprocess.run(["g++", cpp_file_path, "-o", executable_path], capture_output=True, text=True)
         if compile_process.returncode != 0:
             # Compilation failed
-            return f"Compilation Failed:\n{compile_process.stderr}"
+            return f"Compilation Failed:\n{compile_process.stderr}", -1
         
         # Run the compiled executable with input redirected from the input file
         try:
@@ -30,7 +36,7 @@ def run_cpp_code_with_file_input(code: str, input_file_path: str) -> str:
                 run_process = subprocess.run(executable_path, stdin=input_file, capture_output=True, text=True, universal_newlines=True, timeout=2)
                 if run_process.returncode != 0:
                     # Runtime error
-                    return f"Runtime Error:\n{run_process.stderr}"
+                    return f"Runtime Error:\n{run_process.stderr}", -1
             end_time = time.time()
             return run_process.stdout, (end_time - start_time)
         except subprocess.TimeoutExpired:
@@ -48,7 +54,9 @@ def run_single_test_case(code, input_file):
         return False, input_file
     return True, input_file
     
-def run_tcs(code: str, sample_output_folder: str, hidden_output_folder: str) -> bool:
+def run_tcs(code: str, problem_id: int) -> bool:
+    sample_output_folder = f"{PUBLIC_TEST_CASES_FOLDER}p{problem_id:05d}"
+    hidden_output_folder = f"{HIDDEN_TEST_CASES_FOLDER}p{problem_id:05d}"
     start_time = time.time()
     folders = [sample_output_folder, hidden_output_folder]
     test_cases = []
@@ -69,13 +77,12 @@ def run_tcs(code: str, sample_output_folder: str, hidden_output_folder: str) -> 
     print(f"total time for all test cases: {end_time - start_time:.2f} seconds")
     return True
 
+def load_dataset(dataset=DEFAULT_DATASET):
+    df = pd.read_csv(dataset, sep="\t")
+    return df
+
 
 if __name__ == "__main__":
-    df = pd.read_csv("../datasets/improvement_pairs_additional_metadata.csv", sep="\t")
-    # Assuming 'input.txt' is a file in the current directory containing the input for the C++ program
-    # input_file_path = '../datasets/codenet/public_test_cases/p00849/input.0.txt'
+    df = load_dataset()
     sample_code = df.at[3, 'code_v1']
-    # output, tot_time = run_cpp_code_with_file_input(sample_code, input_file_path)
-    # print(f"total time: {tot_time:.2f} seconds")
-    # print(eval_output(output, '../datasets/codenet/public_test_cases/p00849/output.0.txt'))
-    print(run_tcs(sample_code, "../datasets/codenet/public_test_cases/p00849/", "../datasets/codenet2/generated_test_cases/p00849/"))
+    print(run_tcs(sample_code, 849))
