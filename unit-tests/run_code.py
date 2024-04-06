@@ -1,3 +1,11 @@
+"""
+The only function you need is run_tcs(code, problem_id), which will return a tuple(Verdict, runtime)
+Code: the code sample you want to run as a string
+problem_id: the problem id, which corresponds to the problems in the dataset folder
+verdict: "Accepted", "Wrong Answer", "Time Limit Exceeded", "Compilation Error", "Runtime Error"
+runtime: the execution time of the program
+"""
+
 import subprocess
 import tempfile
 import os
@@ -14,7 +22,7 @@ HIDDEN_TEST_CASES_FOLDER = "../datasets/codenet2/generated_test_cases/"
 MAX_TIMEOUT = 2
 
 
-def run_cpp_code_with_file_input(code: str, input_file_path: str) -> Tuple[str, float]:
+def run_cpp_code_with_file_input(code: str, input_file_path: str) -> Tuple[str, float, str]:
     # Create a temporary directory to hold the C++ file and executable
     with tempfile.TemporaryDirectory() as temp_dir:
         cpp_file_path = os.path.join(temp_dir, "code.cpp")
@@ -48,7 +56,7 @@ def eval_output(output: str, expected_output_file: str) -> bool:
         expected_output = expected_file.read()
         return output.strip() == expected_output.strip()
     
-def run_single_test_case(code, input_file):
+def run_single_test_case(code: str, input_file: str) -> Tuple[str, float, str]:
     expected_output_file = input_file.replace('input', 'output')
     verdict, runtime, actual_output = run_cpp_code_with_file_input(code, input_file)
     if verdict != "Accepted":
@@ -57,7 +65,7 @@ def run_single_test_case(code, input_file):
         return "Wrong Answer", runtime, input_file
     return "Accepted", runtime, input_file
     
-def run_tcs(code: str, problem_id: int) -> bool:
+def run_tcs(code: str, problem_id: int) -> Tuple[str, float]:
     sample_output_folder = f"{PUBLIC_TEST_CASES_FOLDER}p{problem_id:05d}"
     hidden_output_folder = f"{HIDDEN_TEST_CASES_FOLDER}p{problem_id:05d}"
     start_time = time.time()
