@@ -11,6 +11,7 @@ from typing import Tuple
 DEFAULT_DATASET = "../datasets/improvement_pairs_additional_metadata.csv"
 PUBLIC_TEST_CASES_FOLDER = "../datasets/codenet/public_test_cases/"
 HIDDEN_TEST_CASES_FOLDER = "../datasets/codenet2/generated_test_cases/"
+MAX_TIMEOUT = 2
 
 
 def run_cpp_code_with_file_input(code: str, input_file_path: str) -> Tuple[str, float]:
@@ -27,20 +28,20 @@ def run_cpp_code_with_file_input(code: str, input_file_path: str) -> Tuple[str, 
         compile_process = subprocess.run(["g++", cpp_file_path, "-o", executable_path], capture_output=True, text=True)
         if compile_process.returncode != 0:
             # Compilation failed
-            return f"Compilation Failed:\n{compile_process.stderr}", -1
+            return f"Compilation Error", -1, ""
         
         # Run the compiled executable with input redirected from the input file
         try:
             start_time = time.time()
             with open(input_file_path, 'r') as input_file:
-                run_process = subprocess.run(executable_path, stdin=input_file, capture_output=True, text=True, universal_newlines=True, timeout=2)
+                run_process = subprocess.run(executable_path, stdin=input_file, capture_output=True, text=True, universal_newlines=True, timeout=MAX_TIMEOUT)
                 if run_process.returncode != 0:
                     # Runtime error
-                    return f"Runtime Error:\n{run_process.stderr}", -1
+                    return "Runtime Error", -1, ""
             end_time = time.time()
-            return run_process.stdout, (end_time - start_time)
+            return "Accepted", (end_time - start_time), run_process.stdout
         except subprocess.TimeoutExpired:
-            return -1, -1
+            return "Time Limit Exceeded", MAX_TIMEOUT, ""
 
 def eval_output(output: str, expected_output_file: str) -> bool:
     with open(expected_output_file, 'r') as expected_file:
@@ -49,10 +50,12 @@ def eval_output(output: str, expected_output_file: str) -> bool:
     
 def run_single_test_case(code, input_file):
     expected_output_file = input_file.replace('input', 'output')
-    actual_output, runtime = run_cpp_code_with_file_input(code, input_file)
-    if runtime == -1 or not eval_output(actual_output, expected_output_file):
-        return False, input_file
-    return True, input_file
+    verdict, runtime, actual_output = run_cpp_code_with_file_input(code, input_file)
+    if verdict != "Accepted":
+        return verdict, runtime, input_file
+    elif not eval_output(actual_output, expected_output_file):
+        return "Wrong Answer", runtime, input_file
+    return "Accepted", runtime, input_file
     
 def run_tcs(code: str, problem_id: int) -> bool:
     sample_output_folder = f"{PUBLIC_TEST_CASES_FOLDER}p{problem_id:05d}"
@@ -60,6 +63,7 @@ def run_tcs(code: str, problem_id: int) -> bool:
     start_time = time.time()
     folders = [sample_output_folder, hidden_output_folder]
     test_cases = []
+    execution_time = 0
 
     for folder in folders:
         input_files = glob.glob(os.path.join(folder, "input.*.txt"))
@@ -69,13 +73,15 @@ def run_tcs(code: str, problem_id: int) -> bool:
     with concurrent.futures.ThreadPoolExecutor() as executor:
         results = executor.map(lambda p: run_single_test_case(*p), test_cases)
     
-    for result, input_file in results:
-        if not result:
+    for verdict, runtime, input_file in results:
+        if verdict != "Accepted":
             print(f'Failed on test case {input_file}')
-            return False
+            return verdict, 2 if verdict == "Time Limit Exceeded" else -1
+        execution_time += runtime
+            
     end_time = time.time()
-    print(f"total time for all test cases: {end_time - start_time:.2f} seconds")
-    return True
+    print(f"time to run all test cases: {end_time - start_time:.2f} seconds")
+    return "Accepted", execution_time / len(test_cases)
 
 def load_dataset(dataset=DEFAULT_DATASET):
     df = pd.read_csv(dataset, sep="\t")
