@@ -1,16 +1,21 @@
 import torch
-import torch.nn as nn
-from ray.rllib.agents import ppo
-from ray.rllib.models import ModelCatalog
-from ray.tune.logger import pretty_print
-from reward import get_reward
-from transformers import BertTokenizer
+from ray.rllib.algorithms.ppo import PPO
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 import random
 import gym
 import numpy as np
+import matplotlib.pyplot as plt
 
-tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+checkpoint = "Salesforce/codet5p-2b"
+device = "cpu"  # or "cuda" for GPU
+tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+model = AutoModelForSeq2SeqLM.from_pretrained(checkpoint,
+                                              torch_dtype=torch.float32,
+                                              low_cpu_mem_usage=True,
+                                              trust_remote_code=True).to(device)
+max_length = 256
 obs_space = gym.spaces.Box(low=0, high=1, shape=(max_length,), dtype=np.float32)
+vocab_size = tokenizer.vocab_size
 action_space = gym.spaces.Discrete(vocab_size)
 
 R1 = -1.0  # Negative reward for code that cannot be compiled
@@ -58,7 +63,7 @@ def execution_time(code):
 
 def tokenize_code(code):
     """
-    Tokenize the code using the BERT tokenizer.
+    Tokenize the code using the tokenizer.
 
     Args:
         code (str): The code to tokenize.
@@ -79,7 +84,7 @@ def get_reward(lang, code_ids, code_ref_ids, gold_ids, tokenizer):
         code_ids (list): The token IDs of the generated code.
         code_ref_ids (list): The token IDs of the reference code.
         gold_ids (list): The token IDs of the gold code.
-        tokenizer (BertTokenizer): The BERT tokenizer.
+        tokenizer (AutoTokenizer): The tokenizer.
 
     Returns:
         int: The reward value (R1, R2, R3, or R4).
@@ -102,70 +107,40 @@ def generate_code(state, action):
     Generate the next state of the code based on the current state and action.
 
     Args:
-        state (list): The current state of the code.
-        action (int): The action to take.
+        state (list): The current state of the code as token IDs.
+        action (int): The action to take (not used in this adapted function).
 
     Returns:
         tuple: A tuple containing the next state, reward, done flag, and an empty info dict.
     """
-    generated_code = model.generate(input_ids=state, num_beams=1, max_length=max_length,
-                                    num_return_sequences=1, temperature=1.0, top_k=50, top_p=1.0,
-                                    do_sample=True, early_stopping=True, no_repeat_ngram_size=2,
-                                    pad_token_id=tokenizer.eos_token_id, eos_token_id=tokenizer.eos_token_id,
-                                    decoder_start_token_id=tokenizer.bos_token_id, num_beam_groups=1,
-                                    diversity_penalty=0.0, output_scores=True, return_dict_in_generate=True,
-                                    forced_bos_token_id=tokenizer.bos_token_id,
-                                    forced_eos_token_id=tokenizer.eos_token_id)
+    # Assuming state is already in the correct format; otherwise, adjust accordingly
+    encoding = tokenizer(" ".join([tokenizer.decode(token_id) for token_id in state]), return_tensors="pt").to(device)
+    encoding['decoder_input_ids'] = encoding['input_ids'].clone()
 
-    next_state = generated_code.sequences[0]
-    reward = get_reward(lang, code_ids=next_state, code_ref_ids=next_state, gold_ids=input_code,
-                        tokenizer=tokenizer)
-    done = True if tokenizer.eos_token_id in next_state else False
-    return next_state, reward, done, {}
+    outputs = model.generate(**encoding, max_length=max_length, pad_token_id=tokenizer.eos_token_id)
+    generated_code_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-class PolicyModel(nn.Module):
-    """
-    Custom policy model using PyTorch.
+    # Assuming input_code_tokens is available for generating next_state_token_ids
+    next_state_token_ids = tokenizer.encode(generated_code_text, return_tensors="pt").tolist()[0]
 
-    Args:
-        obs_space (gym.Space): The observation space.
-        action_space (gym.Space): The action space.
-        num_outputs (int): The number of output units.
-        model_config (dict): The model configuration.
-        name (str): The name of the model.
-    """
-    def __init__(self, obs_space, action_space, num_outputs, model_config, name):
-        super(PolicyModel, self).__init__()
-        self.fc1 = nn.Linear(obs_space.shape[0], 256)
-        self.fc2 = nn.Linear(256, num_outputs)
-        self.softmax = nn.Softmax(dim=-1)
+    # Logic to determine reward and done flag
+    if not compile_code(generated_code_text):
+        reward = R1
+        done = True  # Assuming failure to compile terminates the episode
+    elif not pass_unit_tests(generated_code_text):
+        reward = R2
+        done = True  # Assuming failure to pass unit tests terminates the episode
+    else:
+        current_exec_time = execution_time(generated_code_text)
+        gold_code_execution_time = 0.5
+        # Assuming gold_code_execution_time is determined elsewhere, replace it with actual logic to compare
+        if current_exec_time < gold_code_execution_time:  # gold_code_execution_time needs to be defined or calculated
+            reward = R4
+        else:
+            reward = R3
+        done = False  # Adjust based on your criteria for when an episode is considered complete
 
-    def forward(self, obs):
-        """
-        Forward pass of the policy model.
-
-        Args:
-            obs (torch.Tensor): The observation tensor.
-
-        Returns:
-            torch.Tensor: The action probabilities.
-        """
-        x = torch.relu(self.fc1(obs))
-        x = self.fc2(x)
-        action_probs = self.softmax(x)
-        return action_probs
-
-def policy_mapping_fn(agent_id):
-    """
-    Policy mapping function.
-
-    Args:
-        agent_id (str): The agent ID.
-
-    Returns:
-        str: The policy name.
-    """
-    return "policy"
+    return next_state_token_ids, reward, done, {}
 
 def calculate_score(code, input_code):
     """
@@ -180,7 +155,7 @@ def calculate_score(code, input_code):
     """
     log_probs = []
     for token in code:
-        log_prob = torch.log(agent.get_policy("policy").model.forward(torch.FloatTensor(input_code))[token])
+        log_prob = torch.log(agent.get_policy().model.forward(torch.FloatTensor(input_code))[token])
         log_probs.append(log_prob)
     score = sum(log_probs) / len(code)
     return score
@@ -193,7 +168,8 @@ def train(config, reporter):
         config (dict): The configuration for the PPO agent.
         reporter (func): The reporter function for logging custom metrics.
     """
-    agent = ppo.PPOTrainer(config=config, env=None)
+    episode_rewards = []
+    episode_scores = []
 
     for episode in range(num_episodes):
         state = input_code_tokens
@@ -212,46 +188,49 @@ def train(config, reporter):
             episode_reward += reward
             state = next_state
 
-        reporter(episode_reward=episode_reward, score=score)
+        episode_rewards.append(episode_reward)
+        episode_scores.append(score)
+
+    # Plot the episode rewards
+    plt.figure(figsize=(10, 5))
+    plt.plot(range(1, num_episodes + 1), episode_rewards)
+    plt.xlabel('Episode')
+    plt.ylabel('Reward')
+    plt.title('Episode Rewards')
+    plt.show()
+
+    # Plot the episode scores
+    plt.figure(figsize=(10, 5))
+    plt.plot(range(1, num_episodes + 1), episode_scores)
+    plt.xlabel('Episode')
+    plt.ylabel('Score')
+    plt.title('Episode Scores')
+    plt.show()
 
     agent.stop()
 
 # Define the configuration
 config = {
+    "env": None,
     "framework": "torch",
     "num_gpus": 0,
     "num_workers": 1,
     "model": {
-        "custom_model": "policy_model",
-        "custom_model_config": {},
-    },
-    "multiagent": {
-        "policies": {
-            "policy": (None, obs_space, action_space, {}),
-        },
-        "policy_mapping_fn": policy_mapping_fn,
+        "fcnet_hiddens": [256],
+        "fcnet_activation": "relu",
     },
 }
-
-# Register the custom model
-ModelCatalog.register_custom_model("policy_model", PolicyModel)
 
 # Train the agent
 num_episodes = 100
 lang = 'python'  # Specify the programming language
-tokenizer = ...  # Create the tokenizer based on your language model
 
 # Input Data
-# input_code = "def hello_world():\n    print('Hello, World!')"
-# input_code_tokens = tokenize_code(input_code)
-
-# Example 1: Simple Hello, World! program
-input_code1 = '''
+input_code = '''
 def hello_world():
     print("Hello, World!")
 '''
 
-# Example 2: Function to calculate the average
 input_code2 = '''
 def calculate_average(numbers):
     total = sum(numbers)
@@ -260,7 +239,6 @@ def calculate_average(numbers):
     return average
 '''
 
-# Example 3: Function to find the maximum element in a list
 input_code3 = '''
 def find_max(numbers):
     if not numbers:
@@ -272,14 +250,19 @@ def find_max(numbers):
     return max_num
 '''
 
-input_code_tokens1 = tokenize_code(input_code1)
+input_code_tokens = tokenize_code(input_code)
 input_code_tokens2 = tokenize_code(input_code2)
 input_code_tokens3 = tokenize_code(input_code3)
 
-analysis = ppo.PPOTrainer(config=config, env=None).train()
+# Create the PPO agent
+agent = PPO(config=config)
 
-# Visualize the training results
-for episode in range(num_episodes):
-    episode_reward = analysis.episodes[episode]["episode_reward"]
-    score = analysis.episodes[episode]["custom_metrics"]["score"]
-    print(f"Episode {episode + 1}: Reward = {episode_reward}, Score = {score}")
+# Train the agent
+train(config, reporter=None)
+
+# Save the checkpoint
+checkpoint_path = agent.save()
+print(f"Checkpoint saved at: {checkpoint_path}")
+
+# Terminate the agent
+agent.stop()
