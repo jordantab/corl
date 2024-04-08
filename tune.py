@@ -1,6 +1,8 @@
 """
-Performs the initial fine-tuning step on the dataset using an instruction
-dataset.
+Performs initial fine-tuning step on the dataset using an instruction dataset.
+
+NOTE: all commandline args are strictly optional, and will
+override default configuration values specified in config.py.
 
 Usage:
     python3 tune.py [--lr-warmup-steps] [--batch-size-per-replica]
@@ -240,10 +242,6 @@ def fine_tune(model, train_data, conf):
         local_rank=conf.local_rank,
         deepspeed=conf.deepspeed,
         fp16=conf.fp16,
-        # TODO: Implement logging
-        # logging_dir=args.save_dir,
-        # logging_first_step=True,
-        # logging_steps=args.log_freq,
     )
 
     trainer = Trainer(
