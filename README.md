@@ -16,24 +16,54 @@ A version processed for initial fine tuning (with the optimization instruction) 
 Or you can process the CSV file yourself using [`process_csv.py`](process_csv.py):
 
 ```bash
-python3 process_csv.py --outfile datasets/improvement_pairs_instruction.json
+python3 process_csv.py --infile datasets/improvement_pairs_additional_metadata.csv --outfile datasets/improvement_pairs_instruction.json
 ```
 
 Other uses of the script are suggested in the script's file header.
 
 ## Initial Fine Tuning
 
-The initial fine-tuning of the dataset can be performed with `tune.py`:
+The initial fine-tuning with the instruction dataset can be performed with `tune.py`:
 
 ```bash
 python3 tune.py
+```
+
+You may also use commandline flags to override the default configruation. For a complete list of options, check out the file header in [`tune.py`](tune.py) or run:
+
+```bash
+python3 tune.py -h
 ```
 
 The model checkpoint is saved to `models/dataset_tuned_checkpoint`.
 
 ## References
 
--   https://github.com/madaan/pie-perf?tab=readme-ov-file#dataset
+[PPOCoder](https://github.com/reddy-lab-code-research/PPOCoder)
+
+```
+@article{shojaee2023ppocoder,
+  title={Execution-based code generation using deep reinforcement learning},
+  author={Shojaee, Parshin and Jain, Aneesh and Tipirneni, Sindhu and Reddy, Chandan K},
+  journal={arXiv preprint arXiv:2301.13816},
+  year={2023}
+}
+```
+
+[Pie Perf Dataset](https://github.com/madaan/pie-perf?tab=readme-ov-file#dataset)
+
+```
+@misc{shypula2023learning,
+      title={Learning Performance-Improving Code Edits},
+      author={Alexander Shypula and Aman Madaan and Yimeng Zeng and Uri Alon and Jacob Gardner and Milad Hashemi and Graham Neubig and Parthasarathy Ranganathan and Osbert Bastani and Amir Yazdanbakhsh},
+      year={2023},
+      eprint={2302.07867},
+      archivePrefix={arXiv},
+      primaryClass={cs.SE}
+}
+```
+
+[CodeT5+](https://github.com/salesforce/CodeT5/tree/main)
 
 ```
 @article{wang2023codet5plus,
