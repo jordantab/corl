@@ -1,4 +1,5 @@
 import torch
+import torch.optim as optim
 from ray.rllib.algorithms.ppo import PPO
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 import random
@@ -13,6 +14,9 @@ model = AutoModelForSeq2SeqLM.from_pretrained(checkpoint,
                                               torch_dtype=torch.float32,
                                               low_cpu_mem_usage=True,
                                               trust_remote_code=True).to(device)
+# Define the optimizer for the CodeT5 model
+optimizer = optim.Adam(model.parameters(), lr=1e-5)
+
 max_length = 256
 obs_space = gym.spaces.Box(low=0, high=1, shape=(max_length,), dtype=np.float32)
 vocab_size = tokenizer.vocab_size
@@ -75,29 +79,27 @@ def tokenize_code(code):
     token_ids = tokenizer.convert_tokens_to_ids(tokens)
     return token_ids
 
-def get_reward(lang, code_ids, code_ref_ids, gold_ids, tokenizer):
+def get_reward(lang, generated_code_ids, reference_code_ids, tokenizer):
     """
-    Calculate the reward based on the generated code, reference code, and gold code.
+    Calculate the reward based on the generated code and reference code.
 
     Args:
         lang (str): The programming language.
-        code_ids (list): The token IDs of the generated code.
-        code_ref_ids (list): The token IDs of the reference code.
-        gold_ids (list): The token IDs of the gold code.
+        generated_code_ids (list): The token IDs of the generated code.
+        reference_code_ids (list): The token IDs of the reference code.
         tokenizer (AutoTokenizer): The tokenizer.
 
     Returns:
-        int: The reward value (R1, R2, R3, or R4).
+        float: The reward value.
     """
-    generated_code = tokenizer.decode(code_ids, skip_special_tokens=True)
-    reference_code = tokenizer.decode(code_ref_ids, skip_special_tokens=True)
-    gold_code = tokenizer.decode(gold_ids, skip_special_tokens=True)
+    generated_code = tokenizer.decode(generated_code_ids, skip_special_tokens=True)
+    reference_code = tokenizer.decode(reference_code_ids, skip_special_tokens=True)
 
     if not compile_code(generated_code):
         return R1
     elif not pass_unit_tests(generated_code):
         return R2
-    elif pass_unit_tests(generated_code) and execution_time(generated_code) < execution_time(gold_code):
+    elif pass_unit_tests(generated_code) and execution_time(generated_code) < execution_time(reference_code):
         return R4
     else:
         return R3
@@ -120,45 +122,37 @@ def generate_code(state, action):
     outputs = model.generate(**encoding, max_length=max_length, pad_token_id=tokenizer.eos_token_id)
     generated_code_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-    # Assuming input_code_tokens is available for generating next_state_token_ids
     next_state_token_ids = tokenizer.encode(generated_code_text, return_tensors="pt").tolist()[0]
+    reference_code_token_ids = state  # Assuming the reference code is the input state
 
-    # Logic to determine reward and done flag
-    if not compile_code(generated_code_text):
-        reward = R1
-        done = True  # Assuming failure to compile terminates the episode
-    elif not pass_unit_tests(generated_code_text):
-        reward = R2
-        done = True  # Assuming failure to pass unit tests terminates the episode
+    reward = get_reward(lang, next_state_token_ids, reference_code_token_ids, tokenizer)
+
+    if not compile_code(generated_code_text) or not pass_unit_tests(generated_code_text):
+        done = True
     else:
-        current_exec_time = execution_time(generated_code_text)
-        gold_code_execution_time = 0.5
-        # Assuming gold_code_execution_time is determined elsewhere, replace it with actual logic to compare
-        if current_exec_time < gold_code_execution_time:  # gold_code_execution_time needs to be defined or calculated
-            reward = R4
-        else:
-            reward = R3
-        done = False  # Adjust based on your criteria for when an episode is considered complete
+        done = False
 
     return next_state_token_ids, reward, done, {}
 
-def calculate_score(code, input_code):
+def calculate_score(generated_code_ids, reference_code_ids):
     """
     Calculate the score of the generated code based on Equation 9.
+    This score represents how likely the model is to generate that particular code sample.
 
     Args:
-        code (list): The generated code.
-        input_code (list): The input code.
+        generated_code_ids (list): The token IDs of the generated code.
+        reference_code_ids (list): The token IDs of the reference code.
 
     Returns:
         float: The calculated score.
     """
     log_probs = []
-    for token in code:
-        log_prob = torch.log(agent.get_policy().model.forward(torch.FloatTensor(input_code))[token])
+    for token in generated_code_ids:
+        log_prob = torch.log(agent.get_policy().model.forward(torch.FloatTensor(reference_code_ids))[token])
         log_probs.append(log_prob)
-    score = sum(log_probs) / len(code)
+    score = sum(log_probs) / len(generated_code_ids)
     return score
+
 
 def train(config, reporter):
     """
@@ -176,20 +170,43 @@ def train(config, reporter):
         done = False
         episode_reward = 0
 
-        while not done:
-            action = agent.compute_single_action(state)
-            next_state, reward, done, _ = generate_code(state, action)
+        # Generate candidate code samples
+        candidate_samples = []
+        num_samples = 5
+        for _ in range(num_samples):
+            # Generate code using greedy or random sampling
+            generated_code_ids, _, _, _ = generate_code(state, None)
+            candidate_samples.append(generated_code_ids)
 
-            reward, _, _, _, _, _, _, _ = get_reward(lang, code_ids=next_state, code_ref_ids=next_state,
-                                                     gold_ids=input_code, tokenizer=tokenizer)
-            score = calculate_score(next_state, input_code)
+        # Calculate rewards and scores for candidate samples
+        rewards = [get_reward(tokenizer.decode(sample), tokenizer.decode(state)) for sample in candidate_samples]
+        scores = [calculate_score(sample, state) for sample in candidate_samples]
 
-            agent.log_action(state, action, reward, done, next_state)
-            episode_reward += reward
-            state = next_state
+        # Compute ranking loss (L_rank)
+        # encourages the model to assign higher scores to code samples with higher rewards
+        # calculated by comparing the scores of samples with different rewards.
+        ranking_loss = 0
+        for i in range(len(candidate_samples)):
+            for j in range(len(candidate_samples)):
+                if rewards[i] < rewards[j]:
+                    ranking_loss += max(0, scores[i] - scores[j])
 
-        episode_rewards.append(episode_reward)
-        episode_scores.append(score)
+        # Compute tuning loss (L_tuning)
+        # maximize the likelihood of generating the best code sample(samples with the highest reward)
+        # calculated as negative log probability of the tokens in the best sample
+        best_sample_idx = np.argmax(rewards)
+        best_sample = candidate_samples[best_sample_idx]
+        tuning_loss = -sum(
+            [torch.log(model(torch.tensor(state[:i]).unsqueeze(0))[0, token]) for i, token in enumerate(best_sample)])
+
+        # Combine losses and update LLM model parameters
+        loss = ranking_loss + tuning_loss
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+        episode_rewards.append(rewards[best_sample_idx])
+        episode_scores.append(scores[best_sample_idx])
 
     # Plot the episode rewards
     plt.figure(figsize=(10, 5))
@@ -207,6 +224,13 @@ def train(config, reporter):
     plt.title('Episode Scores')
     plt.show()
 
+    # Save the fine-tuned CodeT5 model checkpoint
+    model_checkpoint_path = "../checkpoints"
+    torch.save(model.state_dict(), model_checkpoint_path)
+    print(f"CodeT5 model checkpoint saved at: {model_checkpoint_path}")
+
+    agent.stop()
+
     agent.stop()
 
 # Define the configuration
@@ -219,10 +243,12 @@ config = {
         "fcnet_hiddens": [256],
         "fcnet_activation": "relu",
     },
+    "observation_space": obs_space,
+    "action_space": action_space,  # Add this line
 }
 
 # Train the agent
-num_episodes = 100
+num_episodes = 10
 lang = 'python'  # Specify the programming language
 
 # Input Data
