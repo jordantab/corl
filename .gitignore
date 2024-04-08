@@ -164,5 +164,4 @@ env
 .venv
 
 # RL specific
-rl/policy_gradient.py
 checkpoints
