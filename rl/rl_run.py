@@ -4,10 +4,10 @@ from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 import random
 
 checkpoint = "Salesforce/codet5p-2b"
-device = "cpu"  # or "cuda" for GPU
+device = "cuda"  # or "cuda" for GPU
 tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 model = AutoModelForSeq2SeqLM.from_pretrained(checkpoint,
-                                              torch_dtype=torch.float32,
+                                              torch_dtype=torch.float16,
                                               low_cpu_mem_usage=True,
                                               trust_remote_code=True).to(device)
 # Define the optimizer for the CodeT5 model
