@@ -1,5 +1,28 @@
 # data-science-team7-s2024
 
+## Setup
+
+You can manage your python environment using a virtual environment:
+
+```bash
+python3 -m venv .venv
+```
+
+You can activate the environment and install the requirements like so:
+
+```bash
+source .venv/bin/activate
+pip3 install -r requirements.txt
+```
+
+Install the precommit hooks used for python formatting:
+
+```bash
+pre-commit install
+```
+
+To exit the virtual environment, simply run `deactivate`.
+
 ## Dataset
 
 Code samples ([`dataset/`](dataset/)) and scores for initial fine-tuning sourced from the [PIE dataset](https://github.com/madaan/pie-perf?tab=readme-ov-file#dataset). You can download the dataset directly [here](https://drive.google.com/file/d/19IL3VETwVI9rdibB979Xm4gEWYwn0CkV/view).
