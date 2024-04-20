@@ -2,8 +2,16 @@ import torch
 import torch.optim as optim
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 import random
-import argparse
 
+checkpoint = "Salesforce/codet5p-2b"
+device = "cuda"  # or "cuda" for GPU
+tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+model = AutoModelForSeq2SeqLM.from_pretrained(checkpoint,
+                                              torch_dtype=torch.float16,
+                                              low_cpu_mem_usage=True,
+                                              trust_remote_code=True).to(device)
+# Define the optimizer for the CodeT5 model
+optimizer = optim.Adam(model.parameters(), lr=1e-5)
 
 max_length = 256
 
@@ -13,19 +21,6 @@ R3 = 0.5   # Positive reward for code that passes unit tests but doesn't improve
 R4 = 1.0   # Higher positive reward for code that passes unit tests and improves execution time
 
 # Placeholder functions
-
-
-def parse_args():
-    parser = argparse.ArgumentParser(
-        description="Apply instruction-tuning to a pretrained model"
-    )
-    # platform configuration
-    parser.add_argument(
-        "--device",
-        default="cuda",
-        type=str,
-        help="The device to use for training (e.g., 'cpu', 'cuda')",
-    )
 
 def compile_code(code):
     """
@@ -208,36 +203,16 @@ def train(model, tokenizer, optimizer, num_episodes, input_code_tokens):
     torch.save(model.state_dict(), model_checkpoint_path)
     print(f"CodeT5 model checkpoint saved at: {model_checkpoint_path}")
 
+# Input Data
+input_code = '''
+def hello_world():
+    print("Hello, World!")
+'''
 
+input_code_tokens = tokenize_code(input_code)
 
-def main():
-    args = parse_args()
-
-    checkpoint = "Salesforce/codet5p-2b"
-    device = "cuda"  # or "cuda" for GPU
-    tokenizer = AutoTokenizer.from_pretrained(checkpoint)
-    model = AutoModelForSeq2SeqLM.from_pretrained(checkpoint,
-                                                  torch_dtype=torch.float16,
-                                                  low_cpu_mem_usage=True,
-                                                  trust_remote_code=True).to("cuda")
-    # Define the optimizer for the CodeT5 model
-    optimizer = optim.Adam(model.parameters(), lr=1e-5)
-
-    # Input Data
-    input_code = '''
-    def hello_world():
-        print("Hello, World!")
-    '''
-
-    input_code_tokens = tokenize_code(input_code)
-
-    # Train the model
-    num_episodes = 10
-    print("Starting training...")
-    train(model, tokenizer, optimizer, num_episodes, input_code_tokens)
-    print("Training completed.")
-
-
-
-if __name__ == "__main__":
-    main()
+# Train the model
+num_episodes = 10
+print("Starting training...")
+train(model, tokenizer, optimizer, num_episodes, input_code_tokens)
+print("Training completed.")
