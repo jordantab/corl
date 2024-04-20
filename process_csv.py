@@ -7,7 +7,7 @@ there is already an accepted format used for fine-tuning a model for sequence to
 sequence generation. For example, see the alpaca instruction tuning dataset:
 https://github.com/sahil280114/codealpaca/blob/master/data/code_alpaca_2k.json
 
-All this script does is create a JSON instruction dataset file from our dataset. 
+All this script does is create a JSON instruction dataset file from our dataset.
 
 Input (csv) format:
     user_id, problem_id, language, submission_id_v0, submission_id_v1, cpu_time_v0,
