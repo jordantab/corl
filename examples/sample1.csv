@@ -1,0 +1,1570 @@
+File,user_id,problem_id,language,submission_id_v0,submission_id_v1,cpu_time_v0,cpu_time_v1,memory_v0,memory_v1,status_v0,status_v1,improvement_frac,code_v0,code_v1,code_v0_loc,code_v1_loc
+sample1.csv,u116766943,p00849,C++,s624998539,s546809015,9370.0,9250.0,1232.0,1228.0,Time Limit Exceeded,Time Limit Exceeded,1.28,"#include<bits/stdc++.h>
+
+
+
+#define REP(i,s,n) for(int i=s;i<n;i++)
+
+#define rep(i,n) REP(i,0,n)
+
+
+
+using namespace std;
+
+
+
+const int IINF = INT_MAX;
+
+
+
+int H,W,mini,field[10][10],prev[10][10],mindist[10][10],nfield[10][10],mindist2[10][10],m1[10][10],m2[10][10];
+
+vector<int> sp[2];
+
+bool visited[10][10];
+
+int dx[] = {0,1,0,-1};
+
+int dy[] = {1,0,-1,0};
+
+bool X[10], Y[10];
+
+
+
+bool isValid(int x,int y) { return 0 <= x && x < W && 0 <= y && y < H; }
+
+
+
+void simulate_min(int dist[10][10],int f[10][10],int s){
+
+  rep(i,H) rep(j,W) dist[i][j] = IINF;
+
+  dist[s/W][s%W] = 0;
+
+  deque<int> deq;
+
+  deq.push_back(s);
+
+  while( !deq.empty() ){
+
+    int cur = deq.front(); deq.pop_front();
+
+    int x = cur % W, y = cur / W;
+
+    rep(i,4){
+
+      int nx = x + dx[i], ny = y + dy[i];
+
+      if( !isValid(nx,ny) ) continue;
+
+      if( f[ny][nx] != 0 && f[ny][nx] != f[s/W][s%W] ) continue;
+
+      if( dist[ny][nx] == IINF ) {
+
+        dist[ny][nx] = dist[y][x] + 1;
+
+        deq.push_back(nx+ny*W);
+
+      }
+
+    }
+
+  }
+
+}
+
+
+
+
+
+void dfs(int x,int y,int cost,int f[10][10],int ep,deque<int> &path,int F,int S,int prev){
+
+
+
+  if( x + y * W == ep ) {
+
+    rep(i,H) rep(j,W) nfield[i][j] = field[i][j];
+
+    rep(i,path.size()) nfield[path[i]/W][path[i]%W] = 1;
+
+    simulate_min(mindist2,nfield,sp[S][0]);
+
+    if( mindist2[sp[S][1]/W][sp[S][1]%W] == IINF ) return;
+
+    mini = min(mini,(int)path.size()-1+mindist2[sp[S][1]/W][sp[S][1]%W]);
+
+    return;
+
+  }
+
+  if( cost >= mini ) return;
+
+  if( m2[sp[S][1]/W][sp[S][1]%W] + cost >= mini ) return;
+
+
+
+  int cnt = 0;
+
+  rep(i,4) {
+
+    int nx = x + dx[i], ny = y + dy[i];
+
+    if( !isValid(nx,ny) ) continue;
+
+    cnt += visited[ny][nx];
+
+ }
+
+  if( cnt >= 2 ) return;
+
+
+
+  {
+
+    rep(i,4){
+
+      int nx = x, ny = y;
+
+      nx += dx[i], ny += dy[i];
+
+      if( !isValid(nx,ny) ) continue;
+
+      if( f[ny][nx] != 0 && f[ny][nx] != f[ep/W][ep%W] ) continue;
+
+      if( visited[ny][nx] ) continue;
+
+      while(1){
+
+        nx += dx[i], ny += dy[i];
+
+        if( !isValid(nx,ny) ) break;
+
+        if( f[ny][nx] != 0 && f[ny][nx] != f[ep/W][ep%W] ) break;
+
+        if( X[nx] || Y[ny] ) break;
+
+        if( visited[ny][nx] ) return;
+
+      }
+
+    }
+
+  }
+
+
+
+
+
+  rep(i,4) {
+
+    if( i == (prev+2) % 4 ) continue;
+
+    int nx = x + dx[i], ny = y + dy[i];
+
+    if( !isValid(nx,ny) ) continue;
+
+    if( f[ny][nx] != 0 && f[ny][nx] != f[ep/W][ep%W] ) continue;
+
+    if( visited[ny][nx] ) continue;
+
+    visited[ny][nx] = true;
+
+    path.push_back(nx+ny*W);
+
+    dfs(nx,ny,cost+1,f,ep,path,F,S,i);
+
+    path.pop_back();
+
+    visited[ny][nx] = false;
+
+  }
+
+
+
+
+
+}
+
+
+
+int compute(int F,int S){
+
+  rep(i,H) rep(j,W) visited[i][j] = false;
+
+  deque<int> path;
+
+  path.push_back(sp[F][0]);
+
+  visited[sp[F][0]/W][sp[F][0]%W] = true;
+
+  simulate_min(m1,field,sp[F][0]);
+
+  simulate_min(m2,field,sp[S][0]);
+
+  dfs(sp[F][0]%W,sp[F][0]/W,0,field,sp[F][1],path,F,S,-IINF);
+
+}
+
+
+
+int main(){
+
+  while( cin >> H >> W, H|W ){
+
+    rep(i,2) sp[i].clear();
+
+    rep(i,10) X[i] = Y[i] = false;
+
+    rep(i,H) rep(j,W) {
+
+      cin >> field[i][j];
+
+      if( field[i][j] == 1 ) X[j] = true, Y[i] = true;
+
+      if( field[i][j] == 2 ) sp[0].push_back(j+i*W), X[j] = Y[i] = true;
+
+      if( field[i][j] == 3 ) sp[1].push_back(j+i*W), X[j] = Y[i] = true;
+
+    }
+
+    mini = IINF;
+
+
+
+    compute(0,1);
+
+    if( mini == IINF ) puts(""0"");
+
+    else cout << mini << endl;
+
+  }
+
+  return 0;
+
+}","#include<bits/stdc++.h>
+
+
+
+#define REP(i,s,n) for(int i=s;i<n;i++)
+
+#define rep(i,n) REP(i,0,n)
+
+
+
+using namespace std;
+
+
+
+const int IINF = INT_MAX;
+
+
+
+int H,W,mini,field[10][10],prev[10][10],mindist[10][10],nfield[10][10],mindist2[10][10],m1[10][10],m2[10][10];
+
+vector<int> sp[2];
+
+bool visited[10][10];
+
+int dx[] = {0,1,0,-1};
+
+int dy[] = {1,0,-1,0};
+
+bool X[10], Y[10];
+
+
+
+bool isValid(int x,int y) { return 0 <= x && x < W && 0 <= y && y < H; }
+
+
+
+void simulate_min(int dist[10][10],int f[10][10],int s){
+
+  rep(i,H) rep(j,W) dist[i][j] = IINF;
+
+  dist[s/W][s%W] = 0;
+
+  deque<int> deq;
+
+  deq.push_back(s);
+
+  while( !deq.empty() ){
+
+    int cur = deq.front(); deq.pop_front();
+
+    int x = cur % W, y = cur / W;
+
+    rep(i,4){
+
+      int nx = x + dx[i], ny = y + dy[i];
+
+      if( !isValid(nx,ny) ) continue;
+
+      if( f[ny][nx] != 0 && f[ny][nx] != f[s/W][s%W] ) continue;
+
+      if( dist[ny][nx] == IINF ) {
+
+        dist[ny][nx] = dist[y][x] + 1;
+
+        deq.push_back(nx+ny*W);
+
+      }
+
+    }
+
+  }
+
+}
+
+
+
+
+
+void dfs(int x,int y,int cost,int f[10][10],int ep,deque<int> &path,int F,int S,int prev){
+
+
+
+  if( cost >= mini ) return;
+
+  if( m2[sp[S][1]/W][sp[S][1]%W] + cost >= mini ) return;
+
+
+
+
+
+
+
+
+
+
+
+  if( x + y * W == ep ) {
+
+    rep(i,H) rep(j,W) nfield[i][j] = field[i][j];
+
+    rep(i,path.size()) nfield[path[i]/W][path[i]%W] = 1;
+
+    simulate_min(mindist2,nfield,sp[S][0]);
+
+    if( mindist2[sp[S][1]/W][sp[S][1]%W] == IINF ) return;
+
+    mini = min(mini,(int)path.size()-1+mindist2[sp[S][1]/W][sp[S][1]%W]);
+
+    return;
+
+  }
+
+  int cnt = 0;
+
+  rep(i,4) {
+
+    int nx = x + dx[i], ny = y + dy[i];
+
+    if( !isValid(nx,ny) ) continue;
+
+    cnt += visited[ny][nx];
+
+ }
+
+  if( cnt >= 2 ) return;
+
+
+
+
+
+  {
+
+    rep(i,4){
+
+      int nx = x, ny = y;
+
+      nx += dx[i], ny += dy[i];
+
+      if( !isValid(nx,ny) ) continue;
+
+      if( f[ny][nx] != 0 && f[ny][nx] != f[ep/W][ep%W] ) continue;
+
+      if( visited[ny][nx] ) continue;
+
+      while(1){
+
+        nx += dx[i], ny += dy[i];
+
+        if( !isValid(nx,ny) ) break;
+
+        if( f[ny][nx] != 0 && f[ny][nx] != f[ep/W][ep%W] ) break;
+
+        if( X[nx] || Y[ny] ) break;
+
+        if( visited[ny][nx] ) return;
+
+      }
+
+    }
+
+  }
+
+
+
+
+
+  rep(i,4) {
+
+    if( i == (prev+2) % 4 ) continue;
+
+    int nx = x + dx[i], ny = y + dy[i];
+
+    if( !isValid(nx,ny) ) continue;
+
+    if( f[ny][nx] != 0 && f[ny][nx] != f[ep/W][ep%W] ) continue;
+
+    if( visited[ny][nx] ) continue;
+
+    visited[ny][nx] = true;
+
+    path.push_back(nx+ny*W);
+
+    dfs(nx,ny,cost+1,f,ep,path,F,S,i);
+
+    path.pop_back();
+
+    visited[ny][nx] = false;
+
+  }
+
+
+
+
+
+}
+
+
+
+int compute(int F,int S){
+
+  rep(i,H) rep(j,W) visited[i][j] = false;
+
+  deque<int> path;
+
+  path.push_back(sp[F][0]);
+
+  visited[sp[F][0]/W][sp[F][0]%W] = true;
+
+  simulate_min(m1,field,sp[F][0]);
+
+  simulate_min(m2,field,sp[S][0]);
+
+  dfs(sp[F][0]%W,sp[F][0]/W,0,field,sp[F][1],path,F,S,-IINF);
+
+}
+
+
+
+int main(){
+
+  while( cin >> H >> W, H|W ){
+
+    rep(i,2) sp[i].clear();
+
+    rep(i,10) X[i] = Y[i] = false;
+
+    rep(i,H) rep(j,W) {
+
+      cin >> field[i][j];
+
+      if( field[i][j] == 1 ) X[j] = true, Y[i] = true;
+
+      if( field[i][j] == 2 ) sp[0].push_back(j+i*W), X[j] = Y[i] = true;
+
+      if( field[i][j] == 3 ) sp[1].push_back(j+i*W), X[j] = Y[i] = true;
+
+    }
+
+    mini = IINF;
+
+
+
+    compute(0,1);
+
+    if( mini == IINF ) puts(""0"");
+
+    else cout << mini << endl;
+
+  }
+
+  return 0;
+
+}",122.0,127.0
+sample1.csv,u116766943,p00849,C++,s546809015,s829771916,9250.0,8780.0,1228.0,1228.0,Time Limit Exceeded,Time Limit Exceeded,5.08,"#include<bits/stdc++.h>
+
+
+
+#define REP(i,s,n) for(int i=s;i<n;i++)
+
+#define rep(i,n) REP(i,0,n)
+
+
+
+using namespace std;
+
+
+
+const int IINF = INT_MAX;
+
+
+
+int H,W,mini,field[10][10],prev[10][10],mindist[10][10],nfield[10][10],mindist2[10][10],m1[10][10],m2[10][10];
+
+vector<int> sp[2];
+
+bool visited[10][10];
+
+int dx[] = {0,1,0,-1};
+
+int dy[] = {1,0,-1,0};
+
+bool X[10], Y[10];
+
+
+
+bool isValid(int x,int y) { return 0 <= x && x < W && 0 <= y && y < H; }
+
+
+
+void simulate_min(int dist[10][10],int f[10][10],int s){
+
+  rep(i,H) rep(j,W) dist[i][j] = IINF;
+
+  dist[s/W][s%W] = 0;
+
+  deque<int> deq;
+
+  deq.push_back(s);
+
+  while( !deq.empty() ){
+
+    int cur = deq.front(); deq.pop_front();
+
+    int x = cur % W, y = cur / W;
+
+    rep(i,4){
+
+      int nx = x + dx[i], ny = y + dy[i];
+
+      if( !isValid(nx,ny) ) continue;
+
+      if( f[ny][nx] != 0 && f[ny][nx] != f[s/W][s%W] ) continue;
+
+      if( dist[ny][nx] == IINF ) {
+
+        dist[ny][nx] = dist[y][x] + 1;
+
+        deq.push_back(nx+ny*W);
+
+      }
+
+    }
+
+  }
+
+}
+
+
+
+
+
+void dfs(int x,int y,int cost,int f[10][10],int ep,deque<int> &path,int F,int S,int prev){
+
+
+
+  if( cost >= mini ) return;
+
+  if( m2[sp[S][1]/W][sp[S][1]%W] + cost >= mini ) return;
+
+
+
+
+
+
+
+
+
+
+
+  if( x + y * W == ep ) {
+
+    rep(i,H) rep(j,W) nfield[i][j] = field[i][j];
+
+    rep(i,path.size()) nfield[path[i]/W][path[i]%W] = 1;
+
+    simulate_min(mindist2,nfield,sp[S][0]);
+
+    if( mindist2[sp[S][1]/W][sp[S][1]%W] == IINF ) return;
+
+    mini = min(mini,(int)path.size()-1+mindist2[sp[S][1]/W][sp[S][1]%W]);
+
+    return;
+
+  }
+
+  int cnt = 0;
+
+  rep(i,4) {
+
+    int nx = x + dx[i], ny = y + dy[i];
+
+    if( !isValid(nx,ny) ) continue;
+
+    cnt += visited[ny][nx];
+
+ }
+
+  if( cnt >= 2 ) return;
+
+
+
+
+
+  {
+
+    rep(i,4){
+
+      int nx = x, ny = y;
+
+      nx += dx[i], ny += dy[i];
+
+      if( !isValid(nx,ny) ) continue;
+
+      if( f[ny][nx] != 0 && f[ny][nx] != f[ep/W][ep%W] ) continue;
+
+      if( visited[ny][nx] ) continue;
+
+      while(1){
+
+        nx += dx[i], ny += dy[i];
+
+        if( !isValid(nx,ny) ) break;
+
+        if( f[ny][nx] != 0 && f[ny][nx] != f[ep/W][ep%W] ) break;
+
+        if( X[nx] || Y[ny] ) break;
+
+        if( visited[ny][nx] ) return;
+
+      }
+
+    }
+
+  }
+
+
+
+
+
+  rep(i,4) {
+
+    if( i == (prev+2) % 4 ) continue;
+
+    int nx = x + dx[i], ny = y + dy[i];
+
+    if( !isValid(nx,ny) ) continue;
+
+    if( f[ny][nx] != 0 && f[ny][nx] != f[ep/W][ep%W] ) continue;
+
+    if( visited[ny][nx] ) continue;
+
+    visited[ny][nx] = true;
+
+    path.push_back(nx+ny*W);
+
+    dfs(nx,ny,cost+1,f,ep,path,F,S,i);
+
+    path.pop_back();
+
+    visited[ny][nx] = false;
+
+  }
+
+
+
+
+
+}
+
+
+
+int compute(int F,int S){
+
+  rep(i,H) rep(j,W) visited[i][j] = false;
+
+  deque<int> path;
+
+  path.push_back(sp[F][0]);
+
+  visited[sp[F][0]/W][sp[F][0]%W] = true;
+
+  simulate_min(m1,field,sp[F][0]);
+
+  simulate_min(m2,field,sp[S][0]);
+
+  dfs(sp[F][0]%W,sp[F][0]/W,0,field,sp[F][1],path,F,S,-IINF);
+
+}
+
+
+
+int main(){
+
+  while( cin >> H >> W, H|W ){
+
+    rep(i,2) sp[i].clear();
+
+    rep(i,10) X[i] = Y[i] = false;
+
+    rep(i,H) rep(j,W) {
+
+      cin >> field[i][j];
+
+      if( field[i][j] == 1 ) X[j] = true, Y[i] = true;
+
+      if( field[i][j] == 2 ) sp[0].push_back(j+i*W), X[j] = Y[i] = true;
+
+      if( field[i][j] == 3 ) sp[1].push_back(j+i*W), X[j] = Y[i] = true;
+
+    }
+
+    mini = IINF;
+
+
+
+    compute(0,1);
+
+    if( mini == IINF ) puts(""0"");
+
+    else cout << mini << endl;
+
+  }
+
+  return 0;
+
+}","#include<bits/stdc++.h>
+
+
+
+#define REP(i,s,n) for(int i=s;i<n;i++)
+
+#define rep(i,n) REP(i,0,n)
+
+
+
+using namespace std;
+
+
+
+const int IINF = INT_MAX;
+
+
+
+int H,W,mini,field[10][10],prev[10][10],mindist[10][10],nfield[10][10],mindist2[10][10],m1[10][10],m2[10][10];
+
+vector<int> sp[2];
+
+bool visited[10][10];
+
+int dx[] = {0,1,0,-1};
+
+int dy[] = {1,0,-1,0};
+
+bool X[10], Y[10];
+
+
+
+bool isValid(int x,int y) { return 0 <= x && x < W && 0 <= y && y < H; }
+
+
+
+void simulate_min(int dist[10][10],int f[10][10],int s){
+
+  rep(i,H) rep(j,W) dist[i][j] = IINF;
+
+  dist[s/W][s%W] = 0;
+
+  deque<int> deq;
+
+  deq.push_back(s);
+
+  while( !deq.empty() ){
+
+    int cur = deq.front(); deq.pop_front();
+
+    int x = cur % W, y = cur / W;
+
+    if( x+y*W != s && f[y][x] == f[s/W][s%W] ) return;
+
+    rep(i,4){
+
+      int nx = x + dx[i], ny = y + dy[i];
+
+      if( !isValid(nx,ny) ) continue;
+
+      if( f[ny][nx] != 0 && f[ny][nx] != f[s/W][s%W] ) continue;
+
+      if( dist[ny][nx] == IINF ) {
+
+        dist[ny][nx] = dist[y][x] + 1;
+
+        deq.push_back(nx+ny*W);
+
+      }
+
+    }
+
+  }
+
+}
+
+
+
+
+
+void dfs(int x,int y,int cost,int f[10][10],int ep,deque<int> &path,int F,int S,int prev){
+
+
+
+  if( cost >= mini ) return;
+
+  if( m1[ep/W][ep%W] - m1[y][x] + m2[sp[S][1]/W][sp[S][1]%W] + cost >= mini ) return;
+
+
+
+
+
+  if( x + y * W == ep ) {
+
+    rep(i,H) rep(j,W) nfield[i][j] = field[i][j];
+
+    rep(i,path.size()) nfield[path[i]/W][path[i]%W] = 1;
+
+    simulate_min(mindist2,nfield,sp[S][0]);
+
+    if( mindist2[sp[S][1]/W][sp[S][1]%W] == IINF ) return;
+
+    mini = min(mini,(int)path.size()-1+mindist2[sp[S][1]/W][sp[S][1]%W]);
+
+    return;
+
+  }
+
+  int cnt = 0;
+
+  rep(i,4) {
+
+    int nx = x + dx[i], ny = y + dy[i];
+
+    if( !isValid(nx,ny) ) continue;
+
+    cnt += visited[ny][nx];
+
+ }
+
+  if( cnt >= 2 ) return;
+
+
+
+
+
+  {
+
+    rep(i,4){
+
+      int nx = x, ny = y;
+
+      nx += dx[i], ny += dy[i];
+
+      if( !isValid(nx,ny) ) continue;
+
+      if( f[ny][nx] != 0 && f[ny][nx] != f[ep/W][ep%W] ) continue;
+
+      if( visited[ny][nx] ) continue;
+
+      while(1){
+
+        nx += dx[i], ny += dy[i];
+
+        if( !isValid(nx,ny) ) break;
+
+        if( f[ny][nx] != 0 && f[ny][nx] != f[ep/W][ep%W] ) break;
+
+        if( X[nx] || Y[ny] ) break;
+
+        if( visited[ny][nx] ) return;
+
+      }
+
+    }
+
+  }
+
+
+
+
+
+  rep(i,4) {
+
+    if( i == (prev+2) % 4 ) continue;
+
+    int nx = x + dx[i], ny = y + dy[i];
+
+    if( !isValid(nx,ny) ) continue;
+
+    if( f[ny][nx] != 0 && f[ny][nx] != f[ep/W][ep%W] ) continue;
+
+    if( visited[ny][nx] ) continue;
+
+    visited[ny][nx] = true;
+
+    path.push_back(nx+ny*W);
+
+    dfs(nx,ny,cost+1,f,ep,path,F,S,i);
+
+    path.pop_back();
+
+    visited[ny][nx] = false;
+
+  }
+
+
+
+
+
+}
+
+
+
+int compute(int F,int S){
+
+  rep(i,H) rep(j,W) visited[i][j] = false;
+
+  deque<int> path;
+
+  path.push_back(sp[F][0]);
+
+  visited[sp[F][0]/W][sp[F][0]%W] = true;
+
+  simulate_min(m1,field,sp[F][0]);
+
+  simulate_min(m2,field,sp[S][0]);
+
+  dfs(sp[F][0]%W,sp[F][0]/W,0,field,sp[F][1],path,F,S,-IINF);
+
+}
+
+
+
+int main(){
+
+  while( cin >> H >> W, H|W ){
+
+    rep(i,2) sp[i].clear();
+
+    rep(i,10) X[i] = Y[i] = false;
+
+    rep(i,H) rep(j,W) {
+
+      cin >> field[i][j];
+
+      if( field[i][j] == 1 ) X[j] = true, Y[i] = true;
+
+      if( field[i][j] == 2 ) sp[0].push_back(j+i*W), X[j] = Y[i] = true;
+
+      if( field[i][j] == 3 ) sp[1].push_back(j+i*W), X[j] = Y[i] = true;
+
+    }
+
+    mini = IINF;
+
+
+
+    compute(0,1);
+
+    if( mini == IINF ) puts(""0"");
+
+    else cout << mini << endl;
+
+  }
+
+  return 0;
+
+}",127.0,125.0
+sample1.csv,u116766943,p00849,C++,s812631681,s154463767,8700.0,8030.0,1232.0,1232.0,Time Limit Exceeded,Time Limit Exceeded,7.7,"#include<bits/stdc++.h>
+
+
+
+#define REP(i,s,n) for(int i=s;i<n;i++)
+
+#define rep(i,n) REP(i,0,n)
+
+
+
+using namespace std;
+
+
+
+const int IINF = INT_MAX;
+
+
+
+int H,W,mini,field[10][10],prev[10][10],mindist[10][10],nfield[10][10],mindist2[10][10],m1[10][10],m2[10][10];
+
+vector<int> sp[2];
+
+bool visited[10][10];
+
+int dx[] = {0,1,0,-1};
+
+int dy[] = {1,0,-1,0};
+
+bool X[10], Y[10];
+
+
+
+bool isValid(int x,int y) { return 0 <= x && x < W && 0 <= y && y < H; }
+
+
+
+void simulate_min(int dist[10][10],int f[10][10],int s){
+
+  rep(i,H) rep(j,W) dist[i][j] = IINF;
+
+  dist[s/W][s%W] = 0;
+
+  deque<int> deq;
+
+  deq.push_back(s);
+
+  while( !deq.empty() ){
+
+    int cur = deq.front(); deq.pop_front();
+
+    int x = cur % W, y = cur / W;
+
+    if( x+y*W != s && f[y][x] == f[s/W][s%W] ) return;
+
+    rep(i,4){
+
+      int nx = x + dx[i], ny = y + dy[i];
+
+      if( !isValid(nx,ny) ) continue;
+
+      if( f[ny][nx] != 0 && f[ny][nx] != f[s/W][s%W] ) continue;
+
+      if( dist[ny][nx] == IINF ) {
+
+        dist[ny][nx] = dist[y][x] + 1;
+
+        deq.push_back(nx+ny*W);
+
+      }
+
+    }
+
+  }
+
+}
+
+
+
+
+
+void dfs(int x,int y,int cost,int f[10][10],int ep,deque<int> &path,int F,int S,int prev){
+
+
+
+  if( cost >= mini ) return;
+
+  if( m1[ep/W][ep%W] - m1[y][x] + m2[sp[S][1]/W][sp[S][1]%W] + cost >= mini ) return;
+
+
+
+
+
+  if( x + y * W == ep ) {
+
+    rep(i,H) rep(j,W) nfield[i][j] = field[i][j];
+
+    rep(i,path.size()) nfield[path[i]/W][path[i]%W] = 1;
+
+    simulate_min(mindist2,nfield,sp[S][0]);
+
+    if( mindist2[sp[S][1]/W][sp[S][1]%W] == IINF ) return;
+
+    mini = min(mini,(int)path.size()-1+mindist2[sp[S][1]/W][sp[S][1]%W]);
+
+    return;
+
+  }
+
+  int cnt = 0;
+
+  rep(i,4) {
+
+    int nx = x + dx[i], ny = y + dy[i];
+
+    if( !isValid(nx,ny) ) continue;
+
+    cnt += visited[ny][nx];
+
+ }
+
+  if( cnt >= 2 ) return;
+
+
+
+
+
+  {
+
+    rep(i,4){
+
+      if( i == (prev+2) % 4 ) continue;
+
+      int nx = x, ny = y;
+
+      nx += dx[i], ny += dy[i];
+
+      if( !isValid(nx,ny) ) continue;
+
+      if( f[ny][nx] != 0 && f[ny][nx] != f[ep/W][ep%W] ) continue;
+
+      if( visited[ny][nx] ) continue;
+
+      while(1){
+
+        nx += dx[i], ny += dy[i];
+
+        if( !isValid(nx,ny) ) break;
+
+        if( f[ny][nx] != 0 && f[ny][nx] != f[ep/W][ep%W] ) break;
+
+        if( X[nx] || Y[ny] ) break;
+
+        if( visited[ny][nx] ) return;
+
+      }
+
+    }
+
+  }
+
+
+
+
+
+  rep(i,4) {
+
+    if( i == (prev+2) % 4 ) continue;
+
+    int nx = x + dx[i], ny = y + dy[i];
+
+    if( !isValid(nx,ny) ) continue;
+
+    if( f[ny][nx] != 0 && f[ny][nx] != f[ep/W][ep%W] ) continue;
+
+    if( visited[ny][nx] ) continue;
+
+    visited[ny][nx] = true;
+
+    path.push_back(nx+ny*W);
+
+    dfs(nx,ny,cost+1,f,ep,path,F,S,i);
+
+    path.pop_back();
+
+    visited[ny][nx] = false;
+
+  }
+
+
+
+
+
+}
+
+
+
+int compute(int F,int S){
+
+  rep(i,H) rep(j,W) visited[i][j] = false;
+
+  deque<int> path;
+
+  path.push_back(sp[F][0]);
+
+  visited[sp[F][0]/W][sp[F][0]%W] = true;
+
+  simulate_min(m1,field,sp[F][0]);
+
+  simulate_min(m2,field,sp[S][0]);
+
+  dfs(sp[F][0]%W,sp[F][0]/W,0,field,sp[F][1],path,F,S,-IINF);
+
+}
+
+
+
+bool check(int a){
+
+  int x = a % W, y = a / W;
+
+  return 0 == x || W-1 == x || 0 == y || H-1 == y;
+
+}
+
+
+
+int main(){
+
+  while( cin >> H >> W, H|W ){
+
+    rep(i,2) sp[i].clear();
+
+    rep(i,10) X[i] = Y[i] = false;
+
+    rep(i,H) rep(j,W) {
+
+      cin >> field[i][j];
+
+      if( field[i][j] == 1 ) X[j] = true, Y[i] = true;
+
+      if( field[i][j] == 2 ) sp[0].push_back(j+i*W), X[j] = Y[i] = true;
+
+      if( field[i][j] == 3 ) sp[1].push_back(j+i*W), X[j] = Y[i] = true;
+
+    }
+
+    mini = IINF;
+
+    if( check(sp[0][1]) && check(sp[0][0]) && check(sp[1][1]) && check(sp[1][0]) ) {
+
+      vector<int> vec;
+
+      for(int i=0;i<W;i++) if( field[0][i] == 2 || field[0][i] == 3 ) vec.push_back(field[0][i]);
+
+      for(int i=1;i<H;i++) if( field[i][W-1] == 2 || field[i][W-1] == 3 ) vec.push_back(field[i][W-1]);
+
+      for(int i=W-2;i>=0;i--) if( field[H-1][i] == 2 || field[H-1][i] == 3 ) vec.push_back(field[H-1][i]);
+
+      for(int i=H-2;i>=1;i--) if( field[i][0] == 2 || field[i][0] == 3 ) vec.push_back(field[i][0]);
+
+      assert(vec.size() == 4);
+
+      if( !( vec[0] == vec[1] || vec[0] == vec[3] ) ) {
+
+        puts(""0"");
+
+        continue;
+
+      }
+
+    }
+
+
+
+
+
+    compute(0,1);
+
+    if( mini == IINF ) puts(""0"");
+
+    else cout << mini << endl;
+
+  }
+
+  return 0;
+
+}","#include<bits/stdc++.h>
+
+
+
+#define REP(i,s,n) for(int i=s;i<n;i++)
+
+#define rep(i,n) REP(i,0,n)
+
+
+
+using namespace std;
+
+
+
+const int IINF = INT_MAX;
+
+
+
+int H,W,mini,field[10][10],prev[10][10],mindist[10][10],nfield[10][10],mindist2[10][10],m1[10][10],m2[10][10];
+
+vector<int> sp[2];
+
+bool visited[10][10];
+
+int dx[] = {0,1,0,-1};
+
+int dy[] = {1,0,-1,0};
+
+bool X[10], Y[10];
+
+
+
+bool isValid(int x,int y) { return 0 <= x && x < W && 0 <= y && y < H; }
+
+
+
+void simulate_min(int dist[10][10],int f[10][10],int s){
+
+  rep(i,H) rep(j,W) dist[i][j] = IINF;
+
+  dist[s/W][s%W] = 0;
+
+  deque<int> deq;
+
+  deq.push_back(s);
+
+  while( !deq.empty() ){
+
+    int cur = deq.front(); deq.pop_front();
+
+    int x = cur % W, y = cur / W;
+
+    if( x+y*W != s && f[y][x] == f[s/W][s%W] ) return;
+
+    rep(i,4){
+
+      int nx = x + dx[i], ny = y + dy[i];
+
+      if( !isValid(nx,ny) ) continue;
+
+      if( f[ny][nx] != 0 && f[ny][nx] != f[s/W][s%W] ) continue;
+
+      if( dist[ny][nx] == IINF ) {
+
+        dist[ny][nx] = dist[y][x] + 1;
+
+        deq.push_back(nx+ny*W);
+
+      }
+
+    }
+
+  }
+
+}
+
+
+
+
+
+void dfs(int x,int y,int cost,int f[10][10],int ep,deque<int> &path,int F,int S,int prev){
+
+
+
+  if( cost >= mini ) return;
+
+  if( m1[ep/W][ep%W] - m1[y][x] + m2[sp[S][1]/W][sp[S][1]%W] + cost >= mini ) return;
+
+
+
+
+
+  if( x + y * W == ep ) {
+
+    rep(i,H) rep(j,W) nfield[i][j] = field[i][j];
+
+    rep(i,path.size()) nfield[path[i]/W][path[i]%W] = 1;
+
+    simulate_min(mindist2,nfield,sp[S][0]);
+
+    if( mindist2[sp[S][1]/W][sp[S][1]%W] == IINF ) return;
+
+    mini = min(mini,(int)path.size()-1+mindist2[sp[S][1]/W][sp[S][1]%W]);
+
+    return;
+
+  }
+
+  int cnt = 0;
+
+  rep(i,4) {
+
+    int nx = x + dx[i], ny = y + dy[i];
+
+    if( !isValid(nx,ny) ) continue;
+
+    cnt += visited[ny][nx];
+
+ }
+
+  if( cnt >= 2 ) return;
+
+
+
+
+
+  {
+
+    rep(i,4){
+
+      if( i == (prev+2) % 4 ) continue;
+
+      int nx = x, ny = y;
+
+      nx += dx[i], ny += dy[i];
+
+      if( !isValid(nx,ny) ) continue;
+
+      if( f[ny][nx] != 0 && f[ny][nx] != f[ep/W][ep%W] ) continue;
+
+      if( visited[ny][nx] ) continue;
+
+      while(1){
+
+        nx += dx[i], ny += dy[i];
+
+        if( !isValid(nx,ny) ) break;
+
+        if( f[ny][nx] != 0 && f[ny][nx] != f[ep/W][ep%W] ) break;
+
+        if( X[nx] || Y[ny] ) break;
+
+        if( visited[ny][nx] ) return;
+
+      }
+
+    }
+
+  }
+
+
+
+
+
+  rep(i,4) {
+
+    if( i == (prev+2) % 4 ) continue;
+
+    int nx = x + dx[i], ny = y + dy[i];
+
+    if( !isValid(nx,ny) ) continue;
+
+    if( f[ny][nx] != 0 && f[ny][nx] != f[ep/W][ep%W] ) continue;
+
+    if( visited[ny][nx] ) continue;
+
+    visited[ny][nx] = true;
+
+    path.push_back(nx+ny*W);
+
+    dfs(nx,ny,cost+1,f,ep,path,F,S,i);
+
+    path.pop_back();
+
+    visited[ny][nx] = false;
+
+  }
+
+
+
+
+
+}
+
+
+
+int compute(int F,int S){
+
+  rep(i,H) rep(j,W) visited[i][j] = false;
+
+  deque<int> path;
+
+  path.push_back(sp[F][0]);
+
+  visited[sp[F][0]/W][sp[F][0]%W] = true;
+
+  simulate_min(m1,field,sp[F][0]);
+
+  simulate_min(m2,field,sp[S][0]);
+
+  dfs(sp[F][0]%W,sp[F][0]/W,0,field,sp[F][1],path,F,S,-IINF);
+
+}
+
+
+
+bool check(int a){
+
+  int x = a % W, y = a / W;
+
+  return 0 == x || W-1 == x || 0 == y || H-1 == y;
+
+}
+
+
+
+int main(){
+
+  while( cin >> H >> W, H|W ){
+
+    rep(i,2) sp[i].clear();
+
+    rep(i,10) X[i] = Y[i] = false;
+
+    rep(i,H) rep(j,W) {
+
+      cin >> field[i][j];
+
+      if( field[i][j] == 1 ) X[j] = true, Y[i] = true;
+
+      if( field[i][j] == 2 ) sp[0].push_back(j+i*W), X[j] = Y[i] = true;
+
+      if( field[i][j] == 3 ) sp[1].push_back(j+i*W), X[j] = Y[i] = true;
+
+    }
+
+    mini = IINF;
+
+    if( check(sp[0][1]) && check(sp[0][0]) && check(sp[1][1]) && check(sp[1][0]) ) {
+
+      vector<int> vec;
+
+      for(int i=0;i<W;i++) if( field[0][i] == 2 || field[0][i] == 3 ) vec.push_back(field[0][i]);
+
+      for(int i=1;i<H;i++) if( field[i][W-1] == 2 || field[i][W-1] == 3 ) vec.push_back(field[i][W-1]);
+
+      for(int i=W-2;i>=0;i--) if( field[H-1][i] == 2 || field[H-1][i] == 3 ) vec.push_back(field[H-1][i]);
+
+      for(int i=H-2;i>=1;i--) if( field[i][0] == 2 || field[i][0] == 3 ) vec.push_back(field[i][0]);
+
+      assert(vec.size() == 4);
+
+      if( !( vec[0] == vec[1] || vec[0] == vec[3] ) ) {
+
+        puts(""0"");
+
+        continue;
+
+      }
+
+    }
+
+
+
+
+
+    compute(0,1);
+
+    if( mini == IINF ) puts(""0"");
+
+    else cout << mini << endl;
+
+  }
+
+  return 0;
+
+}",144.0,144.0

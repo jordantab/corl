@@ -166,4 +166,6 @@ env
 # RL specific
 checkpoints
 #.idea/
+
 datasets/*
+models/*
