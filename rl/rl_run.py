@@ -6,21 +6,24 @@ import random
 checkpoint = "Salesforce/codet5p-2b"
 device = "cuda"  # or "cuda" for GPU
 tokenizer = AutoTokenizer.from_pretrained(checkpoint)
-model = AutoModelForSeq2SeqLM.from_pretrained(checkpoint,
-                                              torch_dtype=torch.float16,
-                                              low_cpu_mem_usage=True,
-                                              trust_remote_code=True).to(device)
+model = AutoModelForSeq2SeqLM.from_pretrained(
+    checkpoint,
+    torch_dtype=torch.float16,
+    low_cpu_mem_usage=True,
+    trust_remote_code=True,
+).to(device)
 # Define the optimizer for the CodeT5 model
 optimizer = optim.Adam(model.parameters(), lr=1e-5)
 
 max_length = 256
 
 R1 = -1.0  # Negative reward for code that cannot be compiled
-R2 = 0.0   # Zero reward for code that fails unit tests
-R3 = 0.5   # Positive reward for code that passes unit tests but doesn't improve execution time
-R4 = 1.0   # Higher positive reward for code that passes unit tests and improves execution time
+R2 = 0.0  # Zero reward for code that fails unit tests
+R3 = 0.5  # Positive reward for code that passes unit tests but doesn't improve execution time
+R4 = 1.0  # Higher positive reward for code that passes unit tests and improves execution time
 
 # Placeholder functions
+
 
 def compile_code(code):
     """
@@ -36,6 +39,7 @@ def compile_code(code):
     print(f"Compilation result: {result}")
     return result
 
+
 def pass_unit_tests(code):
     """
     Run unit tests and return a random test result (True for passing, False for failing).
@@ -50,6 +54,7 @@ def pass_unit_tests(code):
     print(f"Unit test result: {result}")
     return result
 
+
 def execution_time(code):
     """
     Return a random execution time value (in seconds).
@@ -63,6 +68,7 @@ def execution_time(code):
     time = random.uniform(0.1, 1.0)
     print(f"Execution time: {time:.2f} seconds")
     return time
+
 
 def tokenize_code(code):
     """
@@ -79,6 +85,7 @@ def tokenize_code(code):
     token_ids = tokenizer.convert_tokens_to_ids(tokens)
     print(f"Tokenized code: {token_ids}")
     return token_ids
+
 
 def get_reward(generated_code, reference_code):
     """
@@ -98,12 +105,15 @@ def get_reward(generated_code, reference_code):
     elif not pass_unit_tests(generated_code):
         print("Reward: Failed unit tests (R2)")
         return R2
-    elif pass_unit_tests(generated_code) and execution_time(generated_code) < execution_time(reference_code):
+    elif pass_unit_tests(generated_code) and execution_time(
+        generated_code
+    ) < execution_time(reference_code):
         print("Reward: Passed unit tests and improved execution time (R4)")
         return R4
     else:
         print("Reward: Passed unit tests but no improvement in execution time (R3)")
         return R3
+
 
 def generate_code(input_code_tokens):
     """
@@ -118,13 +128,16 @@ def generate_code(input_code_tokens):
     print("Generating optimized code...")
     input_code = tokenizer.decode(input_code_tokens, skip_special_tokens=True)
     encoding = tokenizer(input_code, return_tensors="pt").to(device)
-    encoding['decoder_input_ids'] = encoding['input_ids'].clone()
+    encoding["decoder_input_ids"] = encoding["input_ids"].clone()
 
-    outputs = model.generate(**encoding, max_length=max_length, pad_token_id=tokenizer.eos_token_id)
+    outputs = model.generate(
+        **encoding, max_length=max_length, pad_token_id=tokenizer.eos_token_id
+    )
     generated_code_tokens = outputs[0].tolist()
     print(f"Generated optimized code tokens: {generated_code_tokens}")
 
     return generated_code_tokens
+
 
 def calculate_score(generated_code_tokens, reference_code_tokens):
     """
@@ -141,15 +154,18 @@ def calculate_score(generated_code_tokens, reference_code_tokens):
     print("Calculating score...")
     log_probs = []
     for token_id in generated_code_tokens:
-        reference_code = tokenizer.decode(reference_code_tokens, skip_special_tokens=True)
+        reference_code = tokenizer.decode(
+            reference_code_tokens, skip_special_tokens=True
+        )
         reference_encoding = tokenizer(reference_code, return_tensors="pt").to(device)
-        logits = model(reference_encoding['input_ids']).logits
+        logits = model(reference_encoding["input_ids"]).logits
         log_prob = torch.log_softmax(logits[0, -1], dim=-1)[token_id].item()
         log_probs.append(log_prob)
 
     score = sum(log_probs) / len(generated_code_tokens)
     print(f"Calculated score: {score:.4f}")
     return score
+
 
 def train(model, tokenizer, optimizer, num_episodes, input_code_tokens):
     model.train()
@@ -166,9 +182,13 @@ def train(model, tokenizer, optimizer, num_episodes, input_code_tokens):
             candidate_samples.append(generated_code_tokens)
 
         # Calculate rewards for candidate samples
-        rewards = [get_reward(tokenizer.decode(sample, skip_special_tokens=True),
-                              tokenizer.decode(input_code_tokens, skip_special_tokens=True))
-                   for sample in candidate_samples]
+        rewards = [
+            get_reward(
+                tokenizer.decode(sample, skip_special_tokens=True),
+                tokenizer.decode(input_code_tokens, skip_special_tokens=True),
+            )
+            for sample in candidate_samples
+        ]
         print(f"Rewards: {rewards}")
 
         # Compute ranking loss (L_rank)
@@ -203,11 +223,12 @@ def train(model, tokenizer, optimizer, num_episodes, input_code_tokens):
     torch.save(model.state_dict(), model_checkpoint_path)
     print(f"CodeT5 model checkpoint saved at: {model_checkpoint_path}")
 
+
 # Input Data
-input_code = '''
+input_code = """
 def hello_world():
     print("Hello, World!")
-'''
+"""
 
 input_code_tokens = tokenize_code(input_code)
 
