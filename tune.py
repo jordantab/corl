@@ -394,7 +394,7 @@ def main():
         torch_dtype=torch.float16,
         low_cpu_mem_usage=True,
         trust_remote_code=True,
-    )
+    ).to(args.device)
 
     freeze_self_attn_params(model)
     fine_tune(model, tokenized_data, args)
