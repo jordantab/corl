@@ -36,16 +36,16 @@ The `improvement_pairs_additional_metadata.csv` dataset's columns are in the fol
 user_id, problem_id, language, submission_id_v0, submission_id_v1, cpu_time_v0, cpu_time_v1, memory_v0, memory_v1, status_v0, status_v1, improvement_frac, code_v0, code_v1
 ```
 
-A processed version can be
-A version processed for initial fine tuning (with the optimization instruction) can be found [here](https://drive.google.com/drive/folders/1GILiI_7I6tt-QmI6jhQkfgcCTHsmYh9O?usp=sharing).
+Subsets of the data processed for initial fine tuning (with the optimization instruction) can be found [here](https://drive.google.com/drive/folders/1GILiI_7I6tt-QmI6jhQkfgcCTHsmYh9O?usp=sharing).
 
-Or you can process the CSV file yourself using [`process_csv.py`](process_csv.py):
+The following scripts are available for data processing and analysis:
 
-```bash
-python3 process_csv.py --infile datasets/improvement_pairs_additional_metadata.csv --outfile datasets/improvement_pairs_instruction.json
-```
+-   [`process_csv.py`](process_csv.py) - Converts the csv dataset to a json file for instruction tuning.
+-   [`count_tokens.py`](count_tokens.py) - Analyzes the distribution for input/output sizes (in terms of tokens) ofn instruction tuning dataset (json).
+-   [`filter_dataset`](filter_dataset.py) - Creates a subset of an instruction tuning dataset with samples where input/outputs are below the provided threshold.
 
-Other uses of the script are suggested in the script's file header.
+You can read more about how to use these scripts in their respective file headers, or by running the
+script with the `--help` flag.
 
 ## Initial Fine Tuning
 

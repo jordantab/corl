@@ -74,7 +74,7 @@ def process_csv(infile, outfile, samples, language):
         for row in reader:
             if count == samples:
                 break
-            if row["language"] == language:
+            if row["language"].lower() == language.lower():
                 data.append(
                     {
                         "instruction": INSTRUCTION,
