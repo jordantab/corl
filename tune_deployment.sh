@@ -4,7 +4,8 @@
 # For locally testing tune.py, use "tune_local.sh".
 
 time python3 tune.py --device "cuda" \
-                --inst-dataset "datasets/cpp_leq_105_tokens.json"
+                --max-len 105 \
+                --inst-dataset "datasets/cpp_leq_105_tokens.json" \
                 # TODO:
                 # --outdir "<somewhere-outside-the-repo>""
 
