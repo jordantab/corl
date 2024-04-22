@@ -7,20 +7,32 @@ import matplotlib.pyplot as plt
 import json
 import os
 
+
 # Utility functions
 def parse_args():
     parser = argparse.ArgumentParser(description="Train a model for code optimization.")
-    parser.add_argument('--model_name', type=str, default='Salesforce/codet5p-2b', help='Model checkpoint for initialization.')
-    parser.add_argument('--num_episodes', type=int, default=10, help='Number of training episodes.')
-    parser.add_argument('--dataset_path', type=str, required=True, help='Path to the dataset file.')
+    parser.add_argument(
+        "--model_name",
+        type=str,
+        default="Salesforce/codet5p-2b",
+        help="Model checkpoint for initialization.",
+    )
+    parser.add_argument(
+        "--num_episodes", type=int, default=10, help="Number of training episodes."
+    )
+    parser.add_argument(
+        "--dataset_path", type=str, required=True, help="Path to the dataset file."
+    )
     return parser.parse_args()
+
 
 def load_dataset(file_path):
     """
     Load and return the dataset from a JSON file.
     """
-    with open(file_path, 'r') as file:
+    with open(file_path, "r") as file:
         return json.load(file)
+
 
 # Load arguments and initialize components
 args = parse_args()
@@ -136,7 +148,7 @@ def get_reward(generated_code, reference_code):
         return R3
 
 
-def generate_code(input_code_tokens):
+def generate_code(input_code_tokens, temperature=1.0):
     """
     Generate optimized code based on the input code tokens.
 
@@ -151,8 +163,10 @@ def generate_code(input_code_tokens):
     input_code = tokenizer.decode(input_code_tokens, skip_special_tokens=True)
 
     # Create an optimization prompt
-    optimization_prompt = (f"Optimize the following code for performance and readability:\n\n{input_code}, "
-                           f"only return the optimized code.")
+    optimization_prompt = (
+        f"Optimize the following code for performance and readability:\n\n{input_code}, "
+        f"only return the optimized code."
+    )
 
     # Encode the prompt
     encoding = tokenizer(optimization_prompt, return_tensors="pt").to(device)
@@ -160,7 +174,10 @@ def generate_code(input_code_tokens):
 
     # Generate optimized code
     outputs = model.generate(
-        **encoding, max_length=max_length, pad_token_id=tokenizer.eos_token_id
+        **encoding,
+        max_length=max_length,
+        pad_token_id=tokenizer.eos_token_id,
+        temperature=temperature
     )
     generated_code_tokens = outputs[0].tolist()
     print(f"Generated optimized code tokens: {generated_code_tokens}")
@@ -223,19 +240,25 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
 
             for i in range(num_samples):
                 print(f"Generating candidate sample {i + 1}/{num_samples}")
-                generated_code_tokens = generate_code(input_code_tokens)
+                generated_code_tokens = generate_code(input_code_tokens, temperature=0.8)
                 candidate_samples.append(generated_code_tokens)
 
-                generated_code = tokenizer.decode(generated_code_tokens, skip_special_tokens=True)
-                reward = get_reward(generated_code, entry['input'])
+                generated_code = tokenizer.decode(
+                    generated_code_tokens, skip_special_tokens=True
+                )
+                reward = get_reward(generated_code, entry["input"])
                 rewards.append(reward)
 
             ranking_loss = 0
             for i in range(len(candidate_samples)):
                 for j in range(len(candidate_samples)):
                     if rewards[i] < rewards[j]:
-                        log_prob_i = calculate_score(candidate_samples[i], input_code_tokens)
-                        log_prob_j = calculate_score(candidate_samples[j], input_code_tokens)
+                        log_prob_i = calculate_score(
+                            candidate_samples[i], input_code_tokens
+                        )
+                        log_prob_j = calculate_score(
+                            candidate_samples[j], input_code_tokens
+                        )
                         ranking_loss += max(0, log_prob_i - log_prob_j)
 
             best_sample_idx = rewards.index(max(rewards))
@@ -263,12 +286,13 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
 
     # Plot training losses
     plt.plot(losses)
-    plt.title('Training Loss per Episode')
-    plt.xlabel('Episode')
-    plt.ylabel('Loss')
+    plt.title("Training Loss per Episode")
+    plt.xlabel("Episode")
+    plt.ylabel("Loss")
     plt.show()
 
     print("Training completed.")
+
 
 # Start training
 train(model, tokenizer, optimizer, args.num_episodes, dataset)
