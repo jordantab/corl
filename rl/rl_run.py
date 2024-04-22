@@ -148,7 +148,7 @@ def get_reward(generated_code, reference_code):
         return R3
 
 
-def generate_code(input_code_tokens, temperature=1.0):
+def generate_code(input_code_tokens, temperature=1.0, do_sample=True):
     """
     Generate optimized code based on the input code tokens.
 
@@ -177,7 +177,8 @@ def generate_code(input_code_tokens, temperature=1.0):
         **encoding,
         max_length=max_length,
         pad_token_id=tokenizer.eos_token_id,
-        temperature=temperature
+        temperature=temperature,
+        do_sample=do_sample
     )
     generated_code_tokens = outputs[0].tolist()
     print(f"Generated optimized code tokens: {generated_code_tokens}")
@@ -240,7 +241,7 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
 
             for i in range(num_samples):
                 print(f"Generating candidate sample {i + 1}/{num_samples}")
-                generated_code_tokens = generate_code(input_code_tokens, temperature=0.8)
+                generated_code_tokens = generate_code(input_code_tokens, temperature=0.8, do_sample=True)
                 candidate_samples.append(generated_code_tokens)
 
                 generated_code = tokenizer.decode(
