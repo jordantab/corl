@@ -25,6 +25,7 @@ MAX_TIMEOUT = 2
 def run_cpp_code_with_file_input(
     code: str, input_file_path: str
 ) -> Tuple[str, float, str]:
+    print("hey")
     # Create a temporary directory to hold the C++ file and executable
     with tempfile.TemporaryDirectory() as temp_dir:
         cpp_file_path = os.path.join(temp_dir, "code.cpp")
