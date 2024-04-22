@@ -163,6 +163,12 @@ def generate_code(input_code_tokens, temperature=1.0, do_sample=True):
         list: The generated optimized code tokens.
     """
     print("Generating optimized code...")
+
+    # Ensure that input_code_tokens is a tensor and not a list
+    if isinstance(input_code_tokens, list):
+        # Convert list to tensor if accidentally passed as list
+        input_code_tokens = torch.tensor(input_code_tokens, dtype=torch.long, device=device)
+
     outputs = model.generate(
         input_ids=input_code_tokens,
         max_length=max_length,
