@@ -226,7 +226,10 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
         dataset (list): List of dataset entries.
     """
     model.train()
-    losses = []  # List to store loss values for visualization
+    total_losses = []  # List to store total loss values for visualization
+    reward_scores = []  # List to store reward values
+    ranking_losses = []  # List to store ranking loss values
+    tuning_losses = []  # List to store tuning loss values
 
     for episode in range(num_episodes):
         print(f"Episode {episode + 1}/{num_episodes}")
@@ -267,30 +270,42 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
             tuning_loss = -calculate_score(best_sample, input_code_tokens)
 
             # Combine losses and update model parameters
-            loss = ranking_loss + tuning_loss
+            total_loss = ranking_loss + tuning_loss
             optimizer.zero_grad()
-            loss.backward()
+            total_loss.backward()
             optimizer.step()
 
-            losses.append(loss.item())  # Collect loss for plotting
-            print(f"Combined loss: {loss.item():.4f}")
+            # Collect data for plotting
+            total_losses.append(total_loss.item())
+            reward_scores.append(sum(rewards) / len(rewards))  # Average reward for simplicity
+            ranking_losses.append(ranking_loss)
+            tuning_losses.append(tuning_loss)
+            print(f"Combined loss: {total_loss.item():.4f}")
 
         except Exception as e:
             print(f"Error during training in episode {episode + 1}: {str(e)}")
             continue  # Continue training despite the error
 
     # Save the model only after all episodes
-    os.mkdir("../checkpoints")
-    model_checkpoint_path = "../checkpoints/codet5_model.pt"
+    checkpoints_dir = "../checkpoints"
+    os.makedirs(checkpoints_dir, exist_ok=True)
+    model_checkpoint_path = os.path.join(checkpoints_dir, "codet5_model.pt")
     torch.save(model.state_dict(), model_checkpoint_path)
     print(f"Model checkpoint saved at: {model_checkpoint_path}")
 
-    # Plot training losses
-    plt.plot(losses)
-    plt.title("Training Loss per Episode")
-    plt.xlabel("Episode")
-    plt.ylabel("Loss")
-    plt.show()
+    # Plot and save the metrics
+    plot_directory = "../plots"
+    os.makedirs(plot_directory, exist_ok=True)
+    metrics = {'Total Loss': total_losses, 'Reward Scores': reward_scores, 'Ranking Losses': ranking_losses,
+               'Tuning Losses': tuning_losses}
+    for metric_name, values in metrics.items():
+        plt.figure()
+        plt.plot(values)
+        plt.title(f"{metric_name} per Episode")
+        plt.xlabel("Episode")
+        plt.ylabel(metric_name)
+        plt.savefig(os.path.join(plot_directory, f"{metric_name.replace(' ', '_').lower()}.png"))
+        plt.close()
 
     print("Training completed.")
 
