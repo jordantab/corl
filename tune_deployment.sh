@@ -5,7 +5,7 @@
 
 time python3 tune.py --device "cuda" \
                 --max-len 105 \
-                --inst-dataset "datasets/cpp_leq_105_tokens_train.json" \
+                --inst-dataset "datasets/cpp/cpp_leq_105_tokens_train.json" \
                 # TODO:
                 # --outdir "<somewhere-outside-the-repo>""
 
