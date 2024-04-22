@@ -2,9 +2,31 @@ import torch
 import torch.optim as optim
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 import random
+import argparse
+import matplotlib.pyplot as plt
+import json
+import os
 
-checkpoint = "Salesforce/codet5p-2b"
-device = "cuda"  # or "cuda" for GPU
+# Utility functions
+def parse_args():
+    parser = argparse.ArgumentParser(description="Train a model for code optimization.")
+    parser.add_argument('--model_name', type=str, default='Salesforce/codet5p-2b', help='Model checkpoint for initialization.')
+    parser.add_argument('--num_episodes', type=int, default=10, help='Number of training episodes.')
+    parser.add_argument('--dataset_path', type=str, required=True, help='Path to the dataset file.')
+    return parser.parse_args()
+
+def load_dataset(file_path):
+    """
+    Load and return the dataset from a JSON file.
+    """
+    with open(file_path, 'r') as file:
+        return json.load(file)
+
+# Load arguments and initialize components
+args = parse_args()
+
+checkpoint = args.model_name
+device = "cuda" if torch.cuda.is_available() else "cpu"
 tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 model = AutoModelForSeq2SeqLM.from_pretrained(
     checkpoint,
@@ -12,19 +34,18 @@ model = AutoModelForSeq2SeqLM.from_pretrained(
     low_cpu_mem_usage=True,
     trust_remote_code=True,
 ).to(device)
-# Define the optimizer for the CodeT5 model
 optimizer = optim.Adam(model.parameters(), lr=1e-5)
 
 max_length = 256
 
-R1 = -1.0  # Negative reward for code that cannot be compiled
-R2 = 0.0  # Zero reward for code that fails unit tests
-R3 = 0.5  # Positive reward for code that passes unit tests but doesn't improve execution time
-R4 = 1.0  # Higher positive reward for code that passes unit tests and improves execution time
+# Define rewards
+R1, R2, R3, R4 = -1.0, 0.0, 0.5, 1.0
 
-# Placeholder functions
+# Load dataset
+dataset = load_dataset(args.dataset_path)
 
 
+# Util functions for reward calculating
 def compile_code(code):
     """
     Compile the code and return a random compilation result (True for success, False for failure).
@@ -126,10 +147,18 @@ def generate_code(input_code_tokens):
         list: The generated optimized code tokens.
     """
     print("Generating optimized code...")
+    # Decode tokens to code
     input_code = tokenizer.decode(input_code_tokens, skip_special_tokens=True)
-    encoding = tokenizer(input_code, return_tensors="pt").to(device)
+
+    # Create an optimization prompt
+    optimization_prompt = (f"Optimize the following code for performance and readability:\n\n{input_code}, "
+                           f"only return the optimized code.")
+
+    # Encode the prompt
+    encoding = tokenizer(optimization_prompt, return_tensors="pt").to(device)
     encoding["decoder_input_ids"] = encoding["input_ids"].clone()
 
+    # Generate optimized code
     outputs = model.generate(
         **encoding, max_length=max_length, pad_token_id=tokenizer.eos_token_id
     )
@@ -163,77 +192,83 @@ def calculate_score(generated_code_tokens, reference_code_tokens):
         log_probs.append(log_prob)
 
     score = sum(log_probs) / len(generated_code_tokens)
-    print(f"Calculated score: {score:.4f}")
+    print(f"Calculated sample likelihood score: {score:.4f}")
     return score
 
 
-def train(model, tokenizer, optimizer, num_episodes, input_code_tokens):
+def train(model, tokenizer, optimizer, num_episodes, dataset):
+    """
+    Train the model using episodes from the provided dataset.
+
+    Args:
+        model (torch.nn.Module): The model to be trained.
+        tokenizer (Tokenizer): The tokenizer for encoding and decoding code.
+        optimizer (torch.optim.Optimizer): The optimizer for model training.
+        num_episodes (int): Number of training episodes.
+        dataset (list): List of dataset entries.
+    """
     model.train()
+    losses = []  # List to store loss values for visualization
 
     for episode in range(num_episodes):
         print(f"Episode {episode + 1}/{num_episodes}")
-        # Generate candidate code samples
-        candidate_samples = []
-        num_samples = 5
-        for i in range(num_samples):
-            print(f"Generating candidate sample {i + 1}/{num_samples}")
-            # Generate code using greedy or random sampling
-            generated_code_tokens = generate_code(input_code_tokens)
-            candidate_samples.append(generated_code_tokens)
+        try:
+            entry = dataset[episode % len(dataset)]
+            prompt = f"{entry['instruction']} \n\n {entry['input']}"
+            input_code_tokens = tokenize_code(prompt)
 
-        # Calculate rewards for candidate samples
-        rewards = [
-            get_reward(
-                tokenizer.decode(sample, skip_special_tokens=True),
-                tokenizer.decode(input_code_tokens, skip_special_tokens=True),
-            )
-            for sample in candidate_samples
-        ]
-        print(f"Rewards: {rewards}")
+            candidate_samples = []
+            num_samples = 5
+            rewards = []
 
-        # Compute ranking loss (L_rank)
-        ranking_loss = 0
-        for i in range(len(candidate_samples)):
-            for j in range(len(candidate_samples)):
-                if rewards[i] < rewards[j]:
-                    sample_i = candidate_samples[i]
-                    sample_j = candidate_samples[j]
-                    log_prob_i = calculate_score(sample_i, input_code_tokens)
-                    log_prob_j = calculate_score(sample_j, input_code_tokens)
-                    ranking_loss += max(0, log_prob_i - log_prob_j)
-        print(f"Ranking loss: {ranking_loss:.4f}")
+            for i in range(num_samples):
+                print(f"Generating candidate sample {i + 1}/{num_samples}")
+                generated_code_tokens = generate_code(input_code_tokens)
+                candidate_samples.append(generated_code_tokens)
 
-        # Compute tuning loss (L_tuning)
-        best_sample_idx = rewards.index(max(rewards))
-        best_sample = candidate_samples[best_sample_idx]
-        tuning_loss = -calculate_score(best_sample, input_code_tokens)
-        print(f"Tuning loss: {tuning_loss:.4f}")
+                generated_code = tokenizer.decode(generated_code_tokens, skip_special_tokens=True)
+                reward = get_reward(generated_code, entry['input'])
+                rewards.append(reward)
 
-        # Combine losses and update model parameters
-        loss = ranking_loss + tuning_loss
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-        print(f"Combined loss: {loss.item():.4f}")
+            ranking_loss = 0
+            for i in range(len(candidate_samples)):
+                for j in range(len(candidate_samples)):
+                    if rewards[i] < rewards[j]:
+                        log_prob_i = calculate_score(candidate_samples[i], input_code_tokens)
+                        log_prob_j = calculate_score(candidate_samples[j], input_code_tokens)
+                        ranking_loss += max(0, log_prob_i - log_prob_j)
 
-        print(f"Episode {episode + 1}/{num_episodes} completed.")
+            best_sample_idx = rewards.index(max(rewards))
+            best_sample = candidate_samples[best_sample_idx]
+            tuning_loss = -calculate_score(best_sample, input_code_tokens)
 
-    # Save the fine-tuned CodeT5 model checkpoint
-    model_checkpoint_path = "../checkpoints"
+            # Combine losses and update model parameters
+            loss = ranking_loss + tuning_loss
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+            losses.append(loss.item())  # Collect loss for plotting
+            print(f"Combined loss: {loss.item():.4f}")
+
+        except Exception as e:
+            print(f"Error during training in episode {episode + 1}: {str(e)}")
+            continue  # Continue training despite the error
+
+    # Save the model only after all episodes
+    os.mkdir("../checkpoints")
+    model_checkpoint_path = "../checkpoints/codet5_model.pt"
     torch.save(model.state_dict(), model_checkpoint_path)
-    print(f"CodeT5 model checkpoint saved at: {model_checkpoint_path}")
+    print(f"Model checkpoint saved at: {model_checkpoint_path}")
 
+    # Plot training losses
+    plt.plot(losses)
+    plt.title('Training Loss per Episode')
+    plt.xlabel('Episode')
+    plt.ylabel('Loss')
+    plt.show()
 
-# Input Data
-input_code = """
-def hello_world():
-    print("Hello, World!")
-"""
+    print("Training completed.")
 
-input_code_tokens = tokenize_code(input_code)
-
-# Train the model
-num_episodes = 10
-print("Starting training...")
-train(model, tokenizer, optimizer, num_episodes, input_code_tokens)
-print("Training completed.")
+# Start training
+train(model, tokenizer, optimizer, args.num_episodes, dataset)
