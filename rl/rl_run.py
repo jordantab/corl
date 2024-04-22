@@ -105,19 +105,21 @@ def execution_time(code):
 
 def tokenize_code(code):
     """
-    Tokenize the code using the tokenizer.
+    Tokenize the code using the tokenizer and prepare it for the model.
 
     Args:
         code (str): The code to tokenize.
 
     Returns:
-        list: The tokenized code as a list of token IDs.
+        torch.Tensor: The tokenized code ready for input into the model.
     """
     print("Tokenizing code...")
-    tokens = tokenizer.tokenize(code)
-    token_ids = tokenizer.convert_tokens_to_ids(tokens)
-    print(f"Tokenized code: {token_ids}")
-    return token_ids
+    # Ensure to return_tensors='pt' to get PyTorch tensors directly
+    inputs = tokenizer.encode_plus(code, return_tensors="pt", truncation=True, max_length=max_length, add_special_tokens=True)
+    input_ids = inputs['input_ids'].to(device)  # Move to the correct device
+    print(f"Tokenized code: {input_ids}")
+    return input_ids
+
 
 
 def get_reward(generated_code, reference_code):
@@ -153,28 +155,16 @@ def generate_code(input_code_tokens, temperature=1.0, do_sample=True):
     Generate optimized code based on the input code tokens.
 
     Args:
-        input_code_tokens (list): The tokenized input code.
+        input_code_tokens (torch.Tensor): The tokenized input code.
+        temperature (float): Temperature setting for generation.
+        do_sample (bool): Whether to sample based on the temperature.
 
     Returns:
         list: The generated optimized code tokens.
     """
     print("Generating optimized code...")
-    # Decode tokens to code
-    input_code = tokenizer.decode(input_code_tokens, skip_special_tokens=True)
-
-    # Create an optimization prompt
-    optimization_prompt = (
-        f"Optimize the following code for performance and readability:\n\n{input_code}, "
-        f"only return the optimized code."
-    )
-
-    # Encode the prompt
-    encoding = tokenizer(optimization_prompt, return_tensors="pt").to(device)
-    encoding["decoder_input_ids"] = encoding["input_ids"].clone()
-
-    # Generate optimized code
     outputs = model.generate(
-        **encoding,
+        input_ids=input_code_tokens,
         max_length=max_length,
         pad_token_id=tokenizer.eos_token_id,
         temperature=temperature,
@@ -184,6 +174,7 @@ def generate_code(input_code_tokens, temperature=1.0, do_sample=True):
     print(f"Generated optimized code tokens: {generated_code_tokens}")
 
     return generated_code_tokens
+
 
 
 def calculate_score(generated_code_tokens, reference_code_tokens):
@@ -299,6 +290,7 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
     metrics = {'Total Loss': total_losses, 'Reward Scores': reward_scores, 'Ranking Losses': ranking_losses,
                'Tuning Losses': tuning_losses}
     for metric_name, values in metrics.items():
+        print(f"{metric_name} is {values}")
         plt.figure()
         plt.plot(values)
         plt.title(f"{metric_name} per Episode")
