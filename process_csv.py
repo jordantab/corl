@@ -16,6 +16,7 @@ Input (csv) format:
 
 Output (json) format:
     {
+        "problem_id": <problem_id>,
         "instruction": "Provide an optimized version of the following code snippet.",
         "input": <code_v0>,
         "output": <code_v1>
@@ -77,6 +78,7 @@ def process_csv(infile, outfile, samples, language):
             if row["language"].lower() == language.lower():
                 data.append(
                     {
+                        "problem_id": row["problem_id"],
                         "instruction": INSTRUCTION,
                         "input": row["code_v0"],
                         "output": row["code_v1"],

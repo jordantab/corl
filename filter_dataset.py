@@ -94,7 +94,7 @@ def filter_dataset(data, tokenizer, token_limit):
 def save_filtered_dataset(data, file):
     """Save the filtered dataset to the specified file."""
     with open(file, "w") as f:
-        json.dump(data, f)
+        json.dump(data, f, indent=4)
 
 
 def main():

@@ -43,6 +43,7 @@ The following scripts are available for data processing and analysis:
 -   [`process_csv.py`](process_csv.py) - Converts the csv dataset to a json file for instruction tuning.
 -   [`count_tokens.py`](count_tokens.py) - Analyzes the distribution for input/output sizes (in terms of tokens) ofn instruction tuning dataset (json).
 -   [`filter_dataset`](filter_dataset.py) - Creates a subset of an instruction tuning dataset with samples where input/outputs are below the provided threshold.
+-   [`train_test_split.py`](train_test_split.py) - Splits a JSON dataset into a train and test set, ensuring that all instances of a particular problem_id are either in the training set or the test set.
 
 You can read more about how to use these scripts in their respective file headers, or by running the
 script with the `--help` flag.
