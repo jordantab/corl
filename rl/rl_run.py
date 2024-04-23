@@ -174,8 +174,12 @@ def generate_code(input_code_tokens, temperature=1.0, do_sample=True):
     if not isinstance(input_code_tokens, torch.Tensor):
         raise TypeError("input_code_tokens must be a PyTorch Tensor")
 
+    input_code = tokenizer.decode(input_code_tokens, skip_special_tokens=True)
+    encoding = tokenizer(input_code, return_tensors="pt").to(device)
+    encoding["decoder_input_ids"] = encoding["input_ids"].clone()
+
     outputs = model.generate(
-        input_ids=input_code_tokens,
+        **encoding,
         max_length=max_length,
         pad_token_id=tokenizer.eos_token_id,
         temperature=temperature,
