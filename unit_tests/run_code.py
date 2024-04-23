@@ -17,15 +17,14 @@ from typing import Tuple
 
 
 DEFAULT_DATASET = "../datasets/improvement_pairs_additional_metadata.csv"
-PUBLIC_TEST_CASES_FOLDER = "../datasets/codenet/public_test_cases/"
-HIDDEN_TEST_CASES_FOLDER = "../datasets/codenet2/generated_test_cases/"
+PUBLIC_TEST_CASES_FOLDER = "datasets/public_test_cases/"
+HIDDEN_TEST_CASES_FOLDER = "datasets/generated_test_cases/"
 MAX_TIMEOUT = 2
 
 
 def run_cpp_code_with_file_input(
     code: str, input_file_path: str
 ) -> Tuple[str, float, str]:
-    print("hey")
     # Create a temporary directory to hold the C++ file and executable
     with tempfile.TemporaryDirectory() as temp_dir:
         cpp_file_path = os.path.join(temp_dir, "code.cpp")
@@ -43,6 +42,7 @@ def run_cpp_code_with_file_input(
         )
         if compile_process.returncode != 0:
             # Compilation failed
+            # print("stderr: ", compile_process.stderr)
             return f"Compilation Error", -1, ""
 
         # Run the compiled executable with input redirected from the input file
@@ -83,15 +83,16 @@ def run_single_test_case(code: str, input_file: str) -> Tuple[str, float, str]:
 
 
 def run_tcs(code: str, problem_id: int) -> Tuple[str, float]:
-    sample_output_folder = f"{PUBLIC_TEST_CASES_FOLDER}p{problem_id:05d}"
-    hidden_output_folder = f"{HIDDEN_TEST_CASES_FOLDER}p{problem_id:05d}"
+    sample_output_folder = f"{PUBLIC_TEST_CASES_FOLDER}{problem_id}"
+    hidden_output_folder = f"{HIDDEN_TEST_CASES_FOLDER}{problem_id}"
     start_time = time.time()
     folders = [sample_output_folder, hidden_output_folder]
     test_cases = []
     execution_time = 0
 
     for folder in folders:
-        input_files = glob.glob(os.path.join(folder, "input.*.txt"))
+        filepath = os.path.join(folder, "input.*.txt")
+        input_files = glob.glob(filepath)
         for input_file in input_files:
             test_cases.append((code, input_file))
 
@@ -117,4 +118,4 @@ def load_dataset(dataset=DEFAULT_DATASET):
 if __name__ == "__main__":
     df = load_dataset()
     sample_code = df.at[3, "code_v1"]
-    print(run_tcs(sample_code, 849))
+    print(run_tcs(sample_code, "p00849"))

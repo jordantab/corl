@@ -1,7 +1,7 @@
 import json
 import torch
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
-from unit_tests.run_code import run_cpp_code_with_file_input
+from unit_tests.run_code import run_tcs
 
 
 def eval_model(checkpoint, dataset):
@@ -13,7 +13,7 @@ def eval_model(checkpoint, dataset):
     # import model
     device = "cpu"
     # TODO: figure out max_length output or max_new_tokens
-    max_length_output = 300
+    max_length_output = 105
     tokenizer = AutoTokenizer.from_pretrained(checkpoint)
     model = AutoModelForSeq2SeqLM.from_pretrained(
         checkpoint,
@@ -23,24 +23,27 @@ def eval_model(checkpoint, dataset):
     ).to(device)
 
     for problem in dataset:
-        print("running new problem")
+        # print("running new problem")
         # get slow_code, fast_code
         slow_code = problem["input"]
         fast_code = problem["output"]
 
-        # TODO: figure out how to pass in problem id? whatever the second argument is
         # calculate slow_runtime, fast_runtime
-        verdict_slow, runtime_slow, memory_slow = run_cpp_code_with_file_input(
-            slow_code, problem
-        )
-        verdict_fast, runtime_fast, memory_fast = run_cpp_code_with_file_input(
-            fast_code, problem
-        )
-        print("runtime_slow ", runtime_slow)
+        # verdict_slow, runtime_slow, memory_slow = run_tcs(
+        #     slow_code, problem["problem_id"]
+        # )
+        # verdict_fast, runtime_fast, memory_fast = run_tcs(
+        #     fast_code, problem["problem_id"]
+        # )
+
+        verdict_fast, runtime_fast = run_tcs(fast_code, problem["problem_id"])
+        print("verdict_fast", verdict_fast, runtime_fast)
+
+        verdict_slow, runtime_slow = run_tcs(slow_code, problem["problem_id"])
+        print("verdict_slow", verdict_slow)
 
         # generate problem statement
         problem_statement = problem["instruction"] + problem["input"]
-        print("problem_statement ", problem_statement)
 
         # encode problem (replace with actual problem input)
         encoding = tokenizer(problem_statement, return_tensors="pt").to(device)
@@ -49,13 +52,16 @@ def eval_model(checkpoint, dataset):
         # generate code
         outputs = model.generate(**encoding, max_length=max_length_output)
         generated_code = tokenizer.decode(outputs[0], skip_special_tokens=True)
-        print("generated_code ", generated_code)
+        print("generated_code ", generated_code, " done")
 
         # TODO: update second argument here
         # run generated code
-        verdict, runtime, new_memory = run_cpp_code_with_file_input(
-            generated_code, problem
-        )
+        # verdict, runtime, new_memory = run_tcs(
+        #     generated_code, problem
+        # )
+        verdict, runtime = run_tcs(generated_code, problem["problem_id"])
+
+        print("verdict", verdict)
 
         # evaluate generated code
         if verdict == "Accepted":
@@ -63,10 +69,10 @@ def eval_model(checkpoint, dataset):
                 outputs_slow.append(1)
             if runtime < runtime_fast:
                 outputs_fast.append(1)
-            if new_memory < memory_slow:
-                outputs_memory_slow.append(1)
-            if new_memory < memory_fast:
-                outputs_memory_fast.append(1)
+            # if new_memory < memory_slow:
+            #     outputs_memory_slow.append(1)
+            # if new_memory < memory_fast:
+            #     outputs_memory_fast.append(1)
             else:
                 outputs_slow.append(0)
                 outputs_fast.append(0)
@@ -78,11 +84,13 @@ def eval_model(checkpoint, dataset):
             outputs_memory_slow.append(0)
             outputs_memory_fast.append(0)
 
-    pct_opt_slow, pct_opt_fast, pct_opt_memory = calculate_model_metrics(
-        outputs_slow, outputs_fast, outputs_memory_slow, outputs_memory_fast
+    pct_opt_slow, pct_opt_fast, pct_opt_memory_slow, pct_opt_memory_fast = (
+        calculate_model_metrics(
+            outputs_slow, outputs_fast, outputs_memory_slow, outputs_memory_fast
+        )
     )
 
-    return pct_opt_slow, pct_opt_fast, pct_opt_memory
+    return pct_opt_slow, pct_opt_fast, pct_opt_memory_slow, pct_opt_memory_fast
 
 
 def calculate_model_metrics(
@@ -115,7 +123,7 @@ def main():
     # test_dataset = datasets.load_dataset("json", data_files=args.inst_dataset)["train"]
     # print(test_dataset)
     checkpoint = "Salesforce/codet5p-2b"
-    file_path = "./examples/sample1.json"
+    file_path = "./examples/test.json"
 
     # Open the file in read mode
     with open(file_path, "r") as json_file:
