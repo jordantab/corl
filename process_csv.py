@@ -16,6 +16,7 @@ Input (csv) format:
 
 Output (json) format:
     {
+        "problem_id": <problem_id>,
         "instruction": "Provide an optimized version of the following code snippet.",
         "input": <code_v0>,
         "output": <code_v1>
@@ -36,6 +37,13 @@ columns can be used as well with the --infile flag:
     python3 process_csv.py --infile other_dataset.csv --outfile outfile.json --samples 5
 
 
+Additionally, you can filter the dataset by language using the --language flag:
+
+
+    python3 process_csv.py --language "Python" --outfile examples/sample1.json
+
+
+By default, the language is set to "C++".
 Run the script with --help to print detailed usage.
 """
 
@@ -47,7 +55,7 @@ INSTRUCTION = "Provide an optimized version of the following code snippet."
 MAX_FIELD_MEM = 2 << 20  # 1 MB
 
 
-def process_csv(infile, outfile, samples=-1):
+def process_csv(infile, outfile, samples, language):
     """
     Processes the CSV data and creates a JSON instruction dataset file.
 
@@ -63,16 +71,20 @@ def process_csv(infile, outfile, samples=-1):
     with open(infile, "r", newline="", encoding="utf-8") as csvfile:
         csv.field_size_limit(MAX_FIELD_MEM)
         reader = csv.DictReader(csvfile, delimiter="\t")
-        for idx, row in enumerate(reader):
-            if idx == samples:
+        count = 0
+        for row in reader:
+            if count == samples:
                 break
-            data.append(
-                {
-                    "instruction": INSTRUCTION,
-                    "input": row["code_v0"],
-                    "output": row["code_v1"],
-                }
-            )
+            if row["language"].lower() == language.lower():
+                data.append(
+                    {
+                        "problem_id": row["problem_id"],
+                        "instruction": INSTRUCTION,
+                        "input": row["code_v0"],
+                        "output": row["code_v1"],
+                    }
+                )
+                count += 1
 
     with open(outfile, "w", encoding="utf-8") as jsonfile:
         json.dump(data, jsonfile, indent=4)
@@ -89,14 +101,20 @@ def parse_args():
     )
     parser.add_argument("--outfile", required=True, help="Path to the output JSON file")
     parser.add_argument(
-        "--samples", type=int, help="Number of samples to generate (optional)"
+        "--samples",
+        type=int,
+        default=-1,
+        help="Number of samples to generate (optional)",
+    )
+    parser.add_argument(
+        "--language", type=str, default="C++", help="Selected language of code snippets"
     )
     return parser.parse_args()
 
 
 def main():
     args = parse_args()
-    process_csv(args.infile, args.outfile, args.samples)
+    process_csv(args.infile, args.outfile, args.samples, args.language)
 
 
 if __name__ == "__main__":
