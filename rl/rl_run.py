@@ -6,6 +6,7 @@ import argparse
 import matplotlib.pyplot as plt
 import json
 import os
+import traceback
 
 
 # Utility functions
@@ -115,11 +116,16 @@ def tokenize_code(code):
     """
     print("Tokenizing code...")
     # Ensure to return_tensors='pt' to get PyTorch tensors directly
-    inputs = tokenizer.encode_plus(code, return_tensors="pt", truncation=True, max_length=max_length, add_special_tokens=True)
-    input_ids = inputs['input_ids'].to(device)  # Move to the correct device
+    inputs = tokenizer.encode_plus(
+        code,
+        return_tensors="pt",
+        truncation=True,
+        max_length=max_length,
+        add_special_tokens=True,
+    )
+    input_ids = inputs["input_ids"].to(device)  # Move to the correct device
     print(f"Tokenized code: {input_ids}")
     return input_ids
-
 
 
 def get_reward(generated_code, reference_code):
@@ -164,17 +170,16 @@ def generate_code(input_code_tokens, temperature=1.0, do_sample=True):
     """
     print("Generating optimized code...")
 
-    # Ensure that input_code_tokens is a tensor and not a list
-    if isinstance(input_code_tokens, list):
-        # Convert list to tensor if accidentally passed as list
-        input_code_tokens = torch.tensor(input_code_tokens, dtype=torch.long, device=device)
+    # Check if input_code_tokens is a tensor and not a list
+    if not isinstance(input_code_tokens, torch.Tensor):
+        raise TypeError("input_code_tokens must be a PyTorch Tensor")
 
     outputs = model.generate(
         input_ids=input_code_tokens,
         max_length=max_length,
         pad_token_id=tokenizer.eos_token_id,
         temperature=temperature,
-        do_sample=do_sample
+        do_sample=do_sample,
     )
     generated_code_tokens = outputs[0].tolist()
     print(f"Generated optimized code tokens: {generated_code_tokens}")
@@ -182,8 +187,7 @@ def generate_code(input_code_tokens, temperature=1.0, do_sample=True):
     return generated_code_tokens
 
 
-
-def calculate_score(generated_code_tokens, reference_code_tokens):
+def calculate_score(generated_code_tokens, reference_code):
     """
     Calculate the score of the generated code based on Equation 9.
     This score represents how likely the model is to generate that particular code sample.
@@ -197,16 +201,32 @@ def calculate_score(generated_code_tokens, reference_code_tokens):
     """
     print("Calculating score...")
     log_probs = []
-    for token_id in generated_code_tokens:
-        reference_code = tokenizer.decode(
-            reference_code_tokens, skip_special_tokens=True
+
+    if isinstance(generated_code_tokens, list):
+        generated_code_tokens = torch.tensor(
+            generated_code_tokens, dtype=torch.long, device=device
         )
+
+    # Tokenize the reference code properly
+    if isinstance(reference_code, str):
         reference_encoding = tokenizer(reference_code, return_tensors="pt").to(device)
-        logits = model(reference_encoding["input_ids"]).logits
-        log_prob = torch.log_softmax(logits[0, -1], dim=-1)[token_id].item()
+    else:
+        raise TypeError("reference_code must be a string.")
+
+    # print(reference_encoding)
+
+    logits = model(input_ids=reference_encoding["input_ids"]).logits
+
+    # Loop over each token_id and calculate log probability
+    # Calculate log probability for each token ID in generated_code_tokens
+    for token_id in generated_code_tokens:
+        log_prob = torch.log_softmax(logits[0], dim=-1)
+        if token_id.item() >= log_prob.size(0):
+            continue  # skip if token_id is out of range of logits
+        log_prob = log_prob[token_id.item()].item()
         log_probs.append(log_prob)
 
-    score = sum(log_probs) / len(generated_code_tokens)
+    score = sum(log_probs) / len(generated_code_tokens) if generated_code_tokens else 0
     print(f"Calculated sample likelihood score: {score:.4f}")
     return score
 
@@ -236,12 +256,14 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
             input_code_tokens = tokenize_code(prompt)
 
             candidate_samples = []
-            num_samples = 5
+            num_samples = 1
             rewards = []
 
             for i in range(num_samples):
                 print(f"Generating candidate sample {i + 1}/{num_samples}")
-                generated_code_tokens = generate_code(input_code_tokens, temperature=0.8, do_sample=True)
+                generated_code_tokens = generate_code(
+                    input_code_tokens, temperature=0.8, do_sample=True
+                )
                 candidate_samples.append(generated_code_tokens)
 
                 generated_code = tokenizer.decode(
@@ -264,7 +286,8 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
 
             best_sample_idx = rewards.index(max(rewards))
             best_sample = candidate_samples[best_sample_idx]
-            tuning_loss = -calculate_score(best_sample, input_code_tokens)
+            # tuning_loss = -calculate_score(best_sample, input_code_tokens)
+            tuning_loss = -calculate_score(best_sample, entry["input"])
 
             # Combine losses and update model parameters
             total_loss = ranking_loss + tuning_loss
@@ -274,14 +297,17 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
 
             # Collect data for plotting
             total_losses.append(total_loss.item())
-            reward_scores.append(sum(rewards) / len(rewards))  # Average reward for simplicity
+            reward_scores.append(
+                sum(rewards) / len(rewards)
+            )  # Average reward for simplicity
             ranking_losses.append(ranking_loss)
             tuning_losses.append(tuning_loss)
             print(f"Combined loss: {total_loss.item():.4f}")
 
         except Exception as e:
             print(f"Error during training in episode {episode + 1}: {str(e)}")
-            continue  # Continue training despite the error
+            traceback.print_exc()  # Print the traceback information
+            break
 
     # Save the model only after all episodes
     checkpoints_dir = "../checkpoints"
@@ -293,8 +319,12 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
     # Plot and save the metrics
     plot_directory = "../plots"
     os.makedirs(plot_directory, exist_ok=True)
-    metrics = {'Total Loss': total_losses, 'Reward Scores': reward_scores, 'Ranking Losses': ranking_losses,
-               'Tuning Losses': tuning_losses}
+    metrics = {
+        "Total Loss": total_losses,
+        "Reward Scores": reward_scores,
+        "Ranking Losses": ranking_losses,
+        "Tuning Losses": tuning_losses,
+    }
     for metric_name, values in metrics.items():
         print(f"{metric_name} is {values}")
         plt.figure()
@@ -302,7 +332,9 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
         plt.title(f"{metric_name} per Episode")
         plt.xlabel("Episode")
         plt.ylabel(metric_name)
-        plt.savefig(os.path.join(plot_directory, f"{metric_name.replace(' ', '_').lower()}.png"))
+        plt.savefig(
+            os.path.join(plot_directory, f"{metric_name.replace(' ', '_').lower()}.png")
+        )
         plt.close()
 
     print("Training completed.")
