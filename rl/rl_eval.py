@@ -8,6 +8,8 @@ import json
 import os
 import traceback
 
+from eval_model import run_cpp_code_with_file_input
+
 
 # Utility functions
 def parse_args():
@@ -128,33 +130,40 @@ def tokenize_code(code):
     return input_ids
 
 
-def get_reward(generated_code, reference_code):
+def get_reward(generated_code, reference_code, problem_id):
     """
     Calculate the reward based on the generated code and reference code.
 
     Args:
         generated_code (str): The generated code.
         reference_code (str): The reference code.
+        problem_id (int): The problem ID.
 
     Returns:
         float: The reward value.
     """
     print("Calculating reward...")
+
+    # Run the generated code and get the verdict, runtime, and memory usage
+    verdict, runtime, memory = run_cpp_code_with_file_input(generated_code, problem_id)
+
+    # Run the reference code and get the verdict, runtime, and memory usage
+    reference_verdict, reference_runtime, reference_memory = run_cpp_code_with_file_input(reference_code, problem_id)
+
+
     if not compile_code(generated_code):
         print("Reward: Cannot compile (R1)")
         return R1
-    elif not pass_unit_tests(generated_code):
+    elif verdict == "Accepted":
+        if runtime < reference_runtime:
+            print("Reward: Passed unit tests and improved execution time (R4)")
+            return R4
+        else:
+            print("Reward: Passed unit tests but no improvement in execution time (R3)")
+            return R3
+    else:
         print("Reward: Failed unit tests (R2)")
         return R2
-    elif pass_unit_tests(generated_code) and execution_time(
-        generated_code
-    ) < execution_time(reference_code):
-        print("Reward: Passed unit tests and improved execution time (R4)")
-        return R4
-    else:
-        print("Reward: Passed unit tests but no improvement in execution time (R3)")
-        return R3
-
 
 def generate_code(input_code_tokens, temperature=1.0, do_sample=True):
     """
@@ -273,7 +282,7 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
                     generated_code = tokenizer.decode(
                         generated_code_tokens, skip_special_tokens=True
                     )
-                    reward = get_reward(generated_code, entry["input"])
+                    reward = get_reward(generated_code, entry["input"], pid)
                     rewards.append(reward)
 
                 ranking_loss = 0

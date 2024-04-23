@@ -2,6 +2,7 @@
 
 # Set the path to your Python script
 PYTHON_SCRIPT="rl_run.py"
+#PYTHON_SCRIPT="rl_eval.py"
 
 # Set parameters
 MODEL_NAME="Salesforce/codet5p-2b"
