@@ -43,7 +43,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 model = AutoModelForSeq2SeqLM.from_pretrained(
     checkpoint,
-    torch_dtype=torch.float16,
+    torch_dtype=torch.float32,
     low_cpu_mem_usage=True,
     trust_remote_code=True,
 ).to(device)
@@ -174,12 +174,10 @@ def generate_code(input_code_tokens, temperature=1.0, do_sample=True):
     if not isinstance(input_code_tokens, torch.Tensor):
         raise TypeError("input_code_tokens must be a PyTorch Tensor")
 
-    input_code = tokenizer.decode(input_code_tokens, skip_special_tokens=True)
-    encoding = tokenizer(input_code, return_tensors="pt").to(device)
-    encoding["decoder_input_ids"] = encoding["input_ids"].clone()
+    print(f"Input code tokens: {input_code_tokens}")
 
     outputs = model.generate(
-        **encoding,
+        input_ids=input_code_tokens,
         max_length=max_length,
         pad_token_id=tokenizer.eos_token_id,
         temperature=temperature,
