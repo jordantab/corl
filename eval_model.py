@@ -14,7 +14,7 @@ def eval_model(checkpoint, dataset):
     outputs_memory_fast = []
 
     # import model
-    device = "cpu"
+    device = "cuda"
     max_length_output = 25
     tokenizer = AutoTokenizer.from_pretrained(checkpoint)
     model = AutoModelForSeq2SeqLM.from_pretrained(
