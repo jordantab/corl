@@ -46,6 +46,8 @@ def eval_model(checkpoint, dataset):
         # generate problem statement
         problem_statement = problem["instruction"] + "\n" + problem["input"]
 
+        print("problem_statement", problem_statement)
+
         # Tokenize the problem statement for the encoder
         encoder_inputs = tokenizer(
             problem_statement,
