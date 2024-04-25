@@ -46,32 +46,35 @@ def eval_model(checkpoint, dataset):
         # generate problem statement
         problem_statement = problem["instruction"] + "\n" + problem["input"]
 
-        # Tokenize the problem statement for the encoder
-        encoder_inputs = tokenizer(
-            "Generate code for this problem. def print_hello_world():",
-            return_tensors="pt",
-        ).to(device)
+        encoding = tokenizer(problem_statement, return_tensors="pt").to(device)
+        encoding["decoder_input_ids"] = encoding["input_ids"].clone()
 
-        # List of potential start tokens
-        start_tokens = [
-            tokenizer.bos_token_id,
-            tokenizer.cls_token_id,
-            tokenizer.pad_token_id,
-        ]
+        # # Tokenize the problem statement for the encoder
+        # encoder_inputs = tokenizer(
+        #     "Generate code for this problem. def print_hello_world():",
+        #     return_tensors="pt",
+        # ).to(device)
 
-        for token_id in start_tokens:
-            if token_id is not None:
-                print({tokenizer.decode([token_id])})
-                # Prepare decoder_input_ids with the start token
-                decoder_input_ids = torch.tensor([[token_id]], dtype=torch.long).to(
-                    device
-                )
+        # # List of potential start tokens
+        # start_tokens = [
+        #     tokenizer.bos_token_id,
+        #     tokenizer.cls_token_id,
+        #     tokenizer.pad_token_id,
+        # ]
+
+        # for token_id in start_tokens:
+        #     if token_id is not None:
+        #         print({tokenizer.decode([token_id])})
+        #         # Prepare decoder_input_ids with the start token
+        #         decoder_input_ids = torch.tensor([[token_id]], dtype=torch.long).to(
+        #             device
+        #         )
 
         # Generate code
         generated_tokens = model.generate(
-            input_ids=encoder_inputs["input_ids"],
+            input_ids=encoding["input_ids"],
             # Provide only the start token to the decoder
-            decoder_input_ids=decoder_input_ids,
+            decoder_input_ids=encoding["decoder_input_ids"],
             max_length=max_length_output,
         )
 
