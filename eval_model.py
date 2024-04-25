@@ -2,6 +2,9 @@ import json
 import torch
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 from unit_tests.run_code import run_tcs
+import os
+
+os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 
 def eval_model(checkpoint, dataset):
@@ -12,8 +15,7 @@ def eval_model(checkpoint, dataset):
 
     # import model
     device = "cpu"
-    # TODO: figure out max_length output or max_new_tokens
-    max_length_output = 105
+    max_length_output = 25
     tokenizer = AutoTokenizer.from_pretrained(checkpoint)
     model = AutoModelForSeq2SeqLM.from_pretrained(
         checkpoint,
@@ -23,7 +25,6 @@ def eval_model(checkpoint, dataset):
     ).to(device)
 
     for problem in dataset:
-        # print("running new problem")
         # get slow_code, fast_code
         slow_code = problem["input"]
         fast_code = problem["output"]
@@ -43,22 +44,39 @@ def eval_model(checkpoint, dataset):
         print("verdict_slow", verdict_slow)
 
         # generate problem statement
-        problem_statement = problem["instruction"] + problem["input"]
+        problem_statement = problem["instruction"] + "\n" + problem["input"]
 
-        # encode problem (replace with actual problem input)
-        encoding = tokenizer(problem_statement, return_tensors="pt").to(device)
-        encoding["decoder_input_ids"] = encoding["input_ids"].clone()
+        # Tokenize the problem statement for the encoder
+        encoder_inputs = tokenizer(problem_statement, return_tensors="pt").to(device)
 
-        # generate code
-        outputs = model.generate(**encoding, max_length=max_length_output)
-        generated_code = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        # Prepare a fresh start token for the decoder
+        # Replace 'bos_token_id' with the appropriate token ID for your model
+        start_token = tokenizer.bos_token_id
+        decoder_input_ids = torch.tensor([[start_token]], dtype=torch.long).to(device)
+
+        # Generate code
+        generated_tokens = model.generate(
+            input_ids=encoder_inputs["input_ids"],
+            # Provide only the start token to the decoder
+            decoder_input_ids=decoder_input_ids,
+            max_length=max_length_output,
+        )
+
+        generated_code = tokenizer.decode(generated_tokens[0], skip_special_tokens=True)
+
+        # # encode problem (replace with actual problem input)
+        # encoding = tokenizer(problem_statement,
+        #                      return_tensors="pt").to(device)
+        # encoding["decoder_input_ids"] = encoding["input_ids"].clone()
+
+        # # generate code
+        # outputs = model.generate(**encoding, max_length=max_length_output)
+        # generated_code = tokenizer.decode(outputs[0], skip_special_tokens=True)
+
         print("generated_code ", generated_code, " done")
 
         # TODO: update second argument here
         # run generated code
-        # verdict, runtime, new_memory = run_tcs(
-        #     generated_code, problem
-        # )
         verdict, runtime = run_tcs(generated_code, problem["problem_id"])
 
         print("verdict", verdict)
@@ -117,11 +135,6 @@ def calculate_model_metrics(
 
 
 def main():
-    # args = parse_args()
-
-    # # load sample dataset
-    # test_dataset = datasets.load_dataset("json", data_files=args.inst_dataset)["train"]
-    # print(test_dataset)
     checkpoint = "Salesforce/codet5p-2b"
     file_path = "./examples/test.json"
 
