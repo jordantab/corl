@@ -1,6 +1,6 @@
 [{
-        "problem_id": "p00456",
+        "problem_id": "p02786",
         "instruction": "Provide an optimized version of the following code snippet.",
-        "input": "print(*[sum(sorted(int(input())for _ in[0]*10)[7:])for _ in'12'])\n",
-        "output": "print(*[sum(sorted(int(input())for _ in[0]*10)[7:])for _ in'12'])\n"
+        "input": "H = int(input())\n\nn = H.bit_length()\n\nans = (1<<(n))-1\n\nprint(ans)",
+        "output": "print(2**int(input()).bit_length()-1)"
     }]
