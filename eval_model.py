@@ -1,6 +1,6 @@
 import json
 import torch
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, AutoModelForCausalLM
 from unit_tests.run_code import run_tcs
 import os
 
@@ -15,14 +15,19 @@ def eval_model(checkpoint, dataset):
 
     # import model
     device = "cuda"
-    max_length_output = 60
+    max_length_output = 200
     tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+    """
     model = AutoModelForSeq2SeqLM.from_pretrained(
         checkpoint,
         torch_dtype=torch.float32,
         low_cpu_mem_usage=True,
         trust_remote_code=True,
     ).to(device)
+    """
+    model = AutoModelForCausalLM.from_pretrained(
+        checkpoint, torch_dtype=torch.bfloat16, device_map=device
+    )
 
     for problem in dataset:
         # get slow_code, fast_code
@@ -49,14 +54,46 @@ def eval_model(checkpoint, dataset):
         print("problem_statement", problem_statement)
 
         # Tokenize the problem statement for the encoder
+        """
         encoder_inputs = tokenizer(
-            problem_statement,
+                "def print_hello_world():",
             return_tensors="pt",
             padding="max_length",
             max_length=105,
             truncation=True,
         ).to(device)
+        """
 
+        messages = [
+            {
+                "role": "system",
+                "content": "Please provide an optimized version of the following code in python",
+            },
+            {"role": "user", "content": problem["input"]},
+        ]
+
+        encoder_inputs = tokenizer.apply_chat_template(
+            messages, add_generation_prompt=True, return_tensors="pt"
+        ).to(device)
+
+        terminators = [
+            tokenizer.eos_token_id,
+            tokenizer.convert_tokens_to_ids("<|eot_id|>"),
+        ]
+
+        outputs = model.generate(
+            encoder_inputs,
+            max_new_tokens=256,
+            eos_token_id=terminators,
+            do_sample=True,
+            temperature=0.6,
+            top_p=0.9,
+        )
+        response = outputs[0][encoder_inputs.shape[-1] :]
+        generated_code = tokenizer.decode(response, skip_special_tokens=True)
+        print("gen code\n", generated_code, "\ndone")
+
+        """
         attention_mask = encoder_inputs["attention_mask"]
 
         # List of potential start tokens
@@ -93,7 +130,7 @@ def eval_model(checkpoint, dataset):
         # generated_code = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
         print("generated_code ", generated_code, " done")
-
+        """
         # TODO: update second argument here
         # run generated code
         verdict, runtime = run_tcs(generated_code, problem["problem_id"])
@@ -154,7 +191,7 @@ def calculate_model_metrics(
 
 
 def main():
-    checkpoint = "Salesforce/codet5p-2b"
+    checkpoint = "meta-llama/Meta-Llama-3-8B"
     file_path = "./examples/test_python.json"
 
     # Open the file in read mode
