@@ -52,10 +52,12 @@ def run_python_code_with_file_input(
         except subprocess.TimeoutExpired:
             return "Time Limit Exceeded", MAX_TIMEOUT, ""
 
+
 def eval_output(output: str, expected_output_file: str) -> bool:
     with open(expected_output_file, "r") as expected_file:
         expected_output = expected_file.read()
         return output.strip() == expected_output.strip()
+
 
 def run_single_test_case(code: str, input_file: str) -> Tuple[str, float, str]:
     expected_output_file = input_file.replace("input", "output")
@@ -66,10 +68,11 @@ def run_single_test_case(code: str, input_file: str) -> Tuple[str, float, str]:
         return "Wrong Answer", runtime, input_file
     return "Accepted", runtime, input_file
 
+
 def run_tcs(code: str, problem_id: int) -> Tuple[str, float]:
     # Example paths for test cases, these need to be defined or configured
-    sample_output_folder = f"{PUBLIC_TEST_CASES_FOLDER}p{problem_id:05d}"
-    hidden_output_folder = f"{HIDDEN_TEST_CASES_FOLDER}p{problem_id:05d}"
+    sample_output_folder = f"{PUBLIC_TEST_CASES_FOLDER}{problem_id}"
+    hidden_output_folder = f"{HIDDEN_TEST_CASES_FOLDER}{problem_id}"
     start_time = time.time()
     folders = [sample_output_folder, hidden_output_folder]
     test_cases = []
@@ -81,7 +84,7 @@ def run_tcs(code: str, problem_id: int) -> Tuple[str, float]:
             test_cases.append((code, input_file))
 
     # print('all testcases', folders)
-            
+
     with concurrent.futures.ThreadPoolExecutor() as executor:
         results = executor.map(lambda p: run_single_test_case(*p), test_cases)
 
@@ -102,6 +105,6 @@ def load_dataset(dataset=DEFAULT_DATASET):
 
 
 if __name__ == "__main__":
-    sample_code = df.at[17, 'code_v0']
-    python_df = df[df['language'] == 'Python']
+    sample_code = df.at[17, "code_v0"]
+    python_df = df[df["language"] == "Python"]
     print(run_tcs(sample_code, 3352))
