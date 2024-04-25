@@ -271,6 +271,8 @@ def train(model, tokenizer, optimizer, num_episodes, dataset, max_length, R1, R2
                     generated_code = tokenizer.decode(
                         generated_code_tokens, skip_special_tokens=True
                     )
+                    print(f"Generated code: {generated_code}")
+
                     reward = get_reward(generated_code, entry["input"], pid)
                     rewards.append(reward)
 
