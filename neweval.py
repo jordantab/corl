@@ -1,11 +1,6 @@
 import json
 import torch
-from transformers import (
-    AutoModelForSeq2SeqLM,
-    AutoTokenizer,
-    AutoModelForCausalLM,
-    pipeline,
-)
+from transformers import AutoTokenizer
 import transformers
 from unit_tests.run_code import run_tcs
 import os
