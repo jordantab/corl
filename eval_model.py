@@ -47,12 +47,25 @@ def eval_model(checkpoint, dataset):
         problem_statement = problem["instruction"] + "\n" + problem["input"]
 
         # Tokenize the problem statement for the encoder
-        encoder_inputs = tokenizer(problem_statement, return_tensors="pt").to(device)
+        encoder_inputs = tokenizer(
+            "Generate code for this problem. def print_hello_world():",
+            return_tensors="pt",
+        ).to(device)
 
-        # Prepare a fresh start token for the decoder
-        # Replace 'bos_token_id' with the appropriate token ID for your model
-        start_token = tokenizer.bos_token_id
-        decoder_input_ids = torch.tensor([[start_token]], dtype=torch.long).to(device)
+        # List of potential start tokens
+        start_tokens = [
+            tokenizer.bos_token_id,
+            tokenizer.cls_token_id,
+            tokenizer.pad_token_id,
+        ]
+
+        for token_id in start_tokens:
+            if token_id is not None:
+                print({tokenizer.decode([token_id])})
+                # Prepare decoder_input_ids with the start token
+                decoder_input_ids = torch.tensor([[token_id]], dtype=torch.long).to(
+                    device
+                )
 
         # Generate code
         generated_tokens = model.generate(
