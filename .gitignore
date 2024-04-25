@@ -162,6 +162,7 @@ datasets/*
 
 env
 .venv
+rlenv
 
 # RL specific
 checkpoints

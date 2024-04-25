@@ -8,9 +8,10 @@ import json
 import os
 import traceback
 import transformers
-from unit_test.run_code import run_tcs
+from unit_tests.run_code import run_tcs
 
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
+
 
 # Utility functions
 def parse_args():
@@ -37,10 +38,16 @@ def parse_args():
         "--R2", type=float, default=0.0, help="Reward for unit test failure."
     )
     parser.add_argument(
-        "--R3", type=float, default=0.5, help="Reward for unit test success with no improvement."
+        "--R3",
+        type=float,
+        default=0.5,
+        help="Reward for unit test success with no improvement.",
     )
     parser.add_argument(
-        "--R4", type=float, default=1.0, help="Reward for unit test success with improvement."
+        "--R4",
+        type=float,
+        default=1.0,
+        help="Reward for unit test success with improvement.",
     )
     return parser.parse_args()
 
@@ -174,7 +181,7 @@ def generate_code(input_code, temperature=0.6):
         temperature=temperature,
         top_p=0.9,
     )
-    generated_code = outputs[0]["generated_text"][len(prompt):]
+    generated_code = outputs[0]["generated_text"][len(prompt) :]
     print(f"Generated optimized code tokens: {generated_code}")
 
     return generated_code
@@ -244,10 +251,10 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
 
                 for i in range(num_samples):
                     print(f"Generating candidate sample {i + 1}/{num_samples}")
-                    generated_code = generate_code(
-                        prompt, temperature=0.8
+                    generated_code = generate_code(prompt, temperature=0.8)
+                    generated_code_tokens = tokenizer.encode(
+                        generated_code, add_special_tokens=True
                     )
-                    generated_code_tokens = tokenizer.encode(generated_code, add_special_tokens=True)
                     candidate_samples.append(generated_code_tokens)
                     print(f"Generated code: {generated_code}")
 
@@ -350,20 +357,14 @@ if __name__ == "__main__":
     checkpoint = args.model_name
     device = "cuda" if torch.cuda.is_available() else "cpu"
     tokenizer = AutoTokenizer.from_pretrained(checkpoint)
-    model = AutoModelForSeq2SeqLM.from_pretrained(
-        checkpoint,
-        torch_dtype=torch.float32,
-        low_cpu_mem_usage=True,
-        trust_remote_code=True,
-    ).to(device)
+    model = transformers.pipeline(
+        "text-generation",
+        model=checkpoint,
+        model_kwargs={"torch_dtype": torch.bfloat16},
+        device_map=device,
+    )
     optimizer = optim.Adam(model.parameters(), lr=1e-5)
     dataset = load_dataset(args.dataset_path)
 
     # Start training
-    train(
-        model,
-        tokenizer,
-        optimizer,
-        args.num_episodes,
-        dataset
-    )
+    train(model, tokenizer, optimizer, args.num_episodes, dataset)
