@@ -46,10 +46,7 @@ def eval_model(checkpoint, dataset):
         # generate problem statement
         problem_statement = problem["instruction"] + "\n" + problem["input"]
 
-        encoding = tokenizer(problem_statement, return_tensors="pt").to(device)
-        encoding["decoder_input_ids"] = encoding["input_ids"].clone()
-
-        # # Tokenize the problem statement for the encoder
+        # Tokenize the problem statement for the encoder
         # encoder_inputs = tokenizer(
         #     "Generate code for this problem. def print_hello_world():",
         #     return_tensors="pt",
@@ -70,24 +67,23 @@ def eval_model(checkpoint, dataset):
         #             device
         #         )
 
-        # Generate code
-        generated_tokens = model.generate(
-            input_ids=encoding["input_ids"],
-            # Provide only the start token to the decoder
-            decoder_input_ids=encoding["decoder_input_ids"],
-            max_length=max_length_output,
-        )
+        # # Generate code
+        # generated_tokens = model.generate(
+        #     input_ids=encoder_inputs["input_ids"],
+        #     decoder_input_ids=decoder_input_ids,
+        #     max_length=max_length_output,
+        # )
 
-        generated_code = tokenizer.decode(generated_tokens[0], skip_special_tokens=True)
+        # generated_code = tokenizer.decode(
+        #     generated_tokens[0], skip_special_tokens=True)
 
-        # # encode problem (replace with actual problem input)
-        # encoding = tokenizer(problem_statement,
-        #                      return_tensors="pt").to(device)
-        # encoding["decoder_input_ids"] = encoding["input_ids"].clone()
+        # encode problem (replace with actual problem input)
+        encoding = tokenizer(problem_statement, return_tensors="pt").to(device)
+        encoding["decoder_input_ids"] = encoding["input_ids"].clone()
 
-        # # generate code
-        # outputs = model.generate(**encoding, max_length=max_length_output)
-        # generated_code = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        # generate code
+        outputs = model.generate(**encoding, max_length=max_length_output)
+        generated_code = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
         print("generated_code ", generated_code, " done")
 
