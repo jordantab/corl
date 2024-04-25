@@ -1,6 +1,7 @@
 import json
 import torch
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, AutoModelForCausalLM
+import transformers
 from unit_tests.run_code import run_tcs
 import os
 
@@ -64,34 +65,68 @@ def eval_model(checkpoint, dataset):
         ).to(device)
         """
 
+        # messages = [
+        #     {
+        #         "role": "system",
+        #         "content": "Please provide an optimized version of the following code in python",
+        #     },
+        #     {"role": "user", "content": problem["input"]},
+        # ]
+
+        # encoder_inputs = tokenizer.apply_chat_template(
+        #     messages, add_generation_prompt=True, return_tensors="pt"
+        # ).to(device)
+
+        # terminators = [
+        #     tokenizer.eos_token_id,
+        #     tokenizer.convert_tokens_to_ids("<|eot_id|>"),
+        # ]
+
+        # outputs = model.generate(
+        #     encoder_inputs,
+        #     max_new_tokens=256,
+        #     eos_token_id=terminators,
+        #     do_sample=True,
+        #     temperature=0.6,
+        #     top_p=0.9,
+        # )
+        # response = outputs[0][encoder_inputs.shape[-1] :]
+        # generated_code = tokenizer.decode(response, skip_special_tokens=True)
+        # print("gen code\n", generated_code, "\ndone")
+        pipeline = transformers.pipeline(
+            "text-generation",
+            model=checkpoint,
+            model_kwargs={"torch_dtype": torch.bfloat16},
+            device_map="auto",
+        )
+
         messages = [
             {
                 "role": "system",
-                "content": "Please provide an optimized version of the following code in python",
+                "content": "You are a pirate chatbot who always responds in pirate speak!",
             },
-            {"role": "user", "content": problem["input"]},
+            {"role": "user", "content": "Who are you?"},
         ]
 
-        encoder_inputs = tokenizer.apply_chat_template(
-            messages, add_generation_prompt=True, return_tensors="pt"
-        ).to(device)
+        prompt = pipeline.tokenizer.apply_chat_template(
+            messages, tokenize=False, add_generation_prompt=True
+        )
 
         terminators = [
-            tokenizer.eos_token_id,
-            tokenizer.convert_tokens_to_ids("<|eot_id|>"),
+            pipeline.tokenizer.eos_token_id,
+            pipeline.tokenizer.convert_tokens_to_ids("<|eot_id|>"),
         ]
 
-        outputs = model.generate(
-            encoder_inputs,
+        outputs = pipeline(
+            prompt,
             max_new_tokens=256,
             eos_token_id=terminators,
             do_sample=True,
             temperature=0.6,
             top_p=0.9,
         )
-        response = outputs[0][encoder_inputs.shape[-1] :]
-        generated_code = tokenizer.decode(response, skip_special_tokens=True)
-        print("gen code\n", generated_code, "\ndone")
+        generated_code = outputs[0]["generated_text"][len(prompt) :]
+        print("generated_code\n", generated_code, "\ndone")
 
         """
         attention_mask = encoder_inputs["attention_mask"]
