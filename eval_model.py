@@ -15,7 +15,7 @@ def eval_model(checkpoint, dataset):
 
     # import model
     device = "cuda"
-    max_length_output = 105
+    max_length_output = 60
     tokenizer = AutoTokenizer.from_pretrained(checkpoint)
     model = AutoModelForSeq2SeqLM.from_pretrained(
         checkpoint,
@@ -154,9 +154,8 @@ def calculate_model_metrics(
 
 
 def main():
-    # checkpoint = "Salesforce/codet5p-2b"
-    checkpoint = "Salesforce/instructcodet5p-16b"
-    file_path = "./examples/test.json"
+    checkpoint = "Salesforce/codet5p-2b"
+    file_path = "./examples/test_python.json"
 
     # Open the file in read mode
     with open(file_path, "r") as json_file:
