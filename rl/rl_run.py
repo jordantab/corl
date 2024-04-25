@@ -8,7 +8,7 @@ import json
 import os
 import traceback
 
-from unittest.run_code import run_tcs
+from unit_test.run_code import run_tcs
 
 # Utility functions
 def parse_args():
@@ -65,36 +65,6 @@ def compile_code(code):
     result = random.choice([True, False])
     print(f"Compilation result: {result}")
     return result
-
-
-def pass_unit_tests(code):
-    """
-    Run unit tests and return a random test result (True for passing, False for failing).
-
-    Args:
-        code (str): The code to test.
-
-    Returns:
-        bool: True if the unit tests pass, False otherwise.
-    """
-    result = random.choice([True, False])
-    print(f"Unit test result: {result}")
-    return result
-
-
-def execution_time(code):
-    """
-    Return a random execution time value (in seconds).
-
-    Args:
-        code (str): The code to measure execution time.
-
-    Returns:
-        float: The execution time in seconds.
-    """
-    time = random.uniform(0.1, 1.0)
-    print(f"Execution time: {time:.2f} seconds")
-    return time
 
 
 def tokenize_code(code):
@@ -155,6 +125,7 @@ def get_reward(generated_code, reference_code, problem_id):
         print("Reward: Failed unit tests (R2)")
         return args.R2
 
+
 def generate_code(input_code_tokens, temperature=1.0, do_sample=True):
     """
     Generate optimized code based on the input code tokens.
@@ -188,14 +159,14 @@ def generate_code(input_code_tokens, temperature=1.0, do_sample=True):
     return generated_code_tokens
 
 
-def calculate_score(generated_code_tokens, reference_code):
+def calculate_score(generated_code_tokens, input_code_tokens):
     """
     Calculate the score of the generated code based on Equation 9.
     This score represents how likely the model is to generate that particular code sample.
 
     Args:
         generated_code_tokens (list): The token IDs of the generated code.
-        reference_code_tokens (list): The token IDs of the reference code.
+        input_code_tokens (torch.Tensor): The token IDs of the input code.
 
     Returns:
         float: The calculated score.
@@ -208,18 +179,10 @@ def calculate_score(generated_code_tokens, reference_code):
             generated_code_tokens, dtype=torch.long, device=device
         )
 
-    # Tokenize the reference code properly
-    if isinstance(reference_code, str):
-        reference_encoding = tokenizer(reference_code, return_tensors="pt").to(device)
-    else:
-        raise TypeError("reference_code must be a string.")
+    # Get the model's output logits for the input code tokens
+    logits = model(input_ids=input_code_tokens).logits
 
-    # print(reference_encoding)
-
-    logits = model(input_ids=reference_encoding["input_ids"]).logits
-
-    # Loop over each token_id and calculate log probability
-    # Calculate log probability for each token ID in generated_code_tokens
+    # Loop over each token_id in the generated code and calculate log probability
     for token_id in generated_code_tokens:
         log_prob = torch.log_softmax(logits[0], dim=-1)
         if token_id.item() >= log_prob.size(0):
@@ -232,10 +195,7 @@ def calculate_score(generated_code_tokens, reference_code):
     return score
 
 
-def train(model, tokenizer, optimizer, num_episodes, dataset, max_length, R1, R2, R3, R4):
-
-    # just take the first sample for testing purposes
-    dataset = dataset[0:3]
+def train(model, tokenizer, optimizer, num_episodes, dataset):
 
     model.train()
     total_losses = []
@@ -384,10 +344,5 @@ if __name__ == "__main__":
         tokenizer,
         optimizer,
         args.num_episodes,
-        dataset,
-        args.max_length,
-        args.R1,
-        args.R2,
-        args.R3,
-        args.R4,
+        dataset
     )
