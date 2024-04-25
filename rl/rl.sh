@@ -4,9 +4,9 @@
 PYTHON_SCRIPT="rl_run.py"
 
 # Set parameters
-MODEL_NAME="Salesforce/codet5p-2b"
+MODEL_NAME="meta-llama/Meta-Llama-3-8B-Instruct"
 NUM_EPISODES=10
-DATASET_PATH="../datasets/cpp/cpp_leq_105_tokens_train.json"
+DATASET_PATH="./examples/test_python.json"
 MAX_LENGTH=256
 R1=-1.0
 R2=0.0

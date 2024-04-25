@@ -7,8 +7,10 @@ import matplotlib.pyplot as plt
 import json
 import os
 import traceback
-
+import transformers
 from unit_test.run_code import run_tcs
+
+os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 # Utility functions
 def parse_args():
@@ -16,7 +18,7 @@ def parse_args():
     parser.add_argument(
         "--model_name",
         type=str,
-        default="Salesforce/codet5p-2b",
+        default="meta-llama/Meta-Llama-3-8B-Instruct",
         help="Model checkpoint for initialization.",
     )
     parser.add_argument(
@@ -126,37 +128,56 @@ def get_reward(generated_code, reference_code, problem_id):
         return args.R2
 
 
-def generate_code(input_code_tokens, temperature=1.0, do_sample=True):
+def generate_code(input_code, temperature=0.6):
     """
     Generate optimized code based on the input code tokens.
 
     Args:
-        input_code_tokens (torch.Tensor): The tokenized input code.
+        input_code (str): The input code.
         temperature (float): Temperature setting for generation.
-        do_sample (bool): Whether to sample based on the temperature.
 
     Returns:
         list: The generated optimized code tokens.
     """
     print("Generating optimized code...")
+    print(f"Input code: {input_code}")
 
-    # Check if input_code_tokens is a tensor and not a list
-    if not isinstance(input_code_tokens, torch.Tensor):
-        raise TypeError("input_code_tokens must be a PyTorch Tensor")
-
-    print(f"Input code tokens: {input_code_tokens}")
-
-    outputs = model.generate(
-        input_ids=input_code_tokens,
-        max_length=args.max_length,
-        pad_token_id=tokenizer.eos_token_id,
-        temperature=temperature,
-        do_sample=do_sample,
+    pipeline = transformers.pipeline(
+        "text-generation",
+        model=checkpoint,
+        model_kwargs={"torch_dtype": torch.bfloat16},
+        device_map="auto",
     )
-    generated_code_tokens = outputs[0].tolist()
-    print(f"Generated optimized code tokens: {generated_code_tokens}")
 
-    return generated_code_tokens
+    messages = [
+        {
+            "role": "system",
+            "content": "Provide an optimized version of the following code snippet. Only provide the code, no need to provide any description. ",
+        },
+        {"role": "user", "content": input_code},
+    ]
+
+    prompt = pipeline.tokenizer.apply_chat_template(
+        messages, tokenize=False, add_generation_prompt=True
+    )
+
+    terminators = [
+        pipeline.tokenizer.eos_token_id,
+        pipeline.tokenizer.convert_tokens_to_ids("<|eot_id|>"),
+    ]
+
+    outputs = pipeline(
+        prompt,
+        max_new_tokens=args.max_length,
+        eos_token_id=terminators,
+        do_sample=True,
+        temperature=temperature,
+        top_p=0.9,
+    )
+    generated_code = outputs[0]["generated_text"][len(prompt):]
+    print(f"Generated optimized code tokens: {generated_code}")
+
+    return generated_code
 
 
 def calculate_score(generated_code_tokens, input_code_tokens):
@@ -223,15 +244,15 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
 
                 for i in range(num_samples):
                     print(f"Generating candidate sample {i + 1}/{num_samples}")
-                    generated_code_tokens = generate_code(
-                        input_code_tokens, temperature=0.8, do_sample=True
+                    generated_code = generate_code(
+                        prompt, temperature=0.8
                     )
+                    generated_code_tokens = tokenizer.encode(generated_code, add_special_tokens=True)
                     candidate_samples.append(generated_code_tokens)
-
-                    generated_code = tokenizer.decode(
-                        generated_code_tokens, skip_special_tokens=True
-                    )
                     print(f"Generated code: {generated_code}")
+
+                    if isinstance(generated_code, list):
+                        generated_code = generated_code[0]
 
                     reward = get_reward(generated_code, entry["input"], pid)
                     rewards.append(reward)
@@ -284,7 +305,7 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
     # Save the model only after all episodes
     checkpoints_dir = "../checkpoints"
     os.makedirs(checkpoints_dir, exist_ok=True)
-    model_checkpoint_path = os.path.join(checkpoints_dir, "codet5_model.pt")
+    model_checkpoint_path = os.path.join(checkpoints_dir, "llama-rl-trained.pt")
     torch.save(model.state_dict(), model_checkpoint_path)
     print(f"Model checkpoint saved at: {model_checkpoint_path}")
 

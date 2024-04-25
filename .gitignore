@@ -170,3 +170,12 @@ checkpoints
 datasets/*
 models/*
 .DS_Store
+*/.DS_Store
+*/*/.DS_Store
+*/*/*/.DS_Store
+*/*/*/*/.DS_Store
+*/*/*/*/*/.DS_Store
+*/*/*/*/*/*/.DS_Store
+*/*/*/*/*/*/*/.DS_Store
+*/*/*/*/*/*/*/*/.DS_Store
+*/*/*/*/*/*/*/*/*/.DS_Store
