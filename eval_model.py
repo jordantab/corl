@@ -37,11 +37,11 @@ def eval_model(checkpoint, dataset):
         #     fast_code, problem["problem_id"]
         # )
 
-        verdict_fast, runtime_fast = run_tcs(fast_code, problem["problem_id"])
-        print("verdict_fast", verdict_fast, runtime_fast)
+        # verdict_fast, runtime_fast = run_tcs(fast_code, problem["problem_id"])
+        # print("verdict_fast", verdict_fast, runtime_fast)
 
-        verdict_slow, runtime_slow = run_tcs(slow_code, problem["problem_id"])
-        print("verdict_slow", verdict_slow)
+        # verdict_slow, runtime_slow = run_tcs(slow_code, problem["problem_id"])
+        # print("verdict_slow", verdict_slow)
 
         # generate problem statement
         problem_statement = problem["instruction"] + "\n" + problem["input"]
@@ -83,19 +83,19 @@ def eval_model(checkpoint, dataset):
 
         # evaluate generated code
         if verdict == "Accepted":
-            if runtime < runtime_slow:
-                outputs_slow.append(1)
-            if runtime < runtime_fast:
-                outputs_fast.append(1)
+
+            # if runtime < runtime_slow:
+            #     outputs_slow.append(1)
+            # if runtime < runtime_fast:
+            #     outputs_fast.append(1)
             # if new_memory < memory_slow:
             #     outputs_memory_slow.append(1)
             # if new_memory < memory_fast:
             #     outputs_memory_fast.append(1)
-            else:
-                outputs_slow.append(0)
-                outputs_fast.append(0)
-                outputs_memory_slow.append(0)
-                outputs_memory_fast.append(0)
+            outputs_slow.append(0)
+            outputs_fast.append(0)
+            outputs_memory_slow.append(0)
+            outputs_memory_fast.append(0)
         else:
             outputs_slow.append(0)
             outputs_fast.append(0)
