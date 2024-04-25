@@ -8,6 +8,7 @@ import json
 import os
 import traceback
 
+from unittest.run_code import run_tcs
 
 # Utility functions
 def parse_args():
@@ -24,6 +25,21 @@ def parse_args():
     parser.add_argument(
         "--dataset_path", type=str, required=True, help="Path to the dataset file."
     )
+    parser.add_argument(
+        "--max_length", type=int, default=256, help="Maximum length of the input code."
+    )
+    parser.add_argument(
+        "--R1", type=float, default=-1.0, help="Reward for compilation failure."
+    )
+    parser.add_argument(
+        "--R2", type=float, default=0.0, help="Reward for unit test failure."
+    )
+    parser.add_argument(
+        "--R3", type=float, default=0.5, help="Reward for unit test success with no improvement."
+    )
+    parser.add_argument(
+        "--R4", type=float, default=1.0, help="Reward for unit test success with improvement."
+    )
     return parser.parse_args()
 
 
@@ -33,29 +49,6 @@ def load_dataset(file_path):
     """
     with open(file_path, "r") as file:
         return json.load(file)
-
-
-# Load arguments and initialize components
-args = parse_args()
-
-checkpoint = args.model_name
-device = "cuda" if torch.cuda.is_available() else "cpu"
-tokenizer = AutoTokenizer.from_pretrained(checkpoint)
-model = AutoModelForSeq2SeqLM.from_pretrained(
-    checkpoint,
-    torch_dtype=torch.float32,
-    low_cpu_mem_usage=True,
-    trust_remote_code=True,
-).to(device)
-optimizer = optim.Adam(model.parameters(), lr=1e-5)
-
-max_length = 256
-
-# Define rewards
-R1, R2, R3, R4 = -1.0, 0.0, 0.5, 1.0
-
-# Load dataset
-dataset = load_dataset(args.dataset_path)
 
 
 # Util functions for reward calculating
@@ -120,7 +113,7 @@ def tokenize_code(code):
         code,
         return_tensors="pt",
         truncation=True,
-        max_length=max_length,
+        max_length=args.max_length,
         add_special_tokens=True,
     )
     input_ids = inputs["input_ids"].to(device)  # Move to the correct device
@@ -128,33 +121,39 @@ def tokenize_code(code):
     return input_ids
 
 
-def get_reward(generated_code, reference_code):
+def get_reward(generated_code, reference_code, problem_id):
     """
     Calculate the reward based on the generated code and reference code.
 
     Args:
         generated_code (str): The generated code.
         reference_code (str): The reference code.
+        problem_id (int): The problem ID.
 
     Returns:
         float: The reward value.
     """
     print("Calculating reward...")
+
+    # Run the generated code and get the verdict, runtime, and memory usage
+    verdict, runtime = run_tcs(generated_code, problem_id)
+
+    # Run the reference code and get the verdict, runtime, and memory usage
+    reference_verdict, reference_runtime = run_tcs(reference_code, problem_id)
+
     if not compile_code(generated_code):
         print("Reward: Cannot compile (R1)")
-        return R1
-    elif not pass_unit_tests(generated_code):
-        print("Reward: Failed unit tests (R2)")
-        return R2
-    elif pass_unit_tests(generated_code) and execution_time(
-        generated_code
-    ) < execution_time(reference_code):
-        print("Reward: Passed unit tests and improved execution time (R4)")
-        return R4
+        return args.R1
+    elif verdict == "Accepted":
+        if runtime < reference_runtime:
+            print("Reward: Passed unit tests and improved execution time (R4)")
+            return args.R4
+        else:
+            print("Reward: Passed unit tests but no improvement in execution time (R3)")
+            return args.R3
     else:
-        print("Reward: Passed unit tests but no improvement in execution time (R3)")
-        return R3
-
+        print("Reward: Failed unit tests (R2)")
+        return args.R2
 
 def generate_code(input_code_tokens, temperature=1.0, do_sample=True):
     """
@@ -178,7 +177,7 @@ def generate_code(input_code_tokens, temperature=1.0, do_sample=True):
 
     outputs = model.generate(
         input_ids=input_code_tokens,
-        max_length=max_length,
+        max_length=args.max_length,
         pad_token_id=tokenizer.eos_token_id,
         temperature=temperature,
         do_sample=do_sample,
@@ -233,8 +232,7 @@ def calculate_score(generated_code_tokens, reference_code):
     return score
 
 
-def train(model, tokenizer, optimizer, num_episodes, dataset):
-
+def train(model, tokenizer, optimizer, num_episodes, dataset, max_length, R1, R2, R3, R4):
 
     # just take the first sample for testing purposes
     dataset = dataset[0:3]
@@ -273,7 +271,7 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
                     generated_code = tokenizer.decode(
                         generated_code_tokens, skip_special_tokens=True
                     )
-                    reward = get_reward(generated_code, entry["input"])
+                    reward = get_reward(generated_code, entry["input"], pid)
                     rewards.append(reward)
 
                 ranking_loss = 0
@@ -364,5 +362,30 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
     print("Training completed.")
 
 
-# Start training
-train(model, tokenizer, optimizer, args.num_episodes, dataset)
+if __name__ == "__main__":
+    args = parse_args()
+    checkpoint = args.model_name
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+    model = AutoModelForSeq2SeqLM.from_pretrained(
+        checkpoint,
+        torch_dtype=torch.float32,
+        low_cpu_mem_usage=True,
+        trust_remote_code=True,
+    ).to(device)
+    optimizer = optim.Adam(model.parameters(), lr=1e-5)
+    dataset = load_dataset(args.dataset_path)
+
+    # Start training
+    train(
+        model,
+        tokenizer,
+        optimizer,
+        args.num_episodes,
+        dataset,
+        args.max_length,
+        args.R1,
+        args.R2,
+        args.R3,
+        args.R4,
+    )
