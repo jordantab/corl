@@ -52,7 +52,12 @@ def eval_model(checkpoint, dataset):
         encoder_inputs = tokenizer(
             problem_statement,
             return_tensors="pt",
+            padding="max_length",
+            max_length=105,
+            truncation=True,
         ).to(device)
+
+        attention_mask = encoder_inputs["attention_mask"]
 
         # List of potential start tokens
         start_tokens = [
@@ -73,6 +78,7 @@ def eval_model(checkpoint, dataset):
         generated_tokens = model.generate(
             input_ids=encoder_inputs["input_ids"],
             decoder_input_ids=decoder_input_ids,
+            attention_mask=attention_mask,
             max_length=max_length_output,
         )
 
@@ -148,7 +154,8 @@ def calculate_model_metrics(
 
 
 def main():
-    checkpoint = "Salesforce/codet5p-2b"
+    # checkpoint = "Salesforce/codet5p-2b"
+    checkpoint = "Salesforce/instructcodet5p-16b"
     file_path = "./examples/test.json"
 
     # Open the file in read mode
