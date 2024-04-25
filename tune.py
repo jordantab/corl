@@ -389,12 +389,17 @@ def main():
     tokenized_data = tokenize_dataset(
         tokenizer, train_data, args.max_len, args.num_procs
     )
+
+    float_dtype = torch.float16
+    if args.device == "cuda":
+        float_dtype = torch.float32
+
     model = AutoModelForSeq2SeqLM.from_pretrained(
         args.model,
-        torch_dtype=torch.float16,
+        torch_dtype=float_dtype,
         low_cpu_mem_usage=True,
         trust_remote_code=True,
-    )
+    ).to(args.device)
 
     freeze_self_attn_params(model)
     fine_tune(model, tokenized_data, args)
