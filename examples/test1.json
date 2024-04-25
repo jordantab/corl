@@ -1,0 +1,6 @@
+[{
+        "problem_id": "p03962",
+        "instruction": "Provide an optimized version of the following Python code snippet. Make sure the output is C++",
+        "input": "",
+        "output": "#include <set>\n\n#include <iostream>\n\nusing namespace std;\n\nint x;\n\nint main() {\n\n\tset<int> s;\n\n\tfor(int i = 0; i < 3; i++) cin >> x, s.insert(x);\n\n\tcout << s.size() << endl;\n\n\treturn 0;\n\n}"
+    }]

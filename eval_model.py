@@ -1,6 +1,11 @@
 import json
 import torch
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, AutoModelForCausalLM
+from transformers import (
+    AutoModelForSeq2SeqLM,
+    AutoTokenizer,
+    AutoModelForCausalLM,
+    pipeline,
+)
 import transformers
 from unit_tests.run_code import run_tcs
 import os
@@ -93,13 +98,17 @@ def eval_model(checkpoint, dataset):
         # response = outputs[0][encoder_inputs.shape[-1] :]
         # generated_code = tokenizer.decode(response, skip_special_tokens=True)
         # print("gen code\n", generated_code, "\ndone")
-        pipeline = transformers.pipeline(
+        llm_model = transformers.pipeline(
             "text-generation",
             model=checkpoint,
             model_kwargs={"torch_dtype": torch.bfloat16},
-            device_map="auto",
+            device_map=device,
         )
 
+        print(llm_model("How are you?"))
+        return
+
+        """
         messages = [
             {
                 "role": "system",
@@ -128,7 +137,6 @@ def eval_model(checkpoint, dataset):
         generated_code = outputs[0]["generated_text"][len(prompt) :]
         print("generated_code\n", generated_code, "\ndone")
 
-        """
         attention_mask = encoder_inputs["attention_mask"]
 
         # List of potential start tokens
@@ -165,7 +173,7 @@ def eval_model(checkpoint, dataset):
         # generated_code = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
         print("generated_code ", generated_code, " done")
-        """
+
         # TODO: update second argument here
         # run generated code
         verdict, runtime = run_tcs(generated_code, problem["problem_id"])
@@ -200,6 +208,7 @@ def eval_model(checkpoint, dataset):
     )
 
     return pct_opt_slow, pct_opt_fast, pct_opt_memory_slow, pct_opt_memory_fast
+"""
 
 
 def calculate_model_metrics(
