@@ -1,0 +1,8 @@
+[
+    {
+        "problem_id": "p03146",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s=int(input())\n\ni=2\n\nwhile s>1:s=[s//2,s*3+1][s%2];i+=1\n\nprint(max(i,4))",
+        "output": "s=int(input())\n\ni=4\n\nwhile s>4or 3==s:s=[s//2,s*3+1][s%2];i+=1\n\nprint(i)"
+    }
+]

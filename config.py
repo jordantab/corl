@@ -4,7 +4,7 @@ Default configurations for the RL-LLM training pipeline.
 
 import os
 
-DEFAULT_MODEL = "Salesforce/codet5p-2b"
+DEFAULT_MODEL = "meta-llama/Meta-Llama-3-8B-Instruct"
 
 # Fine-tuning defaults
 DEFAULT_OUTDIR = "models/dataset_tuned_checkpoint"
