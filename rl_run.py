@@ -223,7 +223,9 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
         episode_ranking_losses = []
         episode_tuning_losses = []
 
+        print("dataset size" + str(len(dataset)))
         for entry in dataset:
+            print(f"this entry is: {entry}")
             try:
                 input_code = entry["input"]
                 pid = entry["problem_id"]
@@ -246,6 +248,7 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
                         generated_code = generated_code[0]
 
                     reward = get_reward(generated_code, entry["input"], pid)
+                    print(f"reward is {reward}")
                     rewards.append(reward)
 
                 ranking_loss = 0
@@ -260,9 +263,13 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
                             )
                             ranking_loss += max(0, log_prob_i - log_prob_j)
 
+                print(f"ranking loss is: {ranking_loss}")
+
                 best_sample_idx = rewards.index(max(rewards))
                 best_sample = candidate_samples[best_sample_idx]
                 tuning_loss = -calculate_score(best_sample, entry["input"])
+
+                print(f"tuning loss is: {tuning_loss}")
 
                 # Collect data for the current entry
                 episode_total_losses.append(ranking_loss + tuning_loss)
