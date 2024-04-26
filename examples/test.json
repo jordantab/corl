@@ -1,0 +1,6 @@
+[{
+        "problem_id": "p03962",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "#include <bits/stdc++.h>\n\nusing namespace std;\n\nint main() {\n\n\tset<int> s; int a;\n\n\tfor(int i = 0; i < 3; i++) {\n\n\t\tcin >> a;\n\n\t\ts.insert(a);\n\n\t}\n\n\tcout << s.size() << endl;\n\n\treturn 0;\n\n}",
+        "output": "#include <set>\n\n#include <iostream>\n\nusing namespace std;\n\nint x;\n\nint main() {\n\n\tset<int> s;\n\n\tfor(int i = 0; i < 3; i++) cin >> x, s.insert(x);\n\n\tcout << s.size() << endl;\n\n\treturn 0;\n\n}"
+    }]
