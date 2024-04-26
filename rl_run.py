@@ -260,7 +260,7 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
                 # Collect data for the current entry
                 episode_total_losses.append(ranking_loss + tuning_loss)
                 # avg rewards across all the samples(for that entry) generated per episode
-                episode_reward_scores.append(sum(rewards) / len(rewards)) 
+                episode_reward_scores.append(sum(rewards) / len(rewards))
                 episode_ranking_losses.append(ranking_loss)
                 episode_tuning_losses.append(tuning_loss)
 
@@ -339,16 +339,15 @@ if __name__ == "__main__":
     checkpoint = args.model_name
     device = "cuda" if torch.cuda.is_available() else "cpu"
     tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+    model = AutoModelForCausalLM.from_pretrained(checkpoint).to(device)
     pipeline = transformers.pipeline(
-        "text-generation",
-        model=checkpoint,
-        model_kwargs={"torch_dtype": torch.bfloat16},
-        device_map="auto",
+        "text-generation", model=model, tokenizer=tokenizer, device=device
     )
-    model = pipeline.model
-    optimizer = optim.Adam(model.parameters(), lr=1e-5)
+    optimizer = Adam(model.parameters(), lr=1e-5)
     dataset = load_dataset(args.dataset_path)
-    print(f"Loaded dataset with {len(dataset)} entries, input code is: {dataset[0]['input']}")
+    print(
+        f"Loaded dataset with {len(dataset)} entries, input code is: {dataset[0]['input']}"
+    )
 
     # Start training
     train(model, tokenizer, optimizer, args.num_episodes, dataset)
