@@ -1,7 +1,7 @@
 import json
 import torch
 import transformers
-from unit_test.run_code import run_tcs
+from unit_tests.run_code import run_tcs
 import os
 
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
