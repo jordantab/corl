@@ -8,7 +8,7 @@ import json
 import os
 import traceback
 import transformers
-from unit_tests.run_code import run_tcs
+from unit_test.run_code import run_tcs
 
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
