@@ -22,6 +22,7 @@ def parse_args():
         default="meta-llama/Meta-Llama-3-8B-Instruct",
         help="Model checkpoint for initialization.",
     )
+    parser.add_argument("--checkpoint_path", type=str, required=True, help="Path to the model checkpoint file")
     parser.add_argument(
         "--num_episodes", type=int, default=10, help="Number of training episodes."
     )
@@ -338,8 +339,13 @@ if __name__ == "__main__":
     args = parse_args()
     checkpoint = args.model_name
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    tokenizer = AutoTokenizer.from_pretrained(checkpoint)
-    model = AutoModelForCausalLM.from_pretrained(checkpoint).to(device)
+    
+    model = AutoModelForCausalLM.from_pretrained(checkpoint)
+    model.load_state_dict(torch.load(args.checkpoint_path))
+    model.to(device)
+
+    tokenizer = AutoTokenizer.from_pretrained(checkpoint)    
+    
     pipeline = transformers.pipeline(
         "text-generation", model=model, tokenizer=tokenizer, device=device
     )
