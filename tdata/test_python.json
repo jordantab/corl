@@ -1,0 +1,6 @@
+[{
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "H = int(input())\n\nn = H.bit_length()\n\nans = (1<<(n))-1\n\nprint(ans)",
+        "output": "print(2**int(input()).bit_length()-1)"
+}]
