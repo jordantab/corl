@@ -8,7 +8,7 @@ import json
 import os
 import traceback
 import transformers
-from unit_tests.run_code import run_tcs
+from unit_tests.run_code import run_tcs, run_python_code_with_file_input
 
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
@@ -61,21 +61,6 @@ def load_dataset(file_path):
 
 
 # Util functions for reward calculating
-def compile_code(code):
-    """
-    Compile the code and return a random compilation result (True for success, False for failure).
-
-    Args:
-        code (str): The code to compile.
-
-    Returns:
-        bool: True if the compilation is successful, False otherwise.
-    """
-    result = random.choice([True, False])
-    print(f"Compilation result: {result}")
-    return result
-
-
 def tokenize_code(code):
     """
     Tokenize the code using the tokenizer and prepare it for the model.
@@ -117,13 +102,13 @@ def get_reward(generated_code, reference_code, problem_id):
     # Run the generated code and get the verdict, runtime, and memory usage
     verdict, runtime = run_tcs(generated_code, problem_id)
 
-    # Run the reference code and get the verdict, runtime, and memory usage
-    reference_verdict, reference_runtime = run_tcs(reference_code, problem_id)
-
-    if not compile_code(generated_code):
+    if verdict == "Compilation Error":
         print("Reward: Cannot compile (R1)")
         return args.R1
     elif verdict == "Accepted":
+        # Run the reference code and get the verdict, runtime, and memory usage
+        reference_verdict, reference_runtime = run_tcs(reference_code, problem_id)
+
         if runtime < reference_runtime:
             print("Reward: Passed unit tests and improved execution time (R4)")
             return args.R4
@@ -233,23 +218,22 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
 
         for entry in dataset:
             try:
-                prompt = f"{entry['instruction']} \n {entry['input']}"
+                input_code = entry["input"]
                 pid = entry["problem_id"]
-                print(f"Prompt: {prompt}")
-                input_code_tokens = tokenize_code(prompt)
+                input_code_tokens = tokenize_code(input_code)
 
                 candidate_samples = []
                 num_samples = 1
                 rewards = []
 
                 for i in range(num_samples):
-                    print(f"Generating candidate sample {i + 1}/{num_samples}")
-                    generated_code = generate_code(prompt, temperature=0.8)
+                    print(f"\nGenerating candidate sample {i + 1}/{num_samples}")
+                    generated_code = generate_code(input_code, temperature=0.8)
                     generated_code_tokens = tokenizer.encode(
                         generated_code, add_special_tokens=True
                     )
                     candidate_samples.append(generated_code_tokens)
-                    print(f"Generated code: {generated_code}")
+                    print(f"\nGenerated code: {generated_code}")
 
                     if isinstance(generated_code, list):
                         generated_code = generated_code[0]
@@ -275,7 +259,8 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
 
                 # Collect data for the current entry
                 episode_total_losses.append(ranking_loss + tuning_loss)
-                episode_reward_scores.append(sum(rewards) / len(rewards))
+                # avg rewards across all the samples(for that entry) generated per episode
+                episode_reward_scores.append(sum(rewards) / len(rewards)) 
                 episode_ranking_losses.append(ranking_loss)
                 episode_tuning_losses.append(tuning_loss)
 
@@ -302,7 +287,7 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
         tuning_losses.append(avg_tuning_loss)
         print(f"Average combined loss for episode: {avg_total_loss.item():.4f}")
 
-    # Save the model only after all episodes
+    # Save the model checkpoint only after all episodes
     checkpoints_dir = "../checkpoints"
     os.makedirs(checkpoints_dir, exist_ok=True)
     model_checkpoint_path = os.path.join(checkpoints_dir, "llama-rl-trained.pt")
@@ -329,6 +314,10 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
             os.path.join(plot_directory, f"{metric_name.replace(' ', '_').lower()}.png")
         )
         plt.close()
+    # save the metrics data to a csv file
+    metrics_df = pd.DataFrame(metrics)
+    metrics_df.to_csv(os.path.join(plot_directory, "metrics.csv"), index=False)
+    print(f"Metrics data saved at: {os.path.join(plot_directory, 'metrics.csv')}")
 
     # Calculate and print overall average metrics
     overall_avg_total_loss = sum(total_losses) / len(total_losses)
@@ -359,6 +348,7 @@ if __name__ == "__main__":
     model = pipeline.model
     optimizer = optim.Adam(model.parameters(), lr=1e-5)
     dataset = load_dataset(args.dataset_path)
+    print(f"Loaded dataset with {len(dataset)} entries, input code is: {dataset[0]['input']}")
 
     # Start training
     train(model, tokenizer, optimizer, args.num_episodes, dataset)
