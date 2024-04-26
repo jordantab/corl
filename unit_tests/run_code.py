@@ -45,7 +45,6 @@ def run_python_code_with_file_input(
                     timeout=MAX_TIMEOUT,
                 )
             end_time = time.time()
-            print(f"time to run all test cases: {end_time - start_time:.2f} seconds")
             if run_process.returncode != 0:
                 # Handle runtime errors
                 return "Runtime Error", -1, ""
@@ -71,30 +70,14 @@ def run_single_test_case(code: str, input_file: str) -> Tuple[str, float, str]:
 
 
 def run_tcs(code: str, problem_id: int) -> Tuple[str, float]:
-    print("run_tcs")
     # Example paths for test cases, these need to be defined or configured
     sample_output_folder = f"{PUBLIC_TEST_CASES_FOLDER}{problem_id}"
     hidden_output_folder = f"{HIDDEN_TEST_CASES_FOLDER}{problem_id}"
-    
-    # Check if the code compiles
-    with tempfile.NamedTemporaryFile(suffix=".py") as temp_file:
-        print("open tempfile")
-        temp_file.write(code.encode())
-        temp_file.flush()
-        try:
-            print("start subprocess for " + temp_file.name)
-            subprocess.check_output(["python", temp_file.name], stderr=subprocess.STDOUT)
-            print("finish subprocess")
-        except subprocess.CalledProcessError:
-            print("Compilation Error")
-            return "Compilation Error", -1
-    
     start_time = time.time()
     folders = [sample_output_folder, hidden_output_folder]
     test_cases = []
     execution_time = 0
 
-    print("start execution")
     for folder in folders:
         input_files = glob.glob(os.path.join(os.path.expanduser(folder), "input.*.txt"))
         for input_file in input_files:
@@ -114,7 +97,6 @@ def run_tcs(code: str, problem_id: int) -> Tuple[str, float]:
     end_time = time.time()
     print(f"time to run all test cases: {end_time - start_time:.2f} seconds")
     return "Accepted", execution_time / len(test_cases)
-
 
 def load_dataset(dataset=DEFAULT_DATASET):
     df = pd.read_csv(dataset, sep="\t")

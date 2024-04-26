@@ -8,7 +8,12 @@ os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 
 def eval_model(checkpoint, dataset):
-    outputs_slow, outputs_fast, outputs_memory_slow, outputs_memory_fast = []
+    outputs_slow, outputs_fast, outputs_memory_slow, outputs_memory_fast = (
+        [],
+        [],
+        [],
+        [],
+    )
 
     for problem in dataset:
         # get slow_code, fast_code
@@ -16,8 +21,10 @@ def eval_model(checkpoint, dataset):
         fast_code = problem["output"]
 
         # calculate slow_runtime, fast_runtime
-        # verdict_fast, runtime_fast = run_tcs(fast_code, problem["problem_id"])
-        # verdict_slow, runtime_slow = run_tcs(slow_code, problem["problem_id"])
+        verdict_slow, runtime_slow = run_tcs(slow_code, problem["problem_id"])
+        verdict_fast, runtime_fast = run_tcs(fast_code, problem["problem_id"])
+        print(runtime_slow)
+        print(runtime_fast)
 
         # generate problem statement
         generated_code = generate_code(checkpoint, problem["input"])
