@@ -163,3 +163,4 @@ cython_debug/
 datasets/*
 models/*
 cache_data/*
+checkpoints/*

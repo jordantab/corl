@@ -44,7 +44,7 @@ resume_from_checkpoint: False
 # Dataset and Sampler
 dataset:
   _component_: torchtune.datasets.alpaca_dataset
-  source: /root/data-science-team7-s2024/tunedata/
+  source: /root/data-science-team7-s2024/train_set/
   train_on_input: True
   max_seq_len: 256
 seed: null
