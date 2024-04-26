@@ -138,7 +138,7 @@ def create_preprocessor(tokenizer, max_len):
     return preprocessor
 
 
-def tokenize_dataset(tokenizer, tuning_data, max_len, procs):
+def tokenize_dataset(tokenizer, tuning_data, max_len, procs, cache_path):
     """
     Tokenizes the provided dataset with the provided tokenizer.
 
@@ -149,6 +149,11 @@ def tokenize_dataset(tokenizer, tuning_data, max_len, procs):
         procs (int): number of cpu cores to use during tokenization.
     Returns:
     """
+    if os.path.exists(cache_path):
+        train_data = datasets.load_from_disk(cache_path)
+        print(f'  ==> Loaded {len(train_data)} samples')
+        return train_data
+
     preprocessor = create_preprocessor(tokenizer, max_len)
     train_data = tuning_data.map(
         preprocessor,
@@ -158,7 +163,8 @@ def tokenize_dataset(tokenizer, tuning_data, max_len, procs):
         load_from_cache_file=False,
     )
     print(f"  ==> Loaded {len(train_data)} samples")
-    # TODO: cache training data samples
+    train_data.save_to_disk(cache_path)
+    print(f'Saved training data to {cache_path} and current path is {os.path.dirname(os.path.realpath(__file__))}')
     return train_data
 
 
@@ -311,6 +317,12 @@ def parse_args():
         type=str,
         help="The path to the instruction dataset",
     )
+    parser.add_argument(
+        "--cache-data",
+        default=config.DEFAULT_CACHE_PATH,
+        type=str,
+        help="The path to the training cache data",
+    )
 
     # training parameters
     parser.add_argument(
@@ -387,7 +399,7 @@ def main():
 
     tokenizer = AutoTokenizer.from_pretrained(args.model)
     tokenized_data = tokenize_dataset(
-        tokenizer, train_data, args.max_len, args.num_procs
+        tokenizer, train_data, args.max_len, args.num_procs, args.cache_data
     )
 
     float_dtype = torch.float16
