@@ -64,6 +64,42 @@ python3 tune.py -h
 
 The model checkpoint is saved to `models/dataset_tuned_checkpoint`.
 
+
+## Fine Tuning with Reinforcement Learning 
+
+The Reinforcement Learning fine-tuning can be performed with `rl_run.py`, one can modify the necessary parameters within `rl.sh`. 
+
+### Testing the Script
+
+To test the reinforcement learning script, you can follow these steps:
+
+1. Prepare a test dataset in JSON format that contains input code snippets and their corresponding problem IDs. Place the test dataset file in the specified `DATASET_PATH` location.
+
+2. Run the script using the `rl.sh` bash script.
+
+3. Monitor the output of the script to observe the training progress, including the generated optimized code, rewards, and losses for each episode.
+
+4. After the training is completed, the script will save the trained model checkpoint in the `../checkpoints` directory and generate plots of the training metrics in the `../plots` directory.
+
+5. Evaluate the performance of the trained model by examining the generated optimized code, comparing it with the reference code, and analyzing the training metrics plots.
+
+### Parameters
+
+The following parameters can be specified in the `run_rl.sh` bash script:
+
+- `MODEL_NAME`: The name of the pre-trained model to use for initialization (default: "meta-llama/Meta-Llama-3-8B-Instruct").
+- `NUM_EPISODES`: The number of training episodes to run (default: 10).
+- `DATASET_PATH`: The path to the dataset file in JSON format (required).
+- `MAX_LENGTH`: The maximum length of the input code (default: 256).
+- `R1`: The reward value for compilation failure (default: -1.0).
+- `R2`: The reward value for unit test failure (default: 0.0).
+- `R3`: The reward value for unit test success with no improvement (default: 0.5).
+- `R4`: The reward value for unit test success with improvement (default: 1.0).
+
+Adjust these parameters according to your requirements before running the script.
+
+
+
 ## References
 
 [PPOCoder](https://github.com/reddy-lab-code-research/PPOCoder)
