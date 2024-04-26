@@ -16,38 +16,51 @@ import concurrent.futures
 from typing import Tuple
 
 
-DEFAULT_DATASET = "~/data/improvement_pairs_additional_metadata.csv"
-PUBLIC_TEST_CASES_FOLDER = "~/codenet/public_test_cases/"
-HIDDEN_TEST_CASES_FOLDER = "~/codenet2/generated_test_cases/"
-MAX_TIMEOUT = 5
+DEFAULT_DATASET = "../datasets/improvement_pairs_additional_metadata.csv"
+PUBLIC_TEST_CASES_FOLDER = "../datasets/codenet/public_test_cases/"
+HIDDEN_TEST_CASES_FOLDER = "../datasets/codenet2/generated_test_cases/"
+MAX_TIMEOUT = 2
 
 
-def run_python_code_with_file_input(
+def run_cpp_code_with_file_input(
     code: str, input_file_path: str
 ) -> Tuple[str, float, str]:
-    # Create a temporary directory to hold the Python script
+    # Create a temporary directory to hold the C++ file and executable
     with tempfile.TemporaryDirectory() as temp_dir:
-        python_file_path = os.path.join(temp_dir, "code.py")
+        cpp_file_path = os.path.join(temp_dir, "code.cpp")
+        executable_path = os.path.join(temp_dir, "code")
 
-        # Write the Python code to a file
-        with open(python_file_path, "w") as python_file:
-            python_file.write(code)
+        # Write the C++ code to a file
+        with open(cpp_file_path, "w") as cpp_file:
+            cpp_file.write(code)
 
-        # Run the Python script with input redirected from the input file
+        # Compile the C++ code
+        compile_process = subprocess.run(
+            ["g++", cpp_file_path, "-o", executable_path],
+            capture_output=True,
+            text=True,
+        )
+        if compile_process.returncode != 0:
+            # Compilation failed
+            # print("stderr: ", compile_process.stderr)
+            return f"Compilation Error", -1, ""
+
+        # Run the compiled executable with input redirected from the input file
         try:
             start_time = time.time()
             with open(input_file_path, "r") as input_file:
                 run_process = subprocess.run(
-                    ["python3", python_file_path],
+                    executable_path,
                     stdin=input_file,
                     capture_output=True,
                     text=True,
+                    universal_newlines=True,
                     timeout=MAX_TIMEOUT,
                 )
+                if run_process.returncode != 0:
+                    # Runtime error
+                    return "Runtime Error", -1, ""
             end_time = time.time()
-            if run_process.returncode != 0:
-                # Handle runtime errors
-                return "Runtime Error", -1, ""
             return "Accepted", (end_time - start_time), run_process.stdout
         except subprocess.TimeoutExpired:
             return "Time Limit Exceeded", MAX_TIMEOUT, ""
@@ -61,7 +74,7 @@ def eval_output(output: str, expected_output_file: str) -> bool:
 
 def run_single_test_case(code: str, input_file: str) -> Tuple[str, float, str]:
     expected_output_file = input_file.replace("input", "output")
-    verdict, runtime, actual_output = run_python_code_with_file_input(code, input_file)
+    verdict, runtime, actual_output = run_cpp_code_with_file_input(code, input_file)
     if verdict != "Accepted":
         return verdict, runtime, input_file
     elif not eval_output(actual_output, expected_output_file):
@@ -70,7 +83,6 @@ def run_single_test_case(code: str, input_file: str) -> Tuple[str, float, str]:
 
 
 def run_tcs(code: str, problem_id: int) -> Tuple[str, float]:
-    # Example paths for test cases, these need to be defined or configured
     sample_output_folder = f"{PUBLIC_TEST_CASES_FOLDER}{problem_id}"
     hidden_output_folder = f"{HIDDEN_TEST_CASES_FOLDER}{problem_id}"
     start_time = time.time()
@@ -79,11 +91,10 @@ def run_tcs(code: str, problem_id: int) -> Tuple[str, float]:
     execution_time = 0
 
     for folder in folders:
-        input_files = glob.glob(os.path.join(os.path.expanduser(folder), "input.*.txt"))
+        filepath = os.path.join(folder, "input.*.txt")
+        input_files = glob.glob(filepath)
         for input_file in input_files:
             test_cases.append((code, input_file))
-
-    # print('all testcases', folders)
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
         results = executor.map(lambda p: run_single_test_case(*p), test_cases)
@@ -105,6 +116,6 @@ def load_dataset(dataset=DEFAULT_DATASET):
 
 
 if __name__ == "__main__":
-    sample_code = df.at[17, "code_v0"]
-    python_df = df[df["language"] == "Python"]
-    print(run_tcs(sample_code, 3352))
+    df = load_dataset()
+    sample_code = df.at[3, "code_v1"]
+    print(run_tcs(sample_code, "p00849"))
