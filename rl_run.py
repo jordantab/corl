@@ -149,13 +149,6 @@ def generate_code(input_code, temperature=0.6):
     print("Generating optimized code...")
     print(f"Input code: {input_code}")
 
-    pipeline = transformers.pipeline(
-        "text-generation",
-        model=checkpoint,
-        model_kwargs={"torch_dtype": torch.bfloat16},
-        device_map="auto",
-    )
-
     messages = [
         {
             "role": "system",
@@ -357,17 +350,15 @@ if __name__ == "__main__":
     checkpoint = args.model_name
     device = "cuda" if torch.cuda.is_available() else "cpu"
     tokenizer = AutoTokenizer.from_pretrained(checkpoint)
-    model = AutoModelForCausalLM.from_pretrained(checkpoint, torch_dtype=torch.float32).to(device)
-    optimizer = optim.Adam(model.parameters(), lr=1e-5)
-    dataset = load_dataset(args.dataset_path)
-
-    # Create the pipeline for code generation
-    generation_pipeline = transformers.pipeline(
+    pipeline = transformers.pipeline(
         "text-generation",
         model=checkpoint,
         model_kwargs={"torch_dtype": torch.bfloat16},
-        device_map=device,
+        device_map="auto",
     )
+    model = pipeline.model
+    optimizer = optim.Adam(model.parameters(), lr=1e-5)
+    dataset = load_dataset(args.dataset_path)
 
     # Start training
     train(model, tokenizer, optimizer, args.num_episodes, dataset)
