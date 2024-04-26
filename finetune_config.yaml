@@ -37,15 +37,16 @@ checkpointer:
     consolidated.00.pth
   ]
   recipe_checkpoint: null
-  output_dir: /root/data-science-team7-s2024/models/checkpoints/sample_llama_finetune
+  output_dir: /root/data-science-team7-s2024/models/checkpoints/python_leq_160_tokens
   model_type: LLAMA3
 resume_from_checkpoint: False
 
 # Dataset and Sampler
 dataset:
   _component_: torchtune.datasets.alpaca_dataset
-  source: /root/data-science-team7-s2024/tdata/
+  source: /root/data-science-team7-s2024/tunedata/
   train_on_input: True
+  max_seq_len: 256
 seed: null
 shuffle: True
 batch_size: 2
@@ -69,7 +70,7 @@ gradient_accumulation_steps: 64
 compile: False
 
 # Logging
-output_dir: /tmp/lora_finetune_output
+output_dir: /root/data-science-team7-s2024/logs/lora_finetune_output
 metric_logger:
   _component_: torchtune.utils.metric_logging.DiskLogger
   log_dir: ${output_dir}
