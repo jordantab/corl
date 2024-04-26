@@ -1,5 +1,6 @@
 import torch
 import torch.optim as optim
+from torch.optim.adam import Adam
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import random
 import argparse

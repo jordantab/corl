@@ -17,7 +17,7 @@ from typing import Tuple
 
 
 DEFAULT_DATASET = "~/data/improvement_pairs_additional_metadata.csv"
-PUBLIC_TEST_CASES_FOLDER = "datasets/public_test_cases/"
+PUBLIC_TEST_CASES_FOLDER = "datasets/sample_test_cases/"
 HIDDEN_TEST_CASES_FOLDER = "datasets/generated_test_cases/"
 MAX_TIMEOUT = 5
 
@@ -71,16 +71,20 @@ def run_single_test_case(code: str, input_file: str) -> Tuple[str, float, str]:
 
 
 def run_tcs(code: str, problem_id: int) -> Tuple[str, float]:
+    print("run_tcs")
     # Example paths for test cases, these need to be defined or configured
     sample_output_folder = f"{PUBLIC_TEST_CASES_FOLDER}{problem_id}"
     hidden_output_folder = f"{HIDDEN_TEST_CASES_FOLDER}{problem_id}"
     
     # Check if the code compiles
     with tempfile.NamedTemporaryFile(suffix=".py") as temp_file:
+        print("open tempfile")
         temp_file.write(code.encode())
         temp_file.flush()
         try:
+            print("start subprocess for " + temp_file.name)
             subprocess.check_output(["python", temp_file.name], stderr=subprocess.STDOUT)
+            print("finish subprocess")
         except subprocess.CalledProcessError:
             print("Compilation Error")
             return "Compilation Error", -1
@@ -90,6 +94,7 @@ def run_tcs(code: str, problem_id: int) -> Tuple[str, float]:
     test_cases = []
     execution_time = 0
 
+    print("start execution")
     for folder in folders:
         input_files = glob.glob(os.path.join(os.path.expanduser(folder), "input.*.txt"))
         for input_file in input_files:
