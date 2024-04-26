@@ -22,7 +22,12 @@ def parse_args():
         default="meta-llama/Meta-Llama-3-8B-Instruct",
         help="Model checkpoint for initialization.",
     )
-    parser.add_argument("--checkpoint_path", type=str, required=True, help="Path to the model checkpoint file")
+    parser.add_argument(
+        "--checkpoint_path",
+        type=str,
+        required=True,
+        help="Path to the model checkpoint file",
+    )
     parser.add_argument(
         "--num_episodes", type=int, default=10, help="Number of training episodes."
     )
@@ -337,19 +342,28 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
 
 if __name__ == "__main__":
     args = parse_args()
+    print("load args")
     checkpoint = args.model_name
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    
-    model = AutoModelForCausalLM.from_pretrained(checkpoint)
-    model.load_state_dict(torch.load(args.checkpoint_path))
-    model.to(device)
 
-    tokenizer = AutoTokenizer.from_pretrained(checkpoint)    
-    
+    model = AutoModelForCausalLM.from_pretrained(checkpoint)
+    print("load pretrained")
+    print("args.checkpoint_path: " + args.checkpoint_path)
+    state_dict = torch.load(args.checkpoint_path)
+    print("torch load")
+    model.load_state_dict(state_dict)
+    print("load state dict")
+    model.to(device)
+    print("model loaded!")
+
+    tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+
     pipeline = transformers.pipeline(
         "text-generation", model=model, tokenizer=tokenizer, device=device
     )
+    print("set up pipeline")
     optimizer = Adam(model.parameters(), lr=1e-5)
+    print("set up optimizer, loading dataset")
     dataset = load_dataset(args.dataset_path)
     print(
         f"Loaded dataset with {len(dataset)} entries, input code is: {dataset[0]['input']}"

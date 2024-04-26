@@ -5,7 +5,7 @@ PYTHON_SCRIPT="rl_run.py"
 
 # Set parameters
 MODEL_NAME="meta-llama/Meta-Llama-3-8B-Instruct"
-CHECKPOINT_PATH="models/checkpoints/python_leq_160_tokens"
+CHECKPOINT_PATH="models/checkpoints/python_leq_160_tokens/adapter_0.pt"
 NUM_EPISODES=10
 DATASET_PATH="./examples/test_python.json"
 MAX_LENGTH=256
