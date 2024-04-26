@@ -345,23 +345,34 @@ if __name__ == "__main__":
     print("load args")
     checkpoint = args.model_name
     device = "cuda" if torch.cuda.is_available() else "cpu"
-
-    model = AutoModelForCausalLM.from_pretrained(checkpoint)
-    print("load pretrained")
-    print("args.checkpoint_path: " + args.checkpoint_path)
-    state_dict = torch.load(args.checkpoint_path)
-    print("torch load")
-    model.load_state_dict(state_dict)
-    print("load state dict")
-    model.to(device)
-    print("model loaded!")
-
+    
+    print("load tokenizer")
     tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 
+    # comment this line if you want to use the model directly from huggingface
+    # model = AutoModelForCausalLM.from_pretrained(checkpoint)
+    # print("load pretrained")
+    # print("args.checkpoint_path: " + args.checkpoint_path)
+    # state_dict = torch.load(args.checkpoint_path)
+    # print("torch load")
+    # model.load_state_dict(state_dict)
+    # print("load state dict")
+    # model.to(device)
+    # print("model loaded!")
+    # pipeline = transformers.pipeline(
+    #     "text-generation", model=model, tokenizer=tokenizer, device=device
+    # )
+    
     pipeline = transformers.pipeline(
-        "text-generation", model=model, tokenizer=tokenizer, device=device
+        "text-generation",
+        model=checkpoint,
+        model_kwargs={"torch_dtype": torch.bfloat16},
+        device_map="auto",
     )
     print("set up pipeline")
+    model = pipeline.model
+    print("get model from pipeline")
+
     optimizer = Adam(model.parameters(), lr=1e-5)
     print("set up optimizer, loading dataset")
     dataset = load_dataset(args.dataset_path)
