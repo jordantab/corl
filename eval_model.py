@@ -8,7 +8,12 @@ os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 
 def eval_model(checkpoint, dataset):
-    outputs_slow, outputs_fast, outputs_memory_slow, outputs_memory_fast = []
+    outputs_slow, outputs_fast, outputs_memory_slow, outputs_memory_fast = (
+        [],
+        [],
+        [],
+        [],
+    )
 
     for problem in dataset:
         # get slow_code, fast_code
