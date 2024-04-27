@@ -1,13 +1,54 @@
+"""
+eval_model.py
+
+Usage:
+    python eval_model.py [--file_path <path_to_dataset>] [--device <device>]
+
+This script evaluates the performance of a transformer model in optimizing Python code snippets in terms
+of runtime and memory usage. It uses specific test cases from a JSON file, generates optimized code using a transformer
+model, and compares these optimizations against baseline implementations to measure improvements.
+Each test case in the JSON file should contain an 'input' (slow code) and 'output' (fast code), along with a 'problem_id'.
+
+Arguments:
+    --file_path: Optional override for the path to the dataset.
+    --device: Specify 'cpu' or 'cuda' to set the device for model computation. Defaults to 'cpu'.
+"""
+
+import argparse
 import json
 import torch
 import transformers
 from unit_tests.run_code import run_tcs
 import os
+import config
 
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 
-def eval_model(checkpoint, dataset):
+def parse_args():
+    """
+    Parses command-line arguments.
+
+    Returns:
+        An argparse.Namespace object with the parsed arguments.
+    """
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument(
+        "--file_path",
+        default=config.DEFAULT_TEST_DATASET_PATH,
+        help="Path to the dataset.",
+    )
+    parser.add_argument(
+        "--device",
+        default=config.DEFAULT_DEVICE,
+        help="Specify 'cpu' or 'cuda' to set the device for model computation.",
+    )
+    return parser.parse_args()
+
+
+def eval_model(checkpoint, dataset, device):
     outputs_slow, outputs_fast, outputs_memory_slow, outputs_memory_fast = (
         [],
         [],
@@ -27,7 +68,7 @@ def eval_model(checkpoint, dataset):
         print(runtime_fast)
 
         # generate problem statement
-        generated_code = generate_code(checkpoint, problem["input"])
+        generated_code = generate_code(checkpoint, problem["input"], device)
         print(generated_code)
 
         # run generated code
@@ -64,12 +105,12 @@ def eval_model(checkpoint, dataset):
     return pct_opt_slow, pct_opt_fast, pct_opt_memory_slow, pct_opt_memory_fast
 
 
-def generate_code(checkpoint, slow_code):
+def generate_code(checkpoint, slow_code, device):
     pipeline = transformers.pipeline(
         "text-generation",
         model=checkpoint,
         model_kwargs={"torch_dtype": torch.bfloat16},
-        device_map="auto",  # change to device?
+        device_map=device,
     )
 
     messages = [
@@ -124,14 +165,14 @@ def calculate_model_metrics(
 
 
 def main():
-    checkpoint = "meta-llama/Meta-Llama-3-8B-Instruct"
-    file_path = "./examples/test_python.json"
+    args = parse_args()
+    checkpoint = config.DEFAULT_MODEL
+    file_path = args.file_path
+    device = args.device
 
-    # Open the file in read mode
     with open(file_path, "r") as json_file:
-        # Load the JSON data from the file
         data = json.load(json_file)
-    print(eval_model(checkpoint, data))
+    print(eval_model(checkpoint, data, device))
 
 
 if __name__ == "__main__":
