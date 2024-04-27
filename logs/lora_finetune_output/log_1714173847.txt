@@ -1,0 +1,15 @@
+Step 0 | loss:2.238386869430542 lr:0.0 gpu_resources:16631460352
+Step 0 | peak_memory_active:17.015202304 peak_memory_alloc:17.015202304 peak_memory_reserved:17.425235968
+Step 0 | loss:2.2172229290008545 lr:0.0 gpu_resources:16624054784
+Step 0 | peak_memory_active:16.989327872 peak_memory_alloc:16.989327872 peak_memory_reserved:17.425235968
+Step 0 | loss:2.4669582843780518 lr:0.0 gpu_resources:16581739008
+Step 0 | peak_memory_active:16.91417856 peak_memory_alloc:16.91417856 peak_memory_reserved:17.425235968
+Step 0 | loss:2.1732912063598633 lr:0.0 gpu_resources:16807097344
+Step 0 | peak_memory_active:17.314608128 peak_memory_alloc:17.314608128 peak_memory_reserved:18.442354688
+Step 0 | loss:1.6969412565231323 lr:0.0 gpu_resources:16824722432
+Step 0 | peak_memory_active:17.349010432 peak_memory_alloc:17.349010432 peak_memory_reserved:19.49302784
+Step 0 | loss:2.233818531036377 lr:0.0 gpu_resources:16825224192
+Step 0 | peak_memory_active:17.349010432 peak_memory_alloc:17.349010432 peak_memory_reserved:19.49302784
+Step 0 | loss:1.936589241027832 lr:0.0 gpu_resources:16752216576
+Step 0 | peak_memory_active:17.21188608 peak_memory_alloc:17.21188608 peak_memory_reserved:19.49302784
+Step 0 | loss:2.0676095485687256 lr:0.0 gpu_resources:16812262400

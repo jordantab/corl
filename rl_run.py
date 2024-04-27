@@ -1,3 +1,4 @@
+import io
 import torch
 import torch.optim as optim
 from torch.optim.adam import Adam
@@ -353,40 +354,62 @@ if __name__ == "__main__":
     print("load args")
     checkpoint = args.model_name
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    
-    print("load tokenizer")
+    print("load tokenizer and base model")
+    model = AutoModelForCausalLM.from_pretrained(checkpoint)
     tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 
-    # comment this line if you want to use the model directly from huggingface
-    # model = AutoModelForCausalLM.from_pretrained(checkpoint)
-    # print("load pretrained")
-    # print("args.checkpoint_path: " + args.checkpoint_path)
-    # state_dict = torch.load(args.checkpoint_path)
-    # print("torch load")
-    # model.load_state_dict(state_dict)
-    # print("load state dict")
-    # model.to(device)
-    # print("model loaded!")
-    # pipeline = transformers.pipeline(
-    #     "text-generation", model=model, tokenizer=tokenizer, device=device
-    # )
-    
-    pipeline = transformers.pipeline(
-        "text-generation",
-        model=checkpoint,
-        model_kwargs={"torch_dtype": torch.bfloat16},
-        device_map="auto",
-    )
-    print("set up pipeline")
-    model = pipeline.model
-    print("get model from pipeline")
+    # Load and apply each chunk separately
+    chunk_index = 0
+    while True:
+        chunk_path = f"models/checkpoints/split_state_dict/chunk_{chunk_index}.pt"
+        try:
+            # Load the chunk
+            chunk_state_dict = torch.load(chunk_path, map_location="cpu")
+            # Apply the chunk to the model
+            print(f"applying chunk {chunk_path}...")
+            model.load_state_dict(chunk_state_dict, strict=False)
+            print(f"done")
+            chunk_index += 1
+        except FileNotFoundError:
+            break
 
+    print(f"applied chunks to model")
+    # model_path = os.path.join(args.checkpoint_path, "meta_model_0.pt")
+    adaptor_path = os.path.join(args.checkpoint_path, "adapter_0.pt")
+
+    # Load the model state dict
+    print("loading state dict 1")
+    # model_state_dict = torch.load(model_path, map_location="cpu")
+
+    print("loading state dict 2")
+    # model.load_state_dict(model_state_dict, strict=False)
+    print("Model state dict loaded!")
+
+    # Load the adaptor state dict
+    adaptor_state_dict = torch.load(adaptor_path)
+    # Apply the adaptor state dict to the model
+    for name, param in adaptor_state_dict.items():
+        if name in model.state_dict():
+            model.state_dict()[name].copy_(param)
+    print("Adaptor state dict loaded!")
+    pipeline = transformers.pipeline(
+        "text-generation", model=model, tokenizer=tokenizer, device=device
+    )
+    ## the below commented part is for using a pretrained model from huggingface
+    # pipeline = transformers.pipeline(
+    #     "text-generation",
+    #     model=checkpoint,
+    #     model_kwargs={"torch_dtype": torch.bfloat16},
+    #     device_map="auto",
+    # )
+    # print("set up pipeline")
+    # model = pipeline.model
+    # print("get model from pipeline")
     optimizer = Adam(model.parameters(), lr=1e-5)
     print("set up optimizer, loading dataset")
     dataset = load_dataset(args.dataset_path)
     print(
         f"Loaded dataset with {len(dataset)} entries, input code is: {dataset[0]['input']}"
     )
-
     # Start training
     train(model, tokenizer, optimizer, args.num_episodes, dataset)
