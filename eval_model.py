@@ -60,10 +60,12 @@ def eval_model(checkpoint, dataset, device):
         # get slow_code, fast_code
         slow_code = problem["input"]
         fast_code = problem["output"]
+        pid = problem["problem_id"]
+        print(pid)
 
         # calculate slow_runtime, fast_runtime
-        verdict_slow, runtime_slow = run_tcs(slow_code, problem["problem_id"])
-        verdict_fast, runtime_fast = run_tcs(fast_code, problem["problem_id"])
+        verdict_slow, runtime_slow = run_tcs(slow_code, pid)
+        verdict_fast, runtime_fast = run_tcs(fast_code, pid)
         print(runtime_slow)
         print(runtime_fast)
 
@@ -72,7 +74,7 @@ def eval_model(checkpoint, dataset, device):
         print(generated_code)
 
         # run generated code
-        # verdict, runtime = run_tcs(generated_code, problem["problem_id"])
+        # verdict, runtime = run_tcs(generated_code, pid)
         verdict = "Accepted"
 
         # evaluate generated code
