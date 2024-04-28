@@ -1,6 +1,36 @@
 [{
-        "problem_id": "p02786",
+        "problem_id": "p03146",
         "instruction": "Provide an optimized version of the following code snippet.",
-        "input": "H = int(input())\n\nn = H.bit_length()\n\nans = (1<<(n))-1\n\nprint(ans)",
-        "output": "print(2**int(input()).bit_length()-1)"
+        "input": "s=int(input())\n\ni=2\n\nwhile s>1:s=[s//2,s*3+1][s%2];i+=1\n\nprint(max(i,4))",
+        "output": "s=int(input())\n\ni=4\n\nwhile s>4or 3==s:s=[s//2,s*3+1][s%2];i+=1\n\nprint(i)"
+    },
+    {
+        "problem_id": "p00456",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print(*[sum(sorted(int(input())for _ in[0]*10)[7:])for _ in'12'])\n",
+        "output": "print(*[sum(sorted(int(input())for _ in[0]*10)[7:])for _ in'12'])\n"
+    },
+    {
+        "problem_id": "p03544",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "n = int(input())\n\n\n\na, b = 2, 1\n\n\n\nfor _ in range(n):\n\n  a, b = b, a+b\n\n\n\nprint(a)",
+        "output": "a,b = 2,1\n\n\n\nn = int(input())\n\n\n\nfor _ in range(n-1):\n\n  a,b = b,a+b\n\n\n\nprint(b)"
+    },
+    {
+        "problem_id": "p03544",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b=2,1\n\nfor i in range(int(input())):a,b=b,a+b\n\nprint(a)",
+        "output": "N=int(input())\n\na,b=2,1\n\nfor i in range(N):\n\n    a,b=b,a+b\n\nprint(a)"
+    },
+    {
+        "problem_id": "p03544",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b=2,1\n\nfor i in[0]*int(input()):a,b=b,a+b\n\nprint(a)",
+        "output": "a,b=2,1\n\nfor i in[0]*input():a,b=b,a+b\n\nprint a"
+    },
+    {
+        "problem_id": "p03544",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "n = int(input())\n\n\n\na,b = 2,1\n\nfor i in range(n-1):\n\n    a,b = b,a+b\n\nprint(b)\n",
+        "output": "n = int(input())\n\n\n\na,b = 2,1\n\nfor i in range(n-1):\n\n    a,b = b,a+b\n\nprint(b)\n"
     }]

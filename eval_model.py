@@ -49,54 +49,31 @@ def parse_args():
 
 
 def eval_model(checkpoint, dataset, device):
-    outputs_slow, outputs_fast, outputs_memory_slow, outputs_memory_fast = (
-        [],
-        [],
-        [],
-        [],
-    )
+    results = []
 
     for problem in dataset:
-        # get slow_code, fast_code
+        problem_id = problem["problem_id"]
         slow_code = problem["input"]
         fast_code = problem["output"]
-        pid = problem["problem_id"]
-        print(pid)
 
-        # calculate slow_runtime, fast_runtime
-        verdict_slow, runtime_slow = run_tcs(slow_code, pid)
-        verdict_fast, runtime_fast = run_tcs(fast_code, pid)
-        print(runtime_slow)
-        print(runtime_fast)
+        _, runtime_slow = run_tcs(slow_code, problem_id)
+        _, runtime_fast = run_tcs(fast_code, problem_id)
+        generated_code = generate_code(checkpoint, slow_code, device)
+        verdict, runtime_generated = run_tcs(generated_code, problem_id)
 
-        # generate problem statement
-        generated_code = generate_code(checkpoint, problem["input"], device)
-        print(generated_code)
+        verdict_num = 1 if verdict == "Accepted" else 0
 
-        # run generated code
-        verdict, runtime = run_tcs(generated_code, pid)
-
-        # evaluate generated code
-        if verdict == "Accepted":
-            if runtime < runtime_slow:
-                outputs_slow.append(1)
-            if runtime < runtime_fast:
-                outputs_fast.append(1)
-            outputs_memory_slow.append(0)
-            outputs_memory_fast.append(0)
-        else:
-            outputs_slow.append(0)
-            outputs_fast.append(0)
-            outputs_memory_slow.append(0)
-            outputs_memory_fast.append(0)
-
-    pct_opt_slow, pct_opt_fast, pct_opt_memory_slow, pct_opt_memory_fast = (
-        calculate_model_metrics(
-            outputs_slow, outputs_fast, outputs_memory_slow, outputs_memory_fast
+        results.append(
+            {
+                "problem_id": problem_id,
+                "slow": runtime_slow,
+                "fast": runtime_fast,
+                "generated": runtime_generated,
+                "verdict": verdict_num,
+            }
         )
-    )
 
-    return pct_opt_slow, pct_opt_fast, pct_opt_memory_slow, pct_opt_memory_fast
+    return results
 
 
 def generate_code(checkpoint, slow_code, device):
@@ -106,7 +83,6 @@ def generate_code(checkpoint, slow_code, device):
         model_kwargs={"torch_dtype": torch.bfloat16},
         device_map=device,
     )
-    print(slow_code)
     messages = [
         {
             "role": "system",
@@ -166,7 +142,20 @@ def main():
 
     with open(file_path, "r") as json_file:
         data = json.load(json_file)
-    print(eval_model(checkpoint, data, device))
+
+    results = eval_model(checkpoint, data, device)
+
+    results_dir = "results"
+    os.makedirs(results_dir, exist_ok=True)
+
+    dataset_name = os.path.splitext(os.path.basename(args.file_path))[0]
+    results_filename = f"{dataset_name}_results.json"
+    results_path = os.path.join(results_dir, results_filename)
+
+    with open(results_path, "w") as outfile:
+        json.dump(results, outfile, indent=4)
+
+    print(f"Evaluation completed. Results saved to '{results_path}'.")
 
 
 if __name__ == "__main__":
