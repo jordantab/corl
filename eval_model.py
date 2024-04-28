@@ -60,7 +60,6 @@ def eval_model(checkpoint, dataset, device):
         _, runtime_fast = run_tcs(fast_code, problem_id)
         generated_code = generate_code(checkpoint, slow_code, device)
         verdict, runtime_generated = run_tcs(generated_code, problem_id)
-        verdict = "Accepted"
         verdict_num = 1 if verdict == "Accepted" else 0
 
         results.append(
