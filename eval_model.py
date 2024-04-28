@@ -74,22 +74,16 @@ def eval_model(checkpoint, dataset, device):
         print(generated_code)
 
         # run generated code
-        # verdict, runtime = run_tcs(generated_code, pid)
+        verdict, runtime = run_tcs(generated_code, pid)
         verdict = "Accepted"
 
         # evaluate generated code
         if verdict == "Accepted":
 
-            # if runtime < runtime_slow:
-            #     outputs_slow.append(1)
-            # if runtime < runtime_fast:
-            #     outputs_fast.append(1)
-            # if new_memory < memory_slow:
-            #     outputs_memory_slow.append(1)
-            # if new_memory < memory_fast:
-            #     outputs_memory_fast.append(1)
-            outputs_slow.append(0)
-            outputs_fast.append(0)
+            if runtime < runtime_slow:
+                outputs_slow.append(1)
+            if runtime < runtime_fast:
+                outputs_fast.append(1)
             outputs_memory_slow.append(0)
             outputs_memory_fast.append(0)
         else:
