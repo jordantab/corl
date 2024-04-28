@@ -73,6 +73,8 @@ def eval_model(checkpoint, dataset, device):
         _, runtime_slow = run_tcs(slow_code, problem_id)
         _, runtime_fast = run_tcs(fast_code, problem_id)
         generated_code = generate_code(pipeline, slow_code)
+        print("problem_id: ", problem_id)
+        print("generated_code\n", generated_code)
         num_lines_generated = count_lines_in_string(generated_code)
         verdict, runtime_generated = run_tcs(generated_code, problem_id)
         verdict_num = 1 if verdict == "Accepted" else 0
