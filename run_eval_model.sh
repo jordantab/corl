@@ -9,4 +9,4 @@ DEVICE=${2:-"cpu"}  # Default to "cpu" if not provided
 
 # Running the Python script with parameters using 'time' for profiling
 echo "Running eval_model.py with dataset at '$DATASET_PATH' and on device '$DEVICE'"
-time python eval_model.py --file_path "$DATASET_PATH" --device "$DEVICE"
+time python eval_model.py --file_path "$DATASET_PATH" --device "$DEVICE" > generated_code.txt
