@@ -17,8 +17,8 @@ from typing import Tuple
 
 
 DEFAULT_DATASET = "~/data/improvement_pairs_additional_metadata.csv"
-PUBLIC_TEST_CASES_FOLDER = "datasets/public_test_cases/"
-HIDDEN_TEST_CASES_FOLDER = "datasets/generated_test_cases/"
+PUBLIC_TEST_CASES_FOLDER = "datasets/codenet/public_test_cases/"
+HIDDEN_TEST_CASES_FOLDER = "datasets/codenet2/generated_test_cases/"
 MAX_TIMEOUT = 5
 
 
