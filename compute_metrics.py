@@ -21,6 +21,8 @@ def process_results(input_path):
     count_optimized_fast = 0
     total_slow_vs_gen = 0
     total_fast_vs_gen = 0
+    total_lines_reduced_slow = 0
+    total_lines_reduced_fast = 0
     count_valid_results = 0
 
     for result in data:
@@ -28,39 +30,63 @@ def process_results(input_path):
             slow = result["slow"]
             fast = result["fast"]
             generated = result["generated"]
+            num_lines_slow = result["num_lines_slow"]
+            num_lines_fast = result["num_lines_fast"]
+            num_lines_generated = result["num_lines_generated"]
 
             if generated < slow:
                 count_optimized_slow += 1
                 total_slow_vs_gen += (slow - generated) / slow
+                total_lines_reduced_slow += (
+                    num_lines_slow - num_lines_generated
+                ) / num_lines_slow
 
             if generated < fast:
                 count_optimized_fast += 1
                 total_fast_vs_gen += (fast - generated) / fast
+                total_lines_reduced_fast += (
+                    num_lines_fast - num_lines_generated
+                ) / num_lines_fast
 
             count_valid_results += 1
 
     metrics = {
+        "percent_valid": (100 * count_valid_results / len(data)),
         "avg_speedup_slow": (
-            total_slow_vs_gen / count_valid_results if count_valid_results else 0
+            (100 * total_slow_vs_gen / count_valid_results)
+            if count_valid_results
+            else 0
         ),
         "avg_speedup_fast": (
-            total_fast_vs_gen / count_valid_results if count_valid_results else 0
+            (100 * total_fast_vs_gen / count_valid_results)
+            if count_valid_results
+            else 0
         ),
         "valid_percent_optimized_slow": (
-            (count_optimized_slow / count_valid_results) * 100
+            (100 * count_optimized_slow / count_valid_results)
             if count_valid_results
             else 0
         ),
         "valid_percent_optimized_fast": (
-            (count_optimized_fast / count_valid_results) * 100
+            (100 * count_optimized_fast / count_valid_results)
             if count_valid_results
             else 0
         ),
         "total_percent_optimized_slow": (
-            (count_optimized_slow / len(data)) * 100 if data else 0
+            (100 * count_optimized_slow / len(data)) if data else 0
         ),
         "total_percent_optimized_fast": (
-            (count_optimized_fast / len(data)) * 100 if data else 0
+            (100 * count_optimized_fast / len(data)) if data else 0
+        ),
+        "avg_lines_reduced_slow": (
+            (100 * total_lines_reduced_slow / count_valid_results)
+            if count_valid_results
+            else 0
+        ),
+        "avg_lines_reduced_fast": (
+            (100 * total_lines_reduced_fast / count_valid_results)
+            if count_valid_results
+            else 0
         ),
     }
 

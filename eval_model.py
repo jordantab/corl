@@ -48,17 +48,32 @@ def parse_args():
     return parser.parse_args()
 
 
+def count_lines_in_string(text: str):
+    lines = text.split("\n")
+    return len(lines)
+
+
 def eval_model(checkpoint, dataset, device):
     results = []
+    pipeline = transformers.pipeline(
+        "text-generation",
+        model=checkpoint,
+        model_kwargs={"torch_dtype": torch.bfloat16},
+        device_map=device,
+    )
 
     for problem in dataset:
         problem_id = problem["problem_id"]
         slow_code = problem["input"]
         fast_code = problem["output"]
 
+        num_lines_slow = count_lines_in_string(slow_code)
+        num_lines_fast = count_lines_in_string(fast_code)
+
         _, runtime_slow = run_tcs(slow_code, problem_id)
         _, runtime_fast = run_tcs(fast_code, problem_id)
-        generated_code = generate_code(checkpoint, slow_code, device)
+        generated_code = generate_code(pipeline, slow_code, device)
+        num_lines_generated = count_lines_in_string(generated_code)
         verdict, runtime_generated = run_tcs(generated_code, problem_id)
         verdict_num = 1 if verdict == "Accepted" else 0
 
@@ -69,19 +84,16 @@ def eval_model(checkpoint, dataset, device):
                 "fast": runtime_fast,
                 "generated": runtime_generated,
                 "verdict": verdict_num,
+                "num_lines_slow": num_lines_slow,
+                "num_lines_fast": num_lines_fast,
+                "num_lines_generated": num_lines_generated,
             }
         )
 
     return results
 
 
-def generate_code(checkpoint, slow_code, device):
-    pipeline = transformers.pipeline(
-        "text-generation",
-        model=checkpoint,
-        model_kwargs={"torch_dtype": torch.bfloat16},
-        device_map=device,
-    )
+def generate_code(pipeline, slow_code):
     messages = [
         {
             "role": "system",
