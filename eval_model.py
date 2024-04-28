@@ -75,7 +75,6 @@ def eval_model(checkpoint, dataset, device):
 
         # run generated code
         verdict, runtime = run_tcs(generated_code, pid)
-        verdict = "Accepted"
 
         # evaluate generated code
         if verdict == "Accepted":
