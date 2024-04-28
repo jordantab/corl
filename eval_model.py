@@ -106,7 +106,6 @@ def generate_code(checkpoint, slow_code, device):
         model_kwargs={"torch_dtype": torch.bfloat16},
         device_map=device,
     )
-    # temp_code = 'def fibonacci_recursive(n): return 0 if n == 0 else 1 if n == 1 else fibonacci_recursive(n - 1) + fibonacci_recursive(n - 2); print(f"The {n}th Fibonacci number (slow way): {fibonacci_recursive(10)}")'
     print(slow_code)
     messages = [
         {
