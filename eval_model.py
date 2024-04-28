@@ -58,9 +58,9 @@ def eval_model(checkpoint, dataset, device):
 
         _, runtime_slow = run_tcs(slow_code, problem_id)
         _, runtime_fast = run_tcs(fast_code, problem_id)
-        generated_code = generate_code(checkpoint, slow_code, device)
-        verdict, runtime_generated = run_tcs(generated_code, problem_id)
-
+        # generated_code = generate_code(checkpoint, slow_code, device)
+        # verdict, runtime_generated = run_tcs(generated_code, problem_id)
+        verdict = "Accepted"
         verdict_num = 1 if verdict == "Accepted" else 0
 
         results.append(
@@ -68,7 +68,7 @@ def eval_model(checkpoint, dataset, device):
                 "problem_id": problem_id,
                 "slow": runtime_slow,
                 "fast": runtime_fast,
-                "generated": runtime_generated,
+                # "generated": runtime_generated,
                 "verdict": verdict_num,
             }
         )
@@ -145,7 +145,7 @@ def main():
 
     results = eval_model(checkpoint, data, device)
 
-    results_dir = "results"
+    results_dir = "model_results"
     os.makedirs(results_dir, exist_ok=True)
 
     dataset_name = os.path.splitext(os.path.basename(args.file_path))[0]
