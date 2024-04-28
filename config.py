@@ -7,7 +7,7 @@ import os
 DEFAULT_MODEL = "meta-llama/Meta-Llama-3-8B-Instruct"
 
 # Path configurations
-DEFAULT_TEST_DATASET_PATH = "./examples/test_python.json"
+DEFAULT_TEST_DATASET_PATH = "./testset/python_leq_60_tokens_test.json"
 
 # Fine-tuning defaults
 DEFAULT_OUTDIR = "models/dataset_tuned_checkpoint"

@@ -1,3 +1,15 @@
+"""
+compute_metrics.py
+
+This script processes model results and computes metrics.
+
+Usage:
+    python compute_metrics.py <input_path>
+
+Arguments:
+    input_path      Path to the JSON file with model results.
+"""
+
 import json
 import os
 import argparse

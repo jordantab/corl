@@ -1,9 +1,26 @@
+"""
+filter_samples.py
+
+This script filters a dataset of problem samples based on their execution results.
+Only samples that pass both the slow and fast code tests are kept.
+
+Usage:
+    python filter_samples.py --infile <input_file> --outfile <output_file>
+
+Arguments:
+    --infile <input_file>:  Path to the input JSON file containing the dataset
+    --outfile <output_file>:  Path to the output JSON file to store the filtered dataset
+"""
+
 import argparse
 import json
 from unit_tests.run_code import run_tcs
-import os
+import argparse
+import json
+from unit_tests.run_code import run_tcs
 
-os.environ["TOKENIZERS_PARALLELISM"] = "true"
+
+# Rest of the code...
 
 
 def parse_args():
