@@ -1,0 +1,11 @@
+{
+    "percent_valid": 50.54545454545455,
+    "avg_speedup_slow": 1.099134349548048,
+    "avg_speedup_fast": 0.9634124304543858,
+    "valid_percent_optimized_slow": 17.26618705035971,
+    "valid_percent_optimized_fast": 12.949640287769784,
+    "total_percent_optimized_slow": 8.727272727272727,
+    "total_percent_optimized_fast": 6.545454545454546,
+    "avg_lines_reduced_slow": 4.4998676383568466,
+    "avg_lines_reduced_fast": 3.260534429599178
+}
