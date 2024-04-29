@@ -1,4 +1,5 @@
 import gradio as gr
+import transformers
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 import os
@@ -55,12 +56,13 @@ def tokenize_code(code):
     print(f"Tokenized code: {input_ids}")
     return input_ids
 
-def generate_code(input_code, temperature=0.6):
+def generate_code(input_code, pipeline, temperature=0.6):
     """
     Generate optimized code based on the input code tokens.
 
     Args:
         input_code (str): The input code.
+        pipeline: The text generation pipeline object.
         temperature (float): Temperature setting for generation.
 
     Returns:
@@ -72,9 +74,9 @@ def generate_code(input_code, temperature=0.6):
     messages = [
         {
             "role": "system",
-            "content": "Provide an optimized version of the following code snippet. Only provide the code, no need to provide any description. ",
+            "content": "Provide an optimized version of the following code snippet. Only provide the code, no need to provide any description."
         },
-        {"role": "user", "content": input_code},
+        {"role": "user", "content": input_code}
     ]
 
     prompt = pipeline.tokenizer.apply_chat_template(
@@ -83,16 +85,16 @@ def generate_code(input_code, temperature=0.6):
 
     terminators = [
         pipeline.tokenizer.eos_token_id,
-        pipeline.tokenizer.convert_tokens_to_ids("<|eot_id|>"),
+        pipeline.tokenizer.convert_tokens_to_ids("")
     ]
 
     outputs = pipeline(
         prompt,
-        max_new_tokens=args.max_length,
+        max_new_tokens=100,  # Adjusted from args.max_length to a static value
         eos_token_id=terminators,
         do_sample=True,
         temperature=temperature,
-        top_p=0.9,
+        top_p=0.9
     )
     generated_code = outputs[0]["generated_text"][len(prompt) :]
     print(f"Generated optimized code tokens: {generated_code}")
@@ -100,12 +102,12 @@ def generate_code(input_code, temperature=0.6):
     return generated_code
 
 
-def generate_response(model, tokenizer, input_text):
+def generate_response(pipeline, input_text):
     """
     Generate text based on the input using the loaded model and tokenizer.
     """
-    # Decode and return the output text
-    output_text = generate_code(input_code=input_text)
+    # Generate and return the output text
+    output_text = generate_code(input_text, pipeline)
     print(f"Output: {output_text}")
     return output_text
 
@@ -117,11 +119,12 @@ def main():
 
     checkpoint = "meta-llama/Meta-Llama-3-8B-Instruct"
     device = "cuda" if torch.cuda.is_available() else "cpu"
+    
+    print(f"Using model: {checkpoint}, device: {device}")
 
-    print("load tokenizer and base model")
-
+    print("\nLoading tokenizer and base model")
     model, tokenizer = load_checkpoint("hi")
-    print("loaded tokenizer and base model")
+    print("Loaded tokenizer and base model")
 
     pipeline = transformers.pipeline(
         "text-generation",
@@ -131,11 +134,12 @@ def main():
         device_map="cuda",
     )
 
-    print("set up pipeline")
+    print("\nSet up pipeline!")
     model = pipeline.model
-    print("get model from pipeline")
+    print("Got model from pipeline")
 
     # Set up Gradio interface
+    print("\nSetting up Gradio interface...")
     iface = gr.ChatInterface(fn=generate_response)
 
     # iface = gr.Interface(
