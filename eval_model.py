@@ -35,6 +35,13 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
+
+    parser.add_argument(
+        "--checkpoint",
+        default=config.DEFAULT_MODEL,
+        help="Specify 'cpu' or 'cuda' to set the device for model computation.",
+    )
+
     parser.add_argument(
         "--file_path",
         default=config.DEFAULT_TEST_DATASET_PATH,
@@ -149,7 +156,7 @@ def calculate_model_metrics(
 
 def main():
     args = parse_args()
-    checkpoint = config.DEFAULT_MODEL
+    checkpoint = args.checkpoint
     file_path = args.file_path
     device = args.device
 
