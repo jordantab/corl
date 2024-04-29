@@ -20,9 +20,6 @@ import json
 from unit_tests.run_code import run_tcs
 
 
-# Rest of the code...
-
-
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--infile", help="Input JSON file path")
