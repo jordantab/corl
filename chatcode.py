@@ -9,8 +9,9 @@ os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 global model, tokenizer, pipeline
 
+
 def load_checkpoint(checkpoint):
-    
+
     global model, tokenizer
 
     tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3-8B-Instruct")
@@ -33,6 +34,7 @@ def load_checkpoint(checkpoint):
     model.load_state_dict(adapter_state_dict, strict=False)
 
     return model, tokenizer
+
 
 def tokenize_code(code):
     """
@@ -57,7 +59,8 @@ def tokenize_code(code):
     print(f"Tokenized code: {input_ids}")
     return input_ids
 
-def generate_code(input_code, pipeline, temperature=0.8):
+
+def generate_code(input_code, pipeline, temperature=0.6):
     """
     Generate optimized code based on the input code tokens.
 
@@ -69,18 +72,16 @@ def generate_code(input_code, pipeline, temperature=0.8):
     Returns:
         list: The generated optimized code tokens.
     """
-    
-    global pipeline
-    
+
     print("Generating optimized code...")
     print(f"Input code: {input_code}")
 
     messages = [
         {
             "role": "system",
-            "content": "Provide an optimized version of the following code snippet. Only provide the code, no need to provide any description."
+            "content": "Provide an optimized version of the following code snippet. Only provide the code, no need to provide any description.",
         },
-        {"role": "user", "content": input_code}
+        {"role": "user", "content": input_code},
     ]
 
     prompt = pipeline.tokenizer.apply_chat_template(
@@ -89,16 +90,18 @@ def generate_code(input_code, pipeline, temperature=0.8):
 
     terminators = [
         pipeline.tokenizer.eos_token_id,
-        pipeline.tokenizer.convert_tokens_to_ids("")
+        pipeline.tokenizer.convert_tokens_to_ids("<|eot_id|>"),
     ]
+
+    print(f"prompt getting passed in is: {prompt}")
 
     outputs = pipeline(
         prompt,
-        max_new_tokens=100,  # Adjusted from args.max_length to a static value
+        max_new_tokens=256,  # Adjusted from args.max_length to a static value
         eos_token_id=terminators,
         do_sample=True,
         temperature=temperature,
-        top_p=0.9
+        top_p=0.9,
     )
     generated_code = outputs[0]["generated_text"][len(prompt) :]
     print(f"Generated optimized code tokens: {generated_code}")
@@ -107,14 +110,16 @@ def generate_code(input_code, pipeline, temperature=0.8):
 
 
 def generate_response(input_text, history):
-    
     """
     Generate text based on the input using the loaded model and tokenizer.
     wrapper class essential for gradio, cannot change input format
     """
-    
+
     global pipeline
-    
+
+    print(input_text)
+    print(pipeline)
+
     output_text = generate_code(input_text, pipeline)
     print(f"Output: {output_text}")
     return output_text
@@ -124,18 +129,18 @@ def main():
     """
     Main function to load model, tokenizer and run Gradio interface.
     """
-    
+
     global pipeline
 
     checkpoint = "meta-llama/Meta-Llama-3-8B-Instruct"
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    
+
     print(f"Using model: {checkpoint}, device: {device}")
 
     print("\nLoading tokenizer and base model")
-    load_checkpoint("hi")
+    model, tokenizer = load_checkpoint("hi")
     print("Loaded tokenizer and base model")
-    
+
     pipeline = transformers.pipeline(
         "text-generation",
         model=model,
