@@ -77,10 +77,15 @@ def run_tcs(code: str, problem_id: int) -> Tuple[str, float]:
     folders = [sample_output_folder, hidden_output_folder]
     test_cases = []
     execution_time = 0
-
+    
+    print("folder size: " + str(len(folders)))
     for folder in folders:
+        print(f"folder: {folder}")
+        print(f"folder path: {os.path.expanduser(folder)}")
         input_files = glob.glob(os.path.join(os.path.expanduser(folder), "input.*.txt"))
+        print("input file size: " + str(len(input_files)))
         for input_file in input_files:
+            print(f"input_file: {input_file}")
             test_cases.append((code, input_file))
 
     # print('all testcases', folders)
@@ -96,8 +101,8 @@ def run_tcs(code: str, problem_id: int) -> Tuple[str, float]:
 
     end_time = time.time()
     print(f"time to run all test cases: {end_time - start_time:.2f} seconds")
+    print("number of test cases: " + str(len(test_cases)))
     return "Accepted", execution_time / len(test_cases)
-
 
 def load_dataset(dataset=DEFAULT_DATASET):
     df = pd.read_csv(dataset, sep="\t")
