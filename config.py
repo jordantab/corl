@@ -6,11 +6,14 @@ import os
 
 DEFAULT_MODEL = "meta-llama/Meta-Llama-3-8B-Instruct"
 
+# Path configurations
+DEFAULT_TEST_DATASET_PATH = "./testset/python_leq_60_tokens_test.json"
+
 # Fine-tuning defaults
 DEFAULT_OUTDIR = "models/dataset_tuned_checkpoint"
 
 # Data preprocessing
-DEFAULT_MAX_LEN = 25
+DEFAULT_MAX_LEN = 100
 DEFAULT_PADDING = "max_length"
 DEFAULT_TEST_SIZE = 1
 DEFAULT_INSTRUCTION_DATASET = "examples/sample1.json"
@@ -27,5 +30,5 @@ DEFAULT_DEEPSPEED = None
 DEFAULT_FP16 = False
 
 # Platform specific configs
-DEFAULT_DEVICE = "cpu"  # for GPU usage or "cpu" for CPU usage
+DEFAULT_DEVICE = "cuda"  # for GPU usage or "cuda" for CPU usage
 DEFAULT_NUM_PROCS = os.cpu_count()

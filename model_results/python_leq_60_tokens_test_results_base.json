@@ -1,0 +1,2752 @@
+[
+    {
+        "problem_id": "p02957",
+        "slow": 0.024050244918236367,
+        "fast": 0.023357029144580547,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 5,
+        "num_lines_fast": 5,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02957",
+        "slow": 0.021925149055627677,
+        "fast": 0.022620781109883234,
+        "generated": 0.022675858094142035,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.02221582944576557,
+        "fast": 0.022472134003272422,
+        "generated": 0.023862673686100885,
+        "verdict": 1,
+        "num_lines_slow": 14,
+        "num_lines_fast": 19,
+        "num_lines_generated": 13
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.0225143157518827,
+        "fast": 0.022616262619311992,
+        "generated": 0.023262312779059775,
+        "verdict": 1,
+        "num_lines_slow": 13,
+        "num_lines_fast": 11,
+        "num_lines_generated": 13
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.022194935725285456,
+        "fast": 0.022650798925986655,
+        "generated": 0.023885222581716683,
+        "verdict": 1,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.02213646127627446,
+        "fast": 0.022608993145135734,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 15,
+        "num_lines_fast": 15,
+        "num_lines_generated": 12
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.022411259321066048,
+        "fast": 0.022714860164202176,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.022350072860717773,
+        "fast": 0.022731687013919536,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 12,
+        "num_lines_fast": 14,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.02258179050225478,
+        "fast": 0.022913733353981607,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 11,
+        "num_lines_fast": 15,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.02285751700401306,
+        "fast": 0.022330336845838107,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.02214340063241812,
+        "fast": 0.022603225249510545,
+        "generated": 0.023263108271818895,
+        "verdict": 1,
+        "num_lines_slow": 7,
+        "num_lines_fast": 1,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.02246761551270118,
+        "fast": 0.022605529198279746,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 11,
+        "num_lines_fast": 12,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.02275445140325106,
+        "fast": 0.02277913918861976,
+        "generated": 2,
+        "verdict": 0,
+        "num_lines_slow": 15,
+        "num_lines_fast": 15,
+        "num_lines_generated": 12
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.022632470497718223,
+        "fast": 0.02291632157105666,
+        "generated": 0.02419399985900292,
+        "verdict": 1,
+        "num_lines_slow": 11,
+        "num_lines_fast": 11,
+        "num_lines_generated": 10
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.022421697011360757,
+        "fast": 0.022848684054154616,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.022482984341107883,
+        "fast": 0.02302531783397381,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 11,
+        "num_lines_fast": 13,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.02284320042683528,
+        "fast": 0.022684525984984178,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 13,
+        "num_lines_fast": 20,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.022498857516508836,
+        "fast": 0.022452679964212272,
+        "generated": 0.023670242382929876,
+        "verdict": 1,
+        "num_lines_slow": 18,
+        "num_lines_fast": 20,
+        "num_lines_generated": 12
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.02292003998389611,
+        "fast": 0.02252837786307702,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 17,
+        "num_lines_fast": 17,
+        "num_lines_generated": 17
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.02249506115913391,
+        "fast": 0.02257348023928129,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 11,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.02294365717814519,
+        "fast": 0.02278544123356159,
+        "generated": 0.02267216260616596,
+        "verdict": 1,
+        "num_lines_slow": 7,
+        "num_lines_fast": 1,
+        "num_lines_generated": 7
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.02275056793139531,
+        "fast": 0.022503149050932664,
+        "generated": 0.022359905334619377,
+        "verdict": 1,
+        "num_lines_slow": 11,
+        "num_lines_fast": 1,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.0226595585162823,
+        "fast": 0.022557329673033494,
+        "generated": 0.02262663382750291,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 1,
+        "num_lines_generated": 11
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.022989197419239923,
+        "fast": 0.0242175987133613,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 8,
+        "num_lines_fast": 4,
+        "num_lines_generated": 7
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.02280771044584421,
+        "fast": 0.0221595810009883,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 5,
+        "num_lines_fast": 1,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.022899171480765708,
+        "fast": 0.023537610585872944,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 6,
+        "num_lines_fast": 6,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p02786",
+        "slow": 0.023091011322461642,
+        "fast": 0.023611754179000854,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02847",
+        "slow": 0.013735453287760416,
+        "fast": 0.013254642486572266,
+        "generated": 0.020079374313354492,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 5,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02847",
+        "slow": 0.019932667414347332,
+        "fast": 0.016056060791015625,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 1,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02847",
+        "slow": 0.02032923698425293,
+        "fast": 0.016064167022705078,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 1,
+        "num_lines_fast": 6,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02847",
+        "slow": 0.01996779441833496,
+        "fast": 0.01730656623840332,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 1,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02847",
+        "slow": 0.019799550374348957,
+        "fast": 0.016218105951944988,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 5,
+        "num_lines_fast": 6,
+        "num_lines_generated": 2
+    },
+    {
+        "problem_id": "p02847",
+        "slow": 0.01807538668314616,
+        "fast": 0.015915950139363606,
+        "generated": 0.023976643880208332,
+        "verdict": 1,
+        "num_lines_slow": 4,
+        "num_lines_fast": 4,
+        "num_lines_generated": 2
+    },
+    {
+        "problem_id": "p02847",
+        "slow": 0.019632975260416668,
+        "fast": 0.019855817159016926,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 2
+    },
+    {
+        "problem_id": "p02847",
+        "slow": 0.0180056095123291,
+        "fast": 0.02091375986735026,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 5,
+        "num_lines_fast": 5,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p02847",
+        "slow": 0.01985931396484375,
+        "fast": 0.019727627436319988,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02847",
+        "slow": 0.018027067184448242,
+        "fast": 0.019563039143880207,
+        "generated": 0.01875480016072591,
+        "verdict": 1,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02847",
+        "slow": 0.019765853881835938,
+        "fast": 0.01722550392150879,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 6,
+        "num_lines_fast": 3,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p02847",
+        "slow": 0.019838889439900715,
+        "fast": 0.017754077911376953,
+        "generated": 0.018743435541788738,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02847",
+        "slow": 0.019663492838541668,
+        "fast": 0.019390662511189777,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 1,
+        "num_lines_fast": 6,
+        "num_lines_generated": 2
+    },
+    {
+        "problem_id": "p02847",
+        "slow": 0.019746065139770508,
+        "fast": 0.019572734832763672,
+        "generated": 0.019540707270304363,
+        "verdict": 1,
+        "num_lines_slow": 5,
+        "num_lines_fast": 1,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p02847",
+        "slow": 0.019617557525634766,
+        "fast": 0.017948706944783527,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03965",
+        "slow": 0.023147761243060956,
+        "fast": 0.04471413834581097,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 7,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03965",
+        "slow": 0.022465657261968815,
+        "fast": 0.022692106302502086,
+        "generated": 0.02381786327917599,
+        "verdict": 1,
+        "num_lines_slow": 1,
+        "num_lines_fast": 3,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03965",
+        "slow": 0.023283752422888302,
+        "fast": 0.022761571754529638,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 15,
+        "num_lines_fast": 3,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p03965",
+        "slow": 0.022446711086532446,
+        "fast": 0.022849897736484565,
+        "generated": 0.022651676992768224,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03965",
+        "slow": 0.022497984969500198,
+        "fast": 0.02239785842525149,
+        "generated": 0.02319038261487646,
+        "verdict": 1,
+        "num_lines_slow": 7,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.022476377395483162,
+        "fast": 0.023581025692132804,
+        "generated": 0.023642134207945604,
+        "verdict": 1,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.022904868309314434,
+        "fast": 0.022662910131307747,
+        "generated": 0.02472702585733854,
+        "verdict": 1,
+        "num_lines_slow": 2,
+        "num_lines_fast": 3,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.023673158425551195,
+        "fast": 0.023107682283108052,
+        "generated": 0.02397806140092703,
+        "verdict": 1,
+        "num_lines_slow": 12,
+        "num_lines_fast": 12,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.023210837290837213,
+        "fast": 0.022646750395114604,
+        "generated": 0.0232585622714116,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 11,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.02257489011837886,
+        "fast": 0.022995728712815505,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 1,
+        "num_lines_fast": 3,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.02235913505920997,
+        "fast": 0.022913898412997905,
+        "generated": 0.02311083674430847,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.022734754360639133,
+        "fast": 0.023300317617563102,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.022720208534827598,
+        "fast": 0.022489513342197124,
+        "generated": 0.023246281422101535,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.022967565518159132,
+        "fast": 0.02286805327122028,
+        "generated": 0.023519619153096125,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.022620377632287834,
+        "fast": 0.022641796332139235,
+        "generated": 0.023160067888406608,
+        "verdict": 1,
+        "num_lines_slow": 13,
+        "num_lines_fast": 11,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.02266615629196167,
+        "fast": 0.022429784903159507,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 11,
+        "num_lines_fast": 11,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.02250128984451294,
+        "fast": 0.022868390266711894,
+        "generated": 0.023779314297896165,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.022282125858160164,
+        "fast": 0.022616258034339316,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 1,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.022225324924175557,
+        "fast": 0.02311446345769442,
+        "generated": 0.023757829115940973,
+        "verdict": 1,
+        "num_lines_slow": 5,
+        "num_lines_fast": 9,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.02241599330535302,
+        "fast": 0.02229044299859267,
+        "generated": 0.023285929973308857,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 11,
+        "num_lines_generated": 6
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.022655968482677754,
+        "fast": 0.022580923942419198,
+        "generated": 0.02376755842795739,
+        "verdict": 1,
+        "num_lines_slow": 4,
+        "num_lines_fast": 4,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.022893678683501024,
+        "fast": 0.022812206011552077,
+        "generated": 0.023344149956336387,
+        "verdict": 1,
+        "num_lines_slow": 4,
+        "num_lines_fast": 4,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.022634423696077786,
+        "fast": 0.022967721407230083,
+        "generated": 0.02280694704789382,
+        "verdict": 1,
+        "num_lines_slow": 4,
+        "num_lines_fast": 4,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.023297387820023756,
+        "fast": 0.02300722782428448,
+        "generated": 0.02297966067607586,
+        "verdict": 1,
+        "num_lines_slow": 4,
+        "num_lines_fast": 4,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.022491551362551175,
+        "fast": 0.022957242452181302,
+        "generated": 0.023658452125696037,
+        "verdict": 1,
+        "num_lines_slow": 11,
+        "num_lines_fast": 11,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.022721719283324022,
+        "fast": 0.02284093086536114,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 7,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.022439067180340107,
+        "fast": 0.023008165451196525,
+        "generated": 0.022859901189804077,
+        "verdict": 1,
+        "num_lines_slow": 11,
+        "num_lines_fast": 7,
+        "num_lines_generated": 6
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.022542396417030923,
+        "fast": 0.022843285248829767,
+        "generated": 0.024262508520713218,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 1,
+        "num_lines_generated": 6
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.022779620610750638,
+        "fast": 0.022560458916884202,
+        "generated": 0.023710486980584953,
+        "verdict": 1,
+        "num_lines_slow": 10,
+        "num_lines_fast": 11,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.0226057767868042,
+        "fast": 0.022667332337452814,
+        "generated": 0.023223640827032235,
+        "verdict": 1,
+        "num_lines_slow": 16,
+        "num_lines_fast": 11,
+        "num_lines_generated": 7
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.023545764959775485,
+        "fast": 0.022542290962659396,
+        "generated": 0.02389276486176711,
+        "verdict": 1,
+        "num_lines_slow": 11,
+        "num_lines_fast": 10,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.022131273379692666,
+        "fast": 0.023182570934295654,
+        "generated": 0.02308474137232854,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 6
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.02246822302158062,
+        "fast": 0.0226783431493319,
+        "generated": 0.023094117641448975,
+        "verdict": 1,
+        "num_lines_slow": 6,
+        "num_lines_fast": 6,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.022602688807707567,
+        "fast": 0.022902807364097007,
+        "generated": 0.023747194271821242,
+        "verdict": 1,
+        "num_lines_slow": 13,
+        "num_lines_fast": 6,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.023649183603433464,
+        "fast": 0.023422493384434626,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 12,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.0234125371162708,
+        "fast": 0.02291548252105713,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 11,
+        "num_lines_fast": 11,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03323",
+        "slow": 0.023142078748116128,
+        "fast": 0.02270382413497338,
+        "generated": 0.023082944063039925,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 3,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03698",
+        "slow": 0.022917027656848613,
+        "fast": 0.022748396946833685,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 5,
+        "num_lines_fast": 5,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03698",
+        "slow": 0.022584834924111,
+        "fast": 0.04376815832578219,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 4,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03698",
+        "slow": 0.022228935590157144,
+        "fast": 0.022553673157325156,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 1,
+        "num_lines_fast": 2,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03698",
+        "slow": 0.022423198589911826,
+        "fast": 0.02261937581575834,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03698",
+        "slow": 0.022288455412938044,
+        "fast": 0.022592693567276,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 11,
+        "num_lines_fast": 11,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03698",
+        "slow": 0.022423771711496208,
+        "fast": 0.022431394228568442,
+        "generated": 0.023509312134522658,
+        "verdict": 1,
+        "num_lines_slow": 11,
+        "num_lines_fast": 10,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03698",
+        "slow": 0.022647497745660636,
+        "fast": 0.023435879212159377,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 7,
+        "num_lines_fast": 7,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03698",
+        "slow": 0.022257385345605705,
+        "fast": 0.022298205357331496,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03698",
+        "slow": 0.02281049810923063,
+        "fast": 0.022574906165783223,
+        "generated": 0.023742237916359536,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 11,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03698",
+        "slow": 0.02261252128160917,
+        "fast": 0.022481691378813524,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03698",
+        "slow": 0.02267167201408973,
+        "fast": 0.02265216066287114,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03698",
+        "slow": 0.02272568069971525,
+        "fast": 0.02261565740291889,
+        "generated": 0.0231170470897968,
+        "verdict": 1,
+        "num_lines_slow": 13,
+        "num_lines_fast": 11,
+        "num_lines_generated": 17
+    },
+    {
+        "problem_id": "p03698",
+        "slow": 0.02256753582220811,
+        "fast": 0.022966348207913913,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 5,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02553",
+        "slow": 0.02236186770292429,
+        "fast": 0.02289657867871798,
+        "generated": 0.023437506877459012,
+        "verdict": 1,
+        "num_lines_slow": 6,
+        "num_lines_fast": 6,
+        "num_lines_generated": 2
+    },
+    {
+        "problem_id": "p02553",
+        "slow": 0.022614618906607993,
+        "fast": 0.02327656287413377,
+        "generated": 0.02265042983568632,
+        "verdict": 1,
+        "num_lines_slow": 4,
+        "num_lines_fast": 12,
+        "num_lines_generated": 2
+    },
+    {
+        "problem_id": "p02553",
+        "slow": 0.022894448958910428,
+        "fast": 0.02242364562474764,
+        "generated": 0.02260514864554772,
+        "verdict": 1,
+        "num_lines_slow": 5,
+        "num_lines_fast": 5,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p02553",
+        "slow": 0.022737186688643236,
+        "fast": 0.023132934020115778,
+        "generated": 0.023650105182941143,
+        "verdict": 1,
+        "num_lines_slow": 4,
+        "num_lines_fast": 4,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02553",
+        "slow": 0.02262111810537485,
+        "fast": 0.023037114968666665,
+        "generated": 0.024251318894899808,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 5,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02553",
+        "slow": 0.023000827202430137,
+        "fast": 0.022479529564197246,
+        "generated": 0.023465023590968206,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 6,
+        "num_lines_generated": 2
+    },
+    {
+        "problem_id": "p02553",
+        "slow": 0.022166965099481437,
+        "fast": 0.022857255660570584,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02553",
+        "slow": 0.022722989320755005,
+        "fast": 0.022908238264230583,
+        "generated": 0.023292527748988226,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02553",
+        "slow": 0.022603929042816162,
+        "fast": 0.022611945867538452,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03481",
+        "slow": 0.012671470642089844,
+        "fast": 0.012849807739257812,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 11,
+        "num_lines_fast": 11,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p03481",
+        "slow": 0.011867284774780273,
+        "fast": 0.023537397384643555,
+        "generated": 0.012351751327514648,
+        "verdict": 1,
+        "num_lines_slow": 16,
+        "num_lines_fast": 14,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p03481",
+        "slow": 0.023154735565185547,
+        "fast": 0.023221492767333984,
+        "generated": 0.02257847785949707,
+        "verdict": 1,
+        "num_lines_slow": 11,
+        "num_lines_fast": 9,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p03481",
+        "slow": 0.022807836532592773,
+        "fast": 0.02252054214477539,
+        "generated": 0.02288222312927246,
+        "verdict": 1,
+        "num_lines_slow": 11,
+        "num_lines_fast": 11,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p03481",
+        "slow": 0.02295851707458496,
+        "fast": 0.022738218307495117,
+        "generated": 0.022902727127075195,
+        "verdict": 1,
+        "num_lines_slow": 11,
+        "num_lines_fast": 15,
+        "num_lines_generated": 10
+    },
+    {
+        "problem_id": "p03481",
+        "slow": 0.022917509078979492,
+        "fast": 0.022930622100830078,
+        "generated": 0.023255348205566406,
+        "verdict": 1,
+        "num_lines_slow": 12,
+        "num_lines_fast": 12,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p03481",
+        "slow": 0.023498058319091797,
+        "fast": 0.022721290588378906,
+        "generated": 0.02258753776550293,
+        "verdict": 1,
+        "num_lines_slow": 14,
+        "num_lines_fast": 14,
+        "num_lines_generated": 11
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.023901198919002827,
+        "fast": 0.022813987273436327,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022478793676082905,
+        "fast": 0.022860057078875028,
+        "generated": 0.023270157667306755,
+        "verdict": 1,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 2
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022598981857299805,
+        "fast": 0.02252192680652325,
+        "generated": 0.022970896500807542,
+        "verdict": 1,
+        "num_lines_slow": 5,
+        "num_lines_fast": 5,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.02274767252115103,
+        "fast": 0.022901480014507588,
+        "generated": 0.02272486686706543,
+        "verdict": 1,
+        "num_lines_slow": 5,
+        "num_lines_fast": 5,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.02264293799033532,
+        "fast": 0.0224644816838778,
+        "generated": 0.023353487253189087,
+        "verdict": 1,
+        "num_lines_slow": 11,
+        "num_lines_fast": 11,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022461439554507915,
+        "fast": 0.022669079212042,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 7,
+        "num_lines_fast": 4,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.023300166313464824,
+        "fast": 0.022675165763268106,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 5,
+        "num_lines_fast": 13,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022703709510656502,
+        "fast": 0.02261968071644123,
+        "generated": 0.023756233545450065,
+        "verdict": 1,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022576322922339805,
+        "fast": 0.022758995111172017,
+        "generated": 0.02326293633534358,
+        "verdict": 1,
+        "num_lines_slow": 8,
+        "num_lines_fast": 8,
+        "num_lines_generated": 7
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022701974098499004,
+        "fast": 0.022211194038391113,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 5,
+        "num_lines_fast": 5,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022567895742563102,
+        "fast": 0.02283593095265902,
+        "generated": 0.02298161616692176,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022336861261954673,
+        "fast": 0.02273640953577482,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 8,
+        "num_lines_fast": 8,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022765086247370794,
+        "fast": 0.022631885913702156,
+        "generated": 0.02331622288777278,
+        "verdict": 1,
+        "num_lines_slow": 15,
+        "num_lines_fast": 15,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022745182880988486,
+        "fast": 0.02306839135976938,
+        "generated": 0.023749672449552096,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 1,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.023174350078289326,
+        "fast": 0.022622213913844183,
+        "generated": 0.023206298167888936,
+        "verdict": 1,
+        "num_lines_slow": 6,
+        "num_lines_fast": 4,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022429771148241483,
+        "fast": 0.02252063384422889,
+        "generated": 0.023117968669304483,
+        "verdict": 1,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.02250954508781433,
+        "fast": 0.0431997890655811,
+        "generated": 0.023033644144351665,
+        "verdict": 1,
+        "num_lines_slow": 7,
+        "num_lines_fast": 6,
+        "num_lines_generated": 4
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.02248349327307481,
+        "fast": 0.022657123895791862,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 12,
+        "num_lines_fast": 9,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022977666212962225,
+        "fast": 0.02304888230103713,
+        "generated": 0.022590254361812886,
+        "verdict": 1,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022737904236866877,
+        "fast": 0.022942396310659554,
+        "generated": 0.022733092308044434,
+        "verdict": 1,
+        "num_lines_slow": 7,
+        "num_lines_fast": 7,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022988239159950845,
+        "fast": 0.02304196128478417,
+        "generated": 0.022367782317675076,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 2
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022514079625789937,
+        "fast": 0.022993764052024253,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 15,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.02295556664466858,
+        "fast": 0.022325373612917386,
+        "generated": 0.024323743123274583,
+        "verdict": 1,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022723163549716655,
+        "fast": 0.02308546121303852,
+        "generated": 0.02269131174454322,
+        "verdict": 1,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022411676553579476,
+        "fast": 0.02267091549359835,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.02240929236778846,
+        "fast": 0.0224741857785445,
+        "generated": 0.02314982505945059,
+        "verdict": 1,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022277446893545296,
+        "fast": 0.023216373645342313,
+        "generated": 0.023044260648580697,
+        "verdict": 1,
+        "num_lines_slow": 14,
+        "num_lines_fast": 11,
+        "num_lines_generated": 11
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022782217997771043,
+        "fast": 0.02399202035023616,
+        "generated": 0.023786796973301813,
+        "verdict": 1,
+        "num_lines_slow": 11,
+        "num_lines_fast": 2,
+        "num_lines_generated": 11
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022789661700908955,
+        "fast": 0.022662431001663208,
+        "generated": 0.022770232879198514,
+        "verdict": 1,
+        "num_lines_slow": 4,
+        "num_lines_fast": 3,
+        "num_lines_generated": 2
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022563354327128485,
+        "fast": 0.02300646213384775,
+        "generated": 0.023197845770762518,
+        "verdict": 1,
+        "num_lines_slow": 11,
+        "num_lines_fast": 11,
+        "num_lines_generated": 7
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022821165048159085,
+        "fast": 0.02324579541499798,
+        "generated": 0.02422836422920227,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.0227111830161168,
+        "fast": 0.022417224370516263,
+        "generated": 0.023820922924922064,
+        "verdict": 1,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03369",
+        "slow": 0.022667197080758903,
+        "fast": 0.022583225598702066,
+        "generated": 0.02420075352375324,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 1,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p04047",
+        "slow": 0.02405636287429958,
+        "fast": 0.023462080261082326,
+        "generated": 0.023763591803393318,
+        "verdict": 1,
+        "num_lines_slow": 7,
+        "num_lines_fast": 6,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p04047",
+        "slow": 0.02349731297168917,
+        "fast": 0.023696334616651812,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03852",
+        "slow": 0.022555209123171292,
+        "fast": 0.022802971876584567,
+        "generated": 0.023013318960483257,
+        "verdict": 1,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03852",
+        "slow": 0.022628043706600483,
+        "fast": 0.023390410038141105,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 1,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03852",
+        "slow": 0.02261631076152508,
+        "fast": 0.02266002159852248,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 3,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p03852",
+        "slow": 0.022711597956143893,
+        "fast": 0.023202671454502985,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 4,
+        "num_lines_fast": 3,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03852",
+        "slow": 0.022435506949057944,
+        "fast": 0.02251354089150062,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03852",
+        "slow": 0.023055315017700195,
+        "fast": 0.022749827458308294,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 1,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03852",
+        "slow": 0.022514799466499917,
+        "fast": 0.023013506944362935,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 5,
+        "num_lines_fast": 5,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03852",
+        "slow": 0.022845575442680947,
+        "fast": 0.022508247540547296,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03852",
+        "slow": 0.022764955575649556,
+        "fast": 0.022750416627297036,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 4,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03852",
+        "slow": 0.022211111508882962,
+        "fast": 0.022899538278579712,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 9,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03852",
+        "slow": 0.02289517567707942,
+        "fast": 0.022808334002128013,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03852",
+        "slow": 0.022464357889615573,
+        "fast": 0.022451210480469923,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 15,
+        "num_lines_fast": 13,
+        "num_lines_generated": 11
+    },
+    {
+        "problem_id": "p03852",
+        "slow": 0.022454089843309842,
+        "fast": 0.02279765560076787,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 11,
+        "num_lines_fast": 9,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p03852",
+        "slow": 0.022443544406157274,
+        "fast": 0.022476902374854453,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 11,
+        "num_lines_fast": 9,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p03852",
+        "slow": 0.022975201790149394,
+        "fast": 0.022418597569832437,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 9,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03852",
+        "slow": 0.02251793100283696,
+        "fast": 0.022837904783395622,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03852",
+        "slow": 0.022704472908606894,
+        "fast": 0.022365038211529072,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 10,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03852",
+        "slow": 0.022609635041310236,
+        "fast": 0.022681898795641385,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03852",
+        "slow": 0.022304450090114888,
+        "fast": 0.023232542551480807,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 11,
+        "num_lines_fast": 11,
+        "num_lines_generated": 9
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.012878894805908203,
+        "fast": 0.012893915176391602,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 7,
+        "num_lines_fast": 3,
+        "num_lines_generated": 6
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.01248311996459961,
+        "fast": 0.012291193008422852,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 5,
+        "num_lines_fast": 5,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.02390766143798828,
+        "fast": 0.01417684555053711,
+        "generated": 0.023569107055664062,
+        "verdict": 1,
+        "num_lines_slow": 6,
+        "num_lines_fast": 12,
+        "num_lines_generated": 2
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.023825407028198242,
+        "fast": 0.023717403411865234,
+        "generated": 0.012580156326293945,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 2,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.023869752883911133,
+        "fast": 0.023440837860107422,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 5,
+        "num_lines_fast": 7,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.02452230453491211,
+        "fast": 0.02384161949157715,
+        "generated": 0.023466110229492188,
+        "verdict": 1,
+        "num_lines_slow": 5,
+        "num_lines_fast": 5,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.022578001022338867,
+        "fast": 0.02246403694152832,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.012679576873779297,
+        "fast": 0.023532629013061523,
+        "generated": 0.02303600311279297,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 8,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.022706985473632812,
+        "fast": 0.022815704345703125,
+        "generated": 0.022588253021240234,
+        "verdict": 1,
+        "num_lines_slow": 7,
+        "num_lines_fast": 15,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.022632598876953125,
+        "fast": 0.02286386489868164,
+        "generated": 0.02285289764404297,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 2
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.022866010665893555,
+        "fast": 0.022779464721679688,
+        "generated": 0.022764921188354492,
+        "verdict": 1,
+        "num_lines_slow": 5,
+        "num_lines_fast": 3,
+        "num_lines_generated": 6
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.02623271942138672,
+        "fast": 0.02286982536315918,
+        "generated": 0.02262139320373535,
+        "verdict": 1,
+        "num_lines_slow": 7,
+        "num_lines_fast": 7,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.023009538650512695,
+        "fast": 0.022578954696655273,
+        "generated": 0.022644519805908203,
+        "verdict": 1,
+        "num_lines_slow": 7,
+        "num_lines_fast": 5,
+        "num_lines_generated": 6
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.018323659896850586,
+        "fast": 0.018389463424682617,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 1,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.023534059524536133,
+        "fast": 0.022716760635375977,
+        "generated": 0.022644996643066406,
+        "verdict": 1,
+        "num_lines_slow": 5,
+        "num_lines_fast": 3,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.021623849868774414,
+        "fast": 0.023055315017700195,
+        "generated": 0.022661924362182617,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 9,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.02278280258178711,
+        "fast": 0.02273273468017578,
+        "generated": 0.022787094116210938,
+        "verdict": 1,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.022905826568603516,
+        "fast": 0.022745847702026367,
+        "generated": 0.022760868072509766,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 4,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.02289581298828125,
+        "fast": 0.026279687881469727,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 5,
+        "num_lines_fast": 4,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.02257990837097168,
+        "fast": 0.02267169952392578,
+        "generated": 0.02269721031188965,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 4,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.02278590202331543,
+        "fast": 0.022679805755615234,
+        "generated": 0.024086713790893555,
+        "verdict": 1,
+        "num_lines_slow": 7,
+        "num_lines_fast": 3,
+        "num_lines_generated": 6
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.02379608154296875,
+        "fast": 0.023333072662353516,
+        "generated": 0.022658348083496094,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 8,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.022981882095336914,
+        "fast": 0.022719144821166992,
+        "generated": 0.022342443466186523,
+        "verdict": 1,
+        "num_lines_slow": 7,
+        "num_lines_fast": 8,
+        "num_lines_generated": 4
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.02324223518371582,
+        "fast": 0.022687911987304688,
+        "generated": 0.02288365364074707,
+        "verdict": 1,
+        "num_lines_slow": 10,
+        "num_lines_fast": 7,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.023007869720458984,
+        "fast": 0.023068666458129883,
+        "generated": 0.022742271423339844,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.022975444793701172,
+        "fast": 0.022687196731567383,
+        "generated": 0.022516727447509766,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03795",
+        "slow": 0.02624988555908203,
+        "fast": 0.02272486686706543,
+        "generated": 0.022842884063720703,
+        "verdict": 1,
+        "num_lines_slow": 7,
+        "num_lines_fast": 7,
+        "num_lines_generated": 7
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.04323540054834806,
+        "fast": 0.02276449020092304,
+        "generated": 0.023713604762003973,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.02271772577212407,
+        "fast": 0.02279165616402259,
+        "generated": 0.023900877970915575,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 2
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.02262502908706665,
+        "fast": 0.02286497216958266,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 11,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.02253419619340163,
+        "fast": 0.022500663995742798,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 4,
+        "num_lines_fast": 4,
+        "num_lines_generated": 2
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.022813269725212686,
+        "fast": 0.022811642059913047,
+        "generated": 0.02262424734922556,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.022742674900935247,
+        "fast": 0.022823913739277765,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 11,
+        "num_lines_fast": 12,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.022399125190881584,
+        "fast": 0.022753793459672194,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.02262786030769348,
+        "fast": 0.022738828108860895,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 2
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.022634730889247015,
+        "fast": 0.022813673202808086,
+        "generated": 0.023098773681200467,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 13,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.0226596502157358,
+        "fast": 0.022977961943699762,
+        "generated": 0.02354510472371028,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.022155399505908672,
+        "fast": 0.0229132381769327,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.022675672402748696,
+        "fast": 0.022775627099550687,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 10,
+        "num_lines_fast": 10,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.02295543597294734,
+        "fast": 0.022867672718488254,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 13,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.02283710241317749,
+        "fast": 0.022920645200289212,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 13,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.02269064004604633,
+        "fast": 0.022446462741264932,
+        "generated": 0.023573027207301214,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.02208233796633207,
+        "fast": 0.023149804427073553,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.02276868774340703,
+        "fast": 0.022676039200562697,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 5,
+        "num_lines_fast": 5,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.02307047522985018,
+        "fast": 0.02300942402619582,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 12,
+        "num_lines_fast": 4,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.02277662203862117,
+        "fast": 0.023034595526181735,
+        "generated": 0.023176048810665425,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.0227855764902555,
+        "fast": 0.022974493411871102,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 11,
+        "num_lines_fast": 11,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.022637392465884868,
+        "fast": 0.022631292159740742,
+        "generated": 0.023033327781237088,
+        "verdict": 1,
+        "num_lines_slow": 11,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.022775225914441623,
+        "fast": 0.02267426481613746,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 10,
+        "num_lines_fast": 10,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.02245300320478586,
+        "fast": 0.023288183487378634,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 11,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.022507225091640767,
+        "fast": 0.022761466411443856,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 5,
+        "num_lines_fast": 11,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.022635491994711068,
+        "fast": 0.02278686945254986,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03359",
+        "slow": 0.023090658279565666,
+        "fast": 0.022754967212677002,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 11,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p00312",
+        "slow": 0.02256116126347514,
+        "fast": 0.022644867017431167,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03815",
+        "slow": 0.022413596366215677,
+        "fast": 0.022908912121670916,
+        "generated": 0.02313434961930062,
+        "verdict": 1,
+        "num_lines_slow": 5,
+        "num_lines_fast": 1,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03815",
+        "slow": 0.022452812750362657,
+        "fast": 0.02240198792763127,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03456",
+        "slow": 0.022708514562019937,
+        "fast": 0.022229210688517645,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03456",
+        "slow": 0.19600055997188276,
+        "fast": 0.023188153138527505,
+        "generated": 0.19720751505631667,
+        "verdict": 1,
+        "num_lines_slow": 5,
+        "num_lines_fast": 8,
+        "num_lines_generated": 6
+    },
+    {
+        "problem_id": "p03456",
+        "slow": 0.022978837673480693,
+        "fast": 0.02321867300913884,
+        "generated": 0.02331784826058608,
+        "verdict": 1,
+        "num_lines_slow": 11,
+        "num_lines_fast": 9,
+        "num_lines_generated": 6
+    },
+    {
+        "problem_id": "p03456",
+        "slow": 0.022492858079763558,
+        "fast": 0.02290727312748249,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 10,
+        "num_lines_fast": 3,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p03456",
+        "slow": 0.022475435183598444,
+        "fast": 0.02266667439387395,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 6,
+        "num_lines_fast": 12,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03456",
+        "slow": 0.02280317361538227,
+        "fast": 0.022874701481599074,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 5,
+        "num_lines_fast": 1,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03456",
+        "slow": 0.02264694754893963,
+        "fast": 0.022718810118161716,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 1,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p03456",
+        "slow": 0.02279929931347187,
+        "fast": 0.02262022403570322,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 13,
+        "num_lines_fast": 13,
+        "num_lines_generated": 11
+    },
+    {
+        "problem_id": "p03456",
+        "slow": 0.02243196047269381,
+        "fast": 0.022882605974490825,
+        "generated": 0.023556450238594644,
+        "verdict": 1,
+        "num_lines_slow": 5,
+        "num_lines_fast": 5,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03456",
+        "slow": 0.040520438781151406,
+        "fast": 0.022758174401063185,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 5,
+        "num_lines_fast": 5,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p03456",
+        "slow": 0.023037429039294902,
+        "fast": 0.023542924569203302,
+        "generated": 0.023648287241275493,
+        "verdict": 1,
+        "num_lines_slow": 12,
+        "num_lines_fast": 10,
+        "num_lines_generated": 4
+    },
+    {
+        "problem_id": "p03456",
+        "slow": 0.02304522578532879,
+        "fast": 0.022847109116040744,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 5,
+        "num_lines_fast": 5,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.015866432871137346,
+        "fast": 0.01569868837084089,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 10,
+        "num_lines_fast": 9,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.02014425822666713,
+        "fast": 0.018091474260602678,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 11,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.022284882409232005,
+        "fast": 0.01988175937107631,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 11,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.019992743219648088,
+        "fast": 0.019929494176592146,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 3,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.023333498409816196,
+        "fast": 0.020829950060163225,
+        "generated": 0.022290604455130442,
+        "verdict": 1,
+        "num_lines_slow": 14,
+        "num_lines_fast": 14,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.021373748779296875,
+        "fast": 0.02320267472948347,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 12,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.01906003270830427,
+        "fast": 0.0178945745740618,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 10,
+        "num_lines_fast": 7,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.020444733755929128,
+        "fast": 0.018462249210902622,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 10,
+        "num_lines_fast": 9,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.02146599973951067,
+        "fast": 0.023539628301348006,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 10,
+        "num_lines_fast": 10,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.021133371761866977,
+        "fast": 0.018640228680201938,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 11,
+        "num_lines_fast": 12,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.02116097722734724,
+        "fast": 0.020707215581621443,
+        "generated": 0.02221717153276716,
+        "verdict": 1,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.020575846944536482,
+        "fast": 0.020458579063415527,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.020402159009660994,
+        "fast": 0.017884748322623118,
+        "generated": 0.0215400116784232,
+        "verdict": 1,
+        "num_lines_slow": 13,
+        "num_lines_fast": 11,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.02222027097429548,
+        "fast": 0.021570989063807895,
+        "generated": 0.022708007267543247,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.020045910562787737,
+        "fast": 0.018141099384852817,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 7,
+        "num_lines_fast": 9,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.019638282912118093,
+        "fast": 0.0165003878729684,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 10,
+        "num_lines_fast": 10,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.02090300832475935,
+        "fast": 0.01893430096762521,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.01719508852277483,
+        "fast": 0.016684702464512417,
+        "generated": 0.022019573620387485,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.020382608686174666,
+        "fast": 0.017179012298583984,
+        "generated": 0.022056732858930315,
+        "verdict": 1,
+        "num_lines_slow": 12,
+        "num_lines_fast": 12,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.0222494261605399,
+        "fast": 0.018630283219473704,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 10,
+        "num_lines_fast": 18,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.023401924542018344,
+        "fast": 0.020704473767961775,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.023177163941519602,
+        "fast": 0.021329283714294434,
+        "generated": 0.023389560835702077,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 1,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.020143117223467146,
+        "fast": 0.017566783087594167,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 13,
+        "num_lines_fast": 9,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.020314386912754605,
+        "fast": 0.01696460587637765,
+        "generated": 0.02506218637738909,
+        "verdict": 1,
+        "num_lines_slow": 11,
+        "num_lines_fast": 17,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.02225017547607422,
+        "fast": 0.02098219735281808,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 18,
+        "num_lines_fast": 18,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.019758190427507673,
+        "fast": 0.02027991839817592,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 8,
+        "num_lines_fast": 8,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.019386019025530134,
+        "fast": 0.02363785675593785,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 10,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.021309716360909597,
+        "fast": 0.01867662157331194,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 3,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.019783939634050642,
+        "fast": 0.017929247447422574,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 12,
+        "num_lines_fast": 11,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.02251049450465611,
+        "fast": 0.020240868840898787,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 10,
+        "num_lines_fast": 10,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.022105915205819265,
+        "fast": 0.018261466707502092,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 10,
+        "num_lines_fast": 10,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.022281902176993235,
+        "fast": 0.019776310239519392,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.023380534989493235,
+        "fast": 0.021485550062997,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 11,
+        "num_lines_fast": 5,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.019672274589538574,
+        "fast": 0.019167321068899974,
+        "generated": 0.022467613220214844,
+        "verdict": 1,
+        "num_lines_slow": 1,
+        "num_lines_fast": 1,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.02067850317273821,
+        "fast": 0.019077505384172713,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 12,
+        "num_lines_fast": 12,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.019116248403276716,
+        "fast": 0.017653397151402066,
+        "generated": 0.02159738540649414,
+        "verdict": 1,
+        "num_lines_slow": 3,
+        "num_lines_fast": 3,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.02211134774344308,
+        "fast": 0.01954068456377302,
+        "generated": 0.02343848773411342,
+        "verdict": 1,
+        "num_lines_slow": 12,
+        "num_lines_fast": 12,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.020609480994088308,
+        "fast": 0.021438632692609514,
+        "generated": 0.022519605500357493,
+        "verdict": 1,
+        "num_lines_slow": 13,
+        "num_lines_fast": 9,
+        "num_lines_generated": 5
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.02058112621307373,
+        "fast": 0.019812498773847307,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 10,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.017485925129481723,
+        "fast": 0.018421411514282227,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 5,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.021893296922956194,
+        "fast": 0.02010003158024379,
+        "generated": 0.023887702396937778,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 9,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.020772320883614675,
+        "fast": 0.019508429936000278,
+        "generated": 0.023963434355599538,
+        "verdict": 1,
+        "num_lines_slow": 11,
+        "num_lines_fast": 12,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.02111741474696568,
+        "fast": 0.02238762378692627,
+        "generated": -1,
+        "verdict": 0,
+        "num_lines_slow": 9,
+        "num_lines_fast": 1,
+        "num_lines_generated": 3
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.018941521644592285,
+        "fast": 0.021427665437970842,
+        "generated": 0.023872460637773787,
+        "verdict": 1,
+        "num_lines_slow": 9,
+        "num_lines_fast": 5,
+        "num_lines_generated": 1
+    },
+    {
+        "problem_id": "p02753",
+        "slow": 0.02263758863721575,
+        "fast": 0.01789384228842599,
+        "generated": 0.024147374289376394,
+        "verdict": 1,
+        "num_lines_slow": 10,
+        "num_lines_fast": 10,
+        "num_lines_generated": 1
+    }
+]
