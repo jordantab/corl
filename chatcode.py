@@ -56,7 +56,7 @@ def tokenize_code(code):
     print(f"Tokenized code: {input_ids}")
     return input_ids
 
-def generate_code(input_code, pipeline, temperature=0.6):
+def generate_code(input_code, pipeline, temperature=0.8):
     """
     Generate optimized code based on the input code tokens.
 
@@ -102,10 +102,22 @@ def generate_code(input_code, pipeline, temperature=0.6):
     return generated_code
 
 
-def generate_response(pipeline, input_text):
+def generate_response(model, tokenizer, input_text):
     """
     Generate text based on the input using the loaded model and tokenizer.
     """
+    
+    pipeline = transformers.pipeline(
+        "text-generation",
+        model=model,
+        tokenizer=tokenizer,
+        model_kwargs={"torch_dtype": torch.bfloat16},
+        device_map="cuda",
+    )
+    print("\nSet up pipeline!")
+    model = pipeline.model
+    print("Got model from pipeline")
+    
     # Generate and return the output text
     output_text = generate_code(input_text, pipeline)
     print(f"Output: {output_text}")
@@ -125,18 +137,6 @@ def main():
     print("\nLoading tokenizer and base model")
     model, tokenizer = load_checkpoint("hi")
     print("Loaded tokenizer and base model")
-
-    pipeline = transformers.pipeline(
-        "text-generation",
-        model=model,
-        tokenizer=tokenizer,
-        model_kwargs={"torch_dtype": torch.bfloat16},
-        device_map="cuda",
-    )
-
-    print("\nSet up pipeline!")
-    model = pipeline.model
-    print("Got model from pipeline")
 
     # Set up Gradio interface
     print("\nSetting up Gradio interface...")
