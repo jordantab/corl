@@ -37,14 +37,14 @@ checkpointer:
     consolidated.00.pth
   ]
   recipe_checkpoint: null
-  output_dir: /root/data-science-team7-s2024/models/checkpoints/python_leq_160_tokens
+  output_dir: /root/data-science-team7-s2024/models/checkpoints/python_leq_60_tokens_finetune
   model_type: LLAMA3
 resume_from_checkpoint: False
 
 # Dataset and Sampler
 dataset:
   _component_: torchtune.datasets.alpaca_dataset
-  source: /root/data-science-team7-s2024/train_set/
+  source: /root/data-science-team7-s2024/trainset/
   train_on_input: True
   max_seq_len: 256
 seed: null
