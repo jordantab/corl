@@ -7,6 +7,7 @@ import os
 # Ensure TOKENIZERS_PARALLELISM is set for transformers
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
+global model, tokenizer, pipeline
 
 def load_checkpoint(checkpoint):
     
@@ -68,6 +69,9 @@ def generate_code(input_code, pipeline, temperature=0.8):
     Returns:
         list: The generated optimized code tokens.
     """
+    
+    global pipeline
+    
     print("Generating optimized code...")
     print(f"Input code: {input_code}")
 
@@ -106,7 +110,31 @@ def generate_response(input_text, history):
     
     """
     Generate text based on the input using the loaded model and tokenizer.
+    wrapper class essential for gradio, cannot change input format
     """
+    
+    global pipeline
+    
+    output_text = generate_code(input_text, pipeline)
+    print(f"Output: {output_text}")
+    return output_text
+
+
+def main():
+    """
+    Main function to load model, tokenizer and run Gradio interface.
+    """
+    
+    global pipeline
+
+    checkpoint = "meta-llama/Meta-Llama-3-8B-Instruct"
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    
+    print(f"Using model: {checkpoint}, device: {device}")
+
+    print("\nLoading tokenizer and base model")
+    load_checkpoint("hi")
+    print("Loaded tokenizer and base model")
     
     pipeline = transformers.pipeline(
         "text-generation",
@@ -118,25 +146,6 @@ def generate_response(input_text, history):
     print("\nSet up pipeline!")
     model = pipeline.model
     print("Updated model from pipeline")
-    
-    output_text = generate_code(input_text, pipeline)
-    print(f"Output: {output_text}")
-    return output_text
-
-
-def main():
-    """
-    Main function to load model, tokenizer and run Gradio interface.
-    """
-
-    checkpoint = "meta-llama/Meta-Llama-3-8B-Instruct"
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    
-    print(f"Using model: {checkpoint}, device: {device}")
-
-    print("\nLoading tokenizer and base model")
-    load_checkpoint("hi")
-    print("Loaded tokenizer and base model")
 
     # Set up Gradio interface
     print("\nSetting up Gradio interface...")
