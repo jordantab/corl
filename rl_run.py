@@ -1,6 +1,7 @@
 import io
 import torch
 import torch.optim as optim
+import config
 from torch.optim.adam import Adam
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import random
@@ -29,12 +30,6 @@ def parse_args():
         type=str,
         required=True,
         help="Path to the model checkpoint file",
-    )
-    parser.add_argument(
-        "--from_chunked",
-        type=bool,
-        default=False,
-        help="Path to the directory holding chunked weights for the model",
     )
     parser.add_argument(
         "--num_episodes", type=int, default=10, help="Number of training episodes."
@@ -146,7 +141,7 @@ def generate_code(input_code, temperature=0.6):
         list: The generated optimized code tokens.
     """
     print("Generating optimized code...")
-    print(f"Input code\n: {input_code}")
+    print(f"Input code: {input_code}")
 
     messages = [
         {
@@ -216,6 +211,7 @@ def calculate_score(generated_code_tokens, input_code_tokens):
 
 
 def train(model, tokenizer, optimizer, num_episodes, dataset):
+
     model.train()
     total_losses = []
     reward_scores = []
@@ -354,56 +350,86 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
     print("Training completed.")
 
 
-def apply_chunked_weights(
-    model, checkpoint_path, chunkdir="models/checkpoints/split_state_dict/"
-):
-    # Load and apply each chunk separately
-    chunk_index = 0
-    while True:
-        chunk_path = f"{chunkdir}/chunk_{chunk_index}.pt"
-        try:
-            # Load the chunk
-            chunk_state_dict = torch.load(chunk_path, map_location="cpu")
-            # Apply the chunk to the model
-            print(f"applying chunk {chunk_path}...")
-            model.load_state_dict(chunk_state_dict, strict=False)
-            print(f"done")
-            chunk_index += 1
-        except FileNotFoundError:
-            break
+def load_checkpoint(checkpoint):
+    import torch
+    from transformers import AutoModelForCausalLM, AutoTokenizer
 
-    print(f"applied chunks to model")
-    adaptor_path = os.path.join(checkpoint_path, "adapter_0.pt")
+    tokenizer = AutoTokenizer.from_pretrained(config.DEFAULT_MODEL)
+    model = AutoModelForCausalLM.from_pretrained(
+        config.DEFAULT_MODEL,
+        load_in_8bit=True,  # Optional: Load in 8-bit mode for better performance
+        device_map="auto",  # Optional: Load the model on the appropriate device
+    )
 
-    # Load the adaptor state dict
-    adaptor_state_dict = torch.load(adaptor_path)
-    # Apply the adaptor state dict to the model
-    for name, param in adaptor_state_dict.items():
-        if name in model.state_dict():
-            model.state_dict()[name].copy_(param)
-    print("Adaptor state dict loaded!")
-    return model
+    # Specify the paths to the checkpoint files
+    model_path = "models/checkpoints/python_leq_60_tokens_finetune/meta_model_0.pt"
+    adapter_path = "models/checkpoints/python_leq_60_tokens_finetune/adapter_0.pt"
+
+    # Load the base model state dictionary
+    model_state_dict = torch.load(model_path, map_location="cpu")
+    model.load_state_dict(model_state_dict, strict=False)
+
+    # Load the adapter state dictionary and apply it to the model
+    adapter_state_dict = torch.load(adapter_path, map_location="cpu")
+    model.load_state_dict(adapter_state_dict, strict=False)
+
+    return model, tokenizer
 
 
 if __name__ == "__main__":
     args = parse_args()
+    print("load args")
     checkpoint = args.model_name
     device = "cuda" if torch.cuda.is_available() else "cpu"
+    print("load tokenizer and base model")
+    # model = AutoModelForCausalLM.from_pretrained(checkpoint)
+    # tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 
-    model = AutoModelForCausalLM.from_pretrained(checkpoint)
-    tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+    # Load and apply each chunk separately
+    # chunk_index = 0
+    # while True:
+    #     chunk_path = f"models/checkpoints/split_state_dict/chunk_{chunk_index}.pt"
+    #     try:
+    #         # Load the chunk
+    #         chunk_state_dict = torch.load(chunk_path, map_location="cpu")
+    #         # Apply the chunk to the model
+    #         print(f"applying chunk {chunk_path}...")
+    #         model.load_state_dict(chunk_state_dict, strict=False)
+    #         print(f"done")
+    #         chunk_index += 1
+    #     except FileNotFoundError:
+    #         break
 
-    if args.from_chunked:
-        model = apply_chunked_weights(model, args.checkpoint_path)
+    # print(f"applied chunks to model")
+    # # model_path = os.path.join(args.checkpoint_path, "meta_model_0.pt")
+    # adaptor_path = os.path.join(args.checkpoint_path, "adapter_0.pt")
 
+    # Load the model state dict
+    # model_state_dict = torch.load(model_path, map_location="cpu")
+
+    # model.load_state_dict(model_state_dict, strict=False)
+
+    # Apply the adaptor state dict to the model
+    model, tokenizer = load_checkpoint("hi")
+    print("Adaptor state dict loaded!")
     pipeline = transformers.pipeline(
-        "text-generation", model=model, tokenizer=tokenizer, device=device
+        "text-generation", model=model, tokenizer=tokenizer
     )
+    ## the below commented part is for using a pretrained model from huggingface
+    # pipeline = transformers.pipeline(
+    #     "text-generation",
+    #     model=checkpoint,
+    #     model_kwargs={"torch_dtype": torch.bfloat16},
+    #     device_map="auto",
+    # )
+    # print("set up pipeline")
+    # model = pipeline.model
+    # print("get model from pipeline")
     optimizer = Adam(model.parameters(), lr=1e-5)
     print("set up optimizer, loading dataset")
     dataset = load_dataset(args.dataset_path)
     print(
-        f"Loaded dataset with {len(dataset)} entries, input code is\n: {dataset[0]['input']}"
+        f"Loaded dataset with {len(dataset)} entries, input code is: {dataset[0]['input']}"
     )
     # Start training
     train(model, tokenizer, optimizer, args.num_episodes, dataset)
