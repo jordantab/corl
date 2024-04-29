@@ -30,5 +30,5 @@ DEFAULT_DEEPSPEED = None
 DEFAULT_FP16 = False
 
 # Platform specific configs
-DEFAULT_DEVICE = "cuda"  # for GPU usage or "cuda" for CPU usage
+DEFAULT_DEVICE = "cuda"  # for GPU usage or "cpu" for CPU usage
 DEFAULT_NUM_PROCS = os.cpu_count()
