@@ -1,77 +1,101 @@
+"""
+eval_model.py
+
+Usage:
+    python eval_model.py [--file_path <path_to_dataset>] [--device <device>]
+
+This script evaluates the performance of a transformer model in optimizing Python code snippets in terms
+of runtime and memory usage. It uses specific test cases from a JSON file, generates optimized code using a transformer
+model, and compares these optimizations against baseline implementations to measure improvements.
+Each test case in the JSON file should contain an 'input' (slow code) and 'output' (fast code), along with a 'problem_id'.
+
+Arguments:
+    --file_path: Optional override for the path to the dataset.
+    --device: Specify 'cpu' or 'cuda' to set the device for model computation. Defaults to 'cpu'.
+"""
+
+import argparse
 import json
 import torch
 import transformers
 from unit_tests.run_code import run_tcs
 import os
+import config
 
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 
-def eval_model(checkpoint, dataset):
-    outputs_slow, outputs_fast, outputs_memory_slow, outputs_memory_fast = (
-        [],
-        [],
-        [],
-        [],
+def parse_args():
+    """
+    Parses command-line arguments.
+
+    Returns:
+        An argparse.Namespace object with the parsed arguments.
+    """
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
-
-    for problem in dataset:
-        # get slow_code, fast_code
-        slow_code = problem["input"]
-        fast_code = problem["output"]
-
-        # calculate slow_runtime, fast_runtime
-        verdict_slow, runtime_slow = run_tcs(slow_code, problem["problem_id"])
-        verdict_fast, runtime_fast = run_tcs(fast_code, problem["problem_id"])
-        print(runtime_slow)
-        print(runtime_fast)
-
-        # generate problem statement
-        generated_code = generate_code(checkpoint, problem["input"])
-        print(generated_code)
-
-        # run generated code
-        # verdict, runtime = run_tcs(generated_code, problem["problem_id"])
-        verdict = "Accepted"
-
-        # evaluate generated code
-        if verdict == "Accepted":
-
-            # if runtime < runtime_slow:
-            #     outputs_slow.append(1)
-            # if runtime < runtime_fast:
-            #     outputs_fast.append(1)
-            # if new_memory < memory_slow:
-            #     outputs_memory_slow.append(1)
-            # if new_memory < memory_fast:
-            #     outputs_memory_fast.append(1)
-            outputs_slow.append(0)
-            outputs_fast.append(0)
-            outputs_memory_slow.append(0)
-            outputs_memory_fast.append(0)
-        else:
-            outputs_slow.append(0)
-            outputs_fast.append(0)
-            outputs_memory_slow.append(0)
-            outputs_memory_fast.append(0)
-
-    pct_opt_slow, pct_opt_fast, pct_opt_memory_slow, pct_opt_memory_fast = (
-        calculate_model_metrics(
-            outputs_slow, outputs_fast, outputs_memory_slow, outputs_memory_fast
-        )
+    parser.add_argument(
+        "--file_path",
+        default=config.DEFAULT_TEST_DATASET_PATH,
+        help="Path to the dataset.",
     )
+    parser.add_argument(
+        "--device",
+        default=config.DEFAULT_DEVICE,
+        help="Specify 'cpu' or 'cuda' to set the device for model computation.",
+    )
+    return parser.parse_args()
 
-    return pct_opt_slow, pct_opt_fast, pct_opt_memory_slow, pct_opt_memory_fast
+
+def count_lines_in_string(text: str):
+    lines = text.split("\n")
+    return len(lines)
 
 
-def generate_code(checkpoint, slow_code):
+def eval_model(checkpoint, dataset, device):
+    results = []
     pipeline = transformers.pipeline(
         "text-generation",
         model=checkpoint,
         model_kwargs={"torch_dtype": torch.bfloat16},
-        device_map="auto",  # change to device?
+        device_map=device,
     )
 
+    for problem in dataset:
+        problem_id = problem["problem_id"]
+        slow_code = problem["input"]
+        fast_code = problem["output"]
+
+        num_lines_slow = count_lines_in_string(slow_code)
+        num_lines_fast = count_lines_in_string(fast_code)
+
+        _, runtime_slow = run_tcs(slow_code, problem_id)
+        _, runtime_fast = run_tcs(fast_code, problem_id)
+        generated_code = generate_code(pipeline, slow_code)
+        print("problem_id: ", problem_id)
+        print("generated_code\n", generated_code)
+        num_lines_generated = count_lines_in_string(generated_code)
+        verdict, runtime_generated = run_tcs(generated_code, problem_id)
+        verdict_num = 1 if verdict == "Accepted" else 0
+
+        results.append(
+            {
+                "problem_id": problem_id,
+                "slow": runtime_slow,
+                "fast": runtime_fast,
+                "generated": runtime_generated,
+                "verdict": verdict_num,
+                "num_lines_slow": num_lines_slow,
+                "num_lines_fast": num_lines_fast,
+                "num_lines_generated": num_lines_generated,
+            }
+        )
+
+    return results
+
+
+def generate_code(pipeline, slow_code):
     messages = [
         {
             "role": "system",
@@ -124,14 +148,27 @@ def calculate_model_metrics(
 
 
 def main():
-    checkpoint = "meta-llama/Meta-Llama-3-8B-Instruct"
-    file_path = "./examples/test_python.json"
+    args = parse_args()
+    checkpoint = config.DEFAULT_MODEL
+    file_path = args.file_path
+    device = args.device
 
-    # Open the file in read mode
     with open(file_path, "r") as json_file:
-        # Load the JSON data from the file
         data = json.load(json_file)
-    print(eval_model(checkpoint, data))
+
+    results = eval_model(checkpoint, data, device)
+
+    results_dir = "model_results"
+    os.makedirs(results_dir, exist_ok=True)
+
+    dataset_name = os.path.splitext(os.path.basename(args.file_path))[0]
+    results_filename = f"{dataset_name}_results.json"
+    results_path = os.path.join(results_dir, results_filename)
+
+    with open(results_path, "w") as outfile:
+        json.dump(results, outfile, indent=4)
+
+    print(f"Evaluation completed. Results saved to '{results_path}'.")
 
 
 if __name__ == "__main__":

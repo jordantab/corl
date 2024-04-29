@@ -1,0 +1,1652 @@
+[
+    {
+        "problem_id": "p02957",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b=map(int,input().split())\n\nif (a+b)%2==1:print(\"IMPOSSIBLE\")\n\nelse:print((a+b)//2)",
+        "output": "a,b=map(int,input().split())\n\nif (a+b)%2:print(\"IMPOSSIBLE\")\n\nelse:print(a+(b-a)//2)"
+    },
+    {
+        "problem_id": "p02957",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A, B = map(int, input().split())\n\nprint((A+B)//2 if (A+B) % 2 == 0 else \"IMPOSSIBLE\")",
+        "output": "A,B=map(int,input().split())\n\nprint((A+B)//2 if (A+B)%2==0 else \"IMPOSSIBLE\")"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "n = int(input())\n\nres, i = 0, 1\n\nwhile n > 0:\n\n    res += i\n\n    i *= 2\n\n    n //= 2\n\nprint(res)\n",
+        "output": "N = int(input())\n\n\n\nq = N\n\ncnt = 0\n\n\n\nwhile (q > 1) :\n\n    q = q // 2\n\n    cnt += 1\n\n\n\nprint (2 ** (cnt + 1) - 1)"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "h = int(input())\n\nans = 1\n\nwhile True:\n\n  if h <= ans:\n\n    print(ans)\n\n    break\n\n  ans = 2 * ans + 1",
+        "output": "n = int(input())\n\nm = 1\n\nwhile n > m:\n\n  m *= 2\n\n  m += 1\n\nprint(m)"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print(2**(len(bin(int(input())))-2)-1)",
+        "output": "print(2**(len(bin(int(input())))-2)-1)"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "h = int(input())\n\nans = 0\n\nc = 0\n\nwhile h >0:\n\n    ans += 2**c\n\n    h //= 2\n\n    c+= 1\n\nprint(ans)",
+        "output": "h = int(input())\n\nans = 0\n\nc = 0\n\nwhile h > 0:\n\n    ans += 2**c\n\n    h //=2\n\n    c+= 1\n\nprint(ans)"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print(2**len(format(int(input()),'b'))-1)",
+        "output": "print(2**len(bin(int(input())))//4-1)"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "life=int(input())\n\ncount=0\n\nwhile life>=1:\n\n    life=life/2\n\n    count+=1\n\nprint(2**count-1)\n",
+        "output": "def f(n):\n\n  if n==1:\n\n    return(1)\n\n  else:\n\n    return(2*f(n//2)+1)\n\nn=int(input())\n\nprint(f(n))\n"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "h = int(input())\n\ns = 1\n\nwhile h!=1:\n\n  h //=2\n\n  s += 1\n\nprint(2**s-1)",
+        "output": "h = int(input())\n\ndef a(n):\n\n  if n==1:\n\n    return 1\n\n  else:\n\n    return a(n//2)*2+1\n\n\n\nprint(a(h))"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print(2**(int(input()).bit_length())-1)",
+        "output": "print(~-2**int(input()).bit_length())"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "H = int(input())\n\nn = H.bit_length()\n\nans = (1<<(n))-1\n\nprint(ans)",
+        "output": "print(2**int(input()).bit_length()-1)"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "h=int(input())\n\nans=0\n\nt=1\n\nwhile t<=h:\n\n    t*=2\n\nprint(t-1)",
+        "output": "h=int(input())\n\nans=0\n\nt=1\n\nwhile t<=h:\n\n    t*=2\n\nprint(t-1)\n"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "h = int(input())\n\nans = 1\n\ni = 1\n\nwhile h > 1:\n\n    h = h // 2\n\n    ans += 2 ** i\n\n    i += 1\n\nprint(ans)",
+        "output": "h = int(input())\n\nans = 0\n\ni = 0\n\nwhile h > 0:\n\n    h = h // 2\n\n    ans += 2 ** i\n\n    i += 1\n\nprint(ans)"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "h = int(input())\n\ndef monster(h):\n\n  if h == 1:\n\n    return 1\n\n  return monster(int(h/2))*2+1\n\nprint(monster(h))  ",
+        "output": "h = int(input())\n\ndef monster(h):\n\n  if h == 1:\n\n    return 1\n\n  return monster(int(h/2))*2+1\n\nprint(monster(h))  "
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print(2**int(input()).bit_length() - 1)",
+        "output": "print(2**int(input()).bit_length()-1)"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "H=int(input())\n\ncnt=0\n\nwhile H>0:\n\n  cnt+=1\n\n  H=H//2\n\nprint(2**cnt-1)",
+        "output": "H = int(input())\n\n\n\ncnt = 0\n\nwhile H > 0:\n\n    H //= 2\n\n    cnt += 1\n\nprint(2**cnt-1)"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "H = int(input())\n\n\n\nh = 0\n\nwhile H != 1:\n\n\tH = int(H/2)\n\n\th += 1\n\nprint(2**(h+1)-1)",
+        "output": "H = int(input())\n\n\n\ndef f(x):\n\n\tif x == 1:\n\n\t\treturn 1\n\n\telse:\n\n\t\treturn 2*f(int(x/2)) + 1\n\n\n\nprint(f(H))\n\n\n"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "n = int(input())\n\nans = 0\n\ntmp = 1\n\nwhile (n):\n\n    ans += tmp\n\n    tmp *= 2\n\n    n //= 2\n\n\n\nprint(ans)\n",
+        "output": "n = int(input())\n\n\n\n\n\ndef s(a):\n\n    if a == 0:\n\n        return 0\n\n    return 2*s(a//2)+1\n\n\n\n\n\nprint(s(n))\n"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "h=int(input())\n\n\n\ni=1\n\nans=0\n\nwhile h>0:\n\n   h//=2\n\n   ans+=i\n\n   i*=2\n\nprint(ans)",
+        "output": "h=int(input())\n\nif h==1:\n\n    print(1)\n\n    exit()\n\na=1\n\nwhile h>1:\n\n    h//=2\n\n    a+=1\n\nprint(2**a-1)"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "H=int(input())\n\nx=1\n\nwhile x<=H:\n\n    x*=2\n\nprint(x-1)",
+        "output": "H=int(input())\n\ndef attack(x):\n\n    if x<=1:\n\n        return 1\n\n    return 2*attack(x//2)+1\n\nprint(attack(H))"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a=int(input())\n\nk=2\n\nwhile a>=k:k*=2\n\nprint(k-1)",
+        "output": "print(2**len(bin(int(input())))//4-1)"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A=1\n\nH=int(input())\n\nwhile H!=1:\n\n    A+=1\n\n    H//=2\n\nprint((1<<A)-1)",
+        "output": "print((1<<(int(input()).bit_length()))-1)"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "h=int(input())\n\na=1\n\nc=0\n\nwhile h:h//=2;c+=a;a*=2\n\nprint(c)",
+        "output": "print(2**int(input()).bit_length()-1)"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "import math\n\nH = int(input())\n\nD = math.log2(H) // 1 + 1\n\nprint(int(2**D - 1))\n",
+        "output": "import math\n\nprint(int(2**(math.log2(int(input())) // 1 + 1) - 1))\n"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "from math import *\n\nH = int(input())\n\nprint(2**(int(log2(H))+1)-1)",
+        "output": "print(2**int(input()).bit_length()-1)"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "import math\n\nH=int(input())\n\nprint(2**(math.floor(math.log2(H))+1)-1)\n",
+        "output": "import math\n\nH=int(input())\n\nprint(2**(math.floor(math.log2(H))+1)-1)\n"
+    },
+    {
+        "problem_id": "p02786",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "import math\n\nprint(2**(int(math.log2(int(input())))+1)-1)",
+        "output": "import math\n\nprint(2**(int(math.log2(int(input())))+1)-1)"
+    },
+    {
+        "problem_id": "p02847",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A=[\"SUN\",\"MON\",\"TUE\",\"WED\",\"THU\",\"FRI\",\"SAT\"]\n\nprint(7-A.index(input()))",
+        "output": "s=input()\n\nA=[\"\",\"SAT\",\"FRI\",\"THU\",\"WED\",\"TUE\",\"MON\",\"SUN\"]\n\nprint(A.index(s))"
+    },
+    {
+        "problem_id": "p02847",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nprint(['', 'SAT', 'FRI', 'THU', 'WED', 'TUE', 'MON', 'SUN'].index(s))",
+        "output": "print(7-['SUN','MON','TUE','WED','THU','FRI','SAT'].index(input()))"
+    },
+    {
+        "problem_id": "p02847",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "t=[\"SUN\",\"MON\",\"TUE\",\"WED\",\"THU\",\"FRI\",\"SAT\"];print(7-t.index(input()))",
+        "output": "t=\"SUN,MON,TUE,WED,THU,FRI,SAT\"\n\ns=t.split(\",\")\n\nprint((7-s.index(input())))\n"
+    },
+    {
+        "problem_id": "p02847",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "yo = [\"SUN\", \"MON\", \"TUE\", \"WED\", \"THU\", \"FRI\", \"SAT\", \"\"][::-1]\n\nprint(yo.index(input()))",
+        "output": "print(1+[\"SAT\",\"FRI\",\"THU\",\"WED\",\"TUE\",\"MON\",\"SUN\"].index(input()))"
+    },
+    {
+        "problem_id": "p02847",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s=input()\n\nlist=[\"hoge\",\"SAT\",\"FRI\",\"THU\",\"WED\",\"TUE\",\"MON\",\"SUN\"]\n\nprint(list.index(s))",
+        "output": "s = input()\n\nlist = [\"hoge\", \"SAT\", \"FRI\", \"THU\", \"WED\", \"TUE\", \"MON\", \"SUN\"]\n\nprint(list.index(s))\n"
+    },
+    {
+        "problem_id": "p02847",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "D={\"SUN\":7,\"MON\":6,\"TUE\":5,\"WED\":4,\"THU\":3,\"FRI\":2,\"SAT\":1}\n\nprint(D[input()])\n",
+        "output": "D={\"SUN\":7,\"MON\":6,\"TUE\":5,\"WED\":4,\"THU\":3,\"FRI\":2,\"SAT\":1}\n\nprint(D[input()])\n"
+    },
+    {
+        "problem_id": "p02847",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "w=[\"SUN\",\"MON\",\"TUE\",\"WED\",\"THU\",\"FRI\",\"SAT\"]\n\nprint(7-w.index(input()))",
+        "output": "d={\"SUN\":7,\"MON\":6,\"TUE\":5,\"WED\":4,\"THU\":3,\"FRI\":2,\"SAT\":1}\n\nprint(d[input()])"
+    },
+    {
+        "problem_id": "p02847",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = input()\n\nl = [\"SUN\",\"MON\",\"TUE\",\"WED\",\"THU\",\"FRI\",\"SAT\"]\n\nprint(7-l.index(S))",
+        "output": "S = input()\n\nl = [\"SUN\",\"MON\",\"TUE\",\"WED\",\"THU\",\"FRI\",\"SAT\"]\n\nprint(7-l.index(S))"
+    },
+    {
+        "problem_id": "p02847",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print('  SAFRTHWETUMOSU'.find(input()[:2])//2)",
+        "output": "print(sum(map(ord,input()+'\\n'))**698%6329%8)"
+    },
+    {
+        "problem_id": "p02847",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print({\"SUN\":7,\"MON\":6,\"TUE\":5,\"WED\":4,\"THU\":3,\"FRI\":2,\"SAT\":1}[input()])",
+        "output": "print({\"SUN\":7,\"MON\":6,\"TUE\":5,\"WED\":4,\"THU\":3,\"FRI\":2,\"SAT\":1}[input()])"
+    },
+    {
+        "problem_id": "p02847",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "d = [\"SUN\",\"MON\",\"TUE\",\"WED\",\"THU\",\"FRI\",\"SAT\"]\n\ns = input()\n\nprint(7 - d.index(s))\n",
+        "output": "y = [\"SUN\",\"MON\",\"TUE\",\"WED\",\"THU\",\"FRI\",\"SAT\"]\n\nprint(7-y.index(input()))"
+    },
+    {
+        "problem_id": "p02847",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "d={'SUN':7,'MON':6,'TUE':5,'WED':4,'THU':3,'FRI':2,'SAT':1}\n\nprint(d[input().strip()])",
+        "output": "d={'SUN':7,'MON':6,'TUE':5,'WED':4,'THU':3,'FRI':2,'SAT':1}\n\nprint(d[input()])"
+    },
+    {
+        "problem_id": "p02847",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print(\"SATFRITHUWEDTUEMONSUN\".index(input())//3+1)",
+        "output": "s = input()\n\nl = [\"SUN\",\"MON\",\"TUE\",\"WED\",\"THU\",\"FRI\",\"SAT\",\"SUN\"]\n\nprint(7 - l.index(s))\n"
+    },
+    {
+        "problem_id": "p02847",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S=input()\n\ndays=[\"SAT\",\"FRI\",\"THU\",\"WED\",\"TUE\",\"MON\",\"SUN\"]\n\nprint(days.index(S)+1)",
+        "output": "print([\"\",\"SAT\",\"FRI\",\"THU\",\"WED\",\"TUE\",\"MON\",\"SUN\"].index(input()))"
+    },
+    {
+        "problem_id": "p02847",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nprint([\"\",\"SAT\", \"FRI\", \"THU\", \"WED\", \"TUE\", \"MON\", \"SUN\"].index(s))",
+        "output": "s = input()\n\nprint([\"\",\"SAT\", \"FRI\", \"THU\", \"WED\", \"TUE\", \"MON\", \"SUN\"].index(s))"
+    },
+    {
+        "problem_id": "p03965",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s=input()\n\ng=s.count(\"g\")\n\nl=len(s)\n\nprint(l//2+g-l)",
+        "output": "s=input()\n\nprint(s.count(\"g\")-(len(s)+1)//2)"
+    },
+    {
+        "problem_id": "p03965",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s=[i for i in input()];g,p=s.count(\"g\"),s.count(\"p\");print((g-p)//2)",
+        "output": "s=input()\n\nprint((s.count(\"g\")-s.count(\"p\"))//2)"
+    },
+    {
+        "problem_id": "p03965",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = list(input())\n\ncount = 0\n\nfor i in s:\n\n    if i == 'g':\n\n        count += 1\n\n    else:\n\n        count -= 1\n\nprint(count//2)",
+        "output": "s = list(input())\n\nprint((s.count('g') - s.count('p'))//2)"
+    },
+    {
+        "problem_id": "p03965",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = list(input())\n\nprint((s.count('g') - s.count('p'))//2)",
+        "output": "s=list(input())\n\nprint((len(s)-s.count('p')*2)//2)"
+    },
+    {
+        "problem_id": "p03965",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\n\n\ng_num = s.count(\"g\")\n\nprint(g_num - (len(s)+1)//2)",
+        "output": "s = input()\n\nprint(len(s)//2 - s.count(\"p\"))"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b=map(int,input().split());print('Yay!' if max(a,b)<=8 else ':(')",
+        "output": "print('Yay!'if max(map(int,input().split()))<9 else':(')"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print([\"Yay!\", \":(\", \":(\"][sum([int(x) > 8 for x in input().split()])])\n",
+        "output": "a, b = [int(x) for x in input().split()]\n\nprint([\"Yay!\", \":(\"][a > 8 or b > 8])"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A, B = map(int, input().split())\n\n\n\nif all([A < 9, B < 9]):\n\n    print(\"Yay!\")\n\nelse:\n\n    print(\":(\")\n",
+        "output": "A, B = map(int, input().split())\n\n\n\nif A > 8 or B > 8:\n\n    print(\":(\")\n\nelse:\n\n    print(\"Yay!\")\n"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "(a, b) = map(int, input().split())\n\nif a <= 8 and b <= 8:\n\n    print(\"Yay!\")\n\nelse:\n\n    print(\":(\")",
+        "output": "a, b = map(int, input().split())\n\n\n\nif a <= 8 and b <= 8:\n\n    print(\"Yay!\")\n\nelse:\n\n    print(\":(\")"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print([':(','Yay!'][eval('max('+input().replace(' ',',')+')')<=8])",
+        "output": "a,b=map(int,input().split())\n\nprint([':(','Yay!'][a<9 and b<9])"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A,B = map(int,input().split())\n\nprint(\"Yay!\") if A < 9 and B < 9 else print(\":(\")",
+        "output": "A,B = map(int,input().split())\n\nprint(\"Yay!\") if A < 9 and B < 9 else print(\":(\")"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b = map(int,input().split())\n\nif a <= 8 and b<= 8:\n\n     print(\"Yay!\")\n\nelse:\n\n    print(\":(\")",
+        "output": "a,b = map(int,input().split())\n\nif a <= 8 and b<= 8:\n\n     print(\"Yay!\")\n\nelse:\n\n    print(\":(\")"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A,B = map(int,input().split())\n\nif max(A,B) <= 8:\n\n    print(\"Yay!\")\n\nelse:\n\n    print(\":(\")",
+        "output": "A, B = map(int,input().split())\n\nif A <= 8 and B <= 8:\n\n    print(\"Yay!\")\n\nelse:\n\n    print(\":(\")"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b=map(int,input().split())\n\nif a>8 or b>8:\n\n  print(\":(\")\n\nelse:\n\n  print(\"Yay!\")",
+        "output": "a,b=map(int,input().split())\n\nif a>8 or b>8:\n\n  print(\":(\")\n\nelse:\n\n  print(\"Yay!\")"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A, B = map(int, input().split())  \n\n\n\n\n\nif A>8 or B>8:\n\n    print(':(')\n\nelse:\n\n    print('Yay!')",
+        "output": "A, B = map(int, input().split())\n\n\n\nif A <= 8 and B <= 8:\n\n    print('Yay!')\n\nelse:\n\n    print(':(')"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b = map(int,input().split(\" \"))\n\n\n\nif a <= 8 and b <= 8:\n\n  print('Yay!')\n\nelse:\n\n  print(':(')",
+        "output": "a,b = map(int,input().split(\" \"))\n\n\n\nif a <= 8 and b <= 8:\n\n  print('Yay!')\n\nelse:\n\n  print(':(')"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A,B = map(int,input().split())\n\nif A <=8 and B<=8:\n\n  print(\"Yay!\")\n\nelse:\n\n  print(\":(\")",
+        "output": "A,B = map(int,input().split())\n\nif A<=8 and B<=8 :\n\n    print(\"Yay!\")\n\nelse:\n\n    print(\":(\")"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b=map(int,input().split())\n\nprint(\"Yay!\" if a<9 and b<9 else \":(\")",
+        "output": "print(\"Yay!\" if max(map(int,input().split()))<9 else \":(\")"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b = map(int, input().split())\n\nif a>=9 or b>=9: print(':(')\n\nelse: print('Yay!')",
+        "output": "a, b = map(int, input().split())\n\nif a <= 8 and b <= 8:\n\n  print('Yay!')\n\nelse:\n\n  print(':(')"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A,B = list(map(int,input().split()))\n\nif A <= 8 and B <= 8:\n\n    print(\"Yay!\")\n\nelse:\n\n    print(\":(\")",
+        "output": "A,B = list(map(int,input().split()))\n\n\n\nif A <= 8 and B <= 8:\n\n  print(\"Yay!\")\n\nelse:\n\n  print(\":(\")"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A,B = map(int,input().split())\n\nprint('Yay!' if A <= 8 and B <= 8 else ':(')\n",
+        "output": "A,B = map(int,input().split())\n\nprint('Yay!' if A <= 8 and B <= 8 else ':(')\n"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A,B = map(int,input().split())\n\nprint('Yay!' if A <= 8 and B <= 8 else ':(')\n",
+        "output": "A,B = map(int,input().split())\n\nprint('Yay!' if A <= 8 and B <= 8 else ':(')\n"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A,B = map(int,input().split())\n\nprint('Yay!' if A <= 8 and B <= 8 else ':(')\n",
+        "output": "A,B = map(int,input().split())\n\nprint('Yay!' if A <= 8 and B <= 8 else ':(')\n"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b = map(int, input().split())\n\nprint(\"Yay!\" if a <= 8 and b <= 8 else \":(\")\n",
+        "output": "a, b = map(int, input().split())\n\nprint(\"Yay!\" if a <= 8 and b <= 8 else \":(\")\n"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A,B = sorted(list(map(int,input().split())))\n\n\n\nif B<=8:\n\n  print(\"Yay!\")\n\nelse:\n\n  print(\":(\")",
+        "output": "A,B = sorted(list(map(int,input().split())))\n\n\n\nif B<=8:\n\n  print(\"Yay!\")\n\nelse:\n\n  print(\":(\")"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A,B = map(int,input().split())\n\nprint([\":(\",\"Yay!\"][A<9 and B<9])",
+        "output": "if max(map(int,input().split()))<=8:\n\n  print(\"Yay!\")\n\nelse:\n\n  print(\":(\")"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b = map(int,input().split())\n\n\n\nif max(a,b)<=8:\n\n  print(\"Yay!\")\n\nelse:\n\n  print(\":(\")",
+        "output": "if max(map(int,input().split()))<=8:\n\n  print(\"Yay!\")\n\nelse:\n\n  print(\":(\")"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b=map(int,input().split())\n\nif a<=8 and b<=8:\n\n  print(\"Yay!\")\n\nelse:\n\n  print(\":(\")",
+        "output": "print(\"Yay!\" if max(map(int,input().split()))<9 else \":(\")"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b = map(int, input().split())\n\nif(a <= 8 and b <= 8):\n\n    print(\"Yay!\")\n\nelse:\n\n    print(\":(\")\n",
+        "output": "line = input()\n\nA, B = [int(n) for n in line.split()]\n\nif A > 8 or B > 8:\n\n    print(\":(\")\n\nelse:\n\n    print(\"Yay!\")"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "\n\n\n\nA,B=map(int,input().split())\n\n\n\nif A<=8 and B<=8:\n\n\tprint(\"Yay!\")\n\nelse:\n\n\tprint(\":(\")\n",
+        "output": "A,B=map(int,input().split())\n\n\n\nif A<=8 and B<=8:\n\n\tprint(\"Yay!\")\n\nelse:\n\n\tprint(\":(\")"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A, B = map(int,input().split())\n\n\n\nif(A < 9 and B < 9):\n\n  print(\"Yay!\")\n\nelse:\n\n  print(\":(\")",
+        "output": "A, B = map(int,input().split())\n\nif(A <= 8 and B <= 8):\n\n  print(\"Yay!\")\n\nelse:\n\n  print(\":(\")\n"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b = map(int,input().split())\n\nif(a < 9 and b < 9):\n\n  print(\"Yay!\")\n\nelse:\n\n  print(\":(\")",
+        "output": "A, B = map(int,input().split())\n\nif(A < 9 and B < 9):\n\n  print(\"Yay!\")\n\nelse:\n\n  print(\":(\")"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A, B = map(int, input().split())\n\nans = 'Yay!' if A <= 8 and B <= 8 else ':('\n\nprint(ans)\n",
+        "output": "A, B = map(int, input().split())\n\nans = 'Yay!' if max(A, B) <= 8 else ':('\n\nprint(ans)\n"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b = map(int, input().split())\n\n \n\nif a <= 8 and b <= 8:\n\n    print('Yay!')\n\nelse:\n\n    print(':(')\n\n   ",
+        "output": "a, b = map(int, input().split())\n\n\n\nprint('Yay!' if a <= 8 and b <= 8 else ':(')\n"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A,B = map(int,input().split(\" \"))\n\nif A <= 8 and B <= 8:\n\n\tprint(\"Yay!\")\n\nelse:\n\n\tprint(\":(\")",
+        "output": "A,B = map(int,input().split(\" \"))\n\nif A <= 8 and B <= 8:\n\n\tprint(\"Yay!\")\n\nelse:\n\n\tprint(\":(\")\n\n\n"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b = map(int,input().split())\n\n\n\nif a > 8 or b > 8:\n\n  print(\":(\")\n\nelse:\n\n  print(\"Yay!\")",
+        "output": "a,b = map(int,input().split())\n\n\n\nif a>8 or b>8:\n\n  print(\":(\")\n\nelse:\n\n  print(\"Yay!\")"
+    },
+    {
+        "problem_id": "p03323",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A = [int(i) for i in input().split()]\n\nif max(A) <= 8:\n\n    print('Yay!')\n\nelse:\n\n    print(':(')",
+        "output": "A, B = map(int, input().split())\n\nprint('Yay!' if A <= 8 and B <= 8 else ':(')"
+    },
+    {
+        "problem_id": "p03698",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s=list(input())\n\nss=set(s)\n\nprint('yes' if len(s)==len(ss) else 'no')",
+        "output": "s=input()\n\nst=set(s)\n\nprint('yes' if len(st)==len(s) else 'no')"
+    },
+    {
+        "problem_id": "p03698",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nprint(\"yes\" if len(s) == len(list(set(s))) else \"no\")",
+        "output": "s = input()\n\nprint(\"no\" if len(s) - len(set(s)) else \"yes\")\n"
+    },
+    {
+        "problem_id": "p03698",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a = list(input());b = set(a);print(\"yes\") if(len(a)==len(b)) else print(\"no\")",
+        "output": "a = list(input());print(\"yes\" if(len(a)==len(set(a))) else \"no\")\n"
+    },
+    {
+        "problem_id": "p03698",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nprint(\"yes\" if len(s)==len(list(set(s))) else \"no\")",
+        "output": "s = input()\n\nprint(\"yes\" if len(s)==len(set(s)) else \"no\")"
+    },
+    {
+        "problem_id": "p03698",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = str(input())\n\n\n\nif len(s) == len(set(s)):\n\n    print(\"yes\")\n\nelse:\n\n    print(\"no\")",
+        "output": "s = str(input())\n\n\n\nif len(s) == len(set(s)):\n\n    print(\"yes\")\n\nelse:\n\n    print(\"no\")"
+    },
+    {
+        "problem_id": "p03698",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = input()\n\ns = set(S)\n\nif len(s) == len(S):\n\n  print(\"yes\")\n\nelse:\n\n  print(\"no\")",
+        "output": "S = input()\n\nif len(S) == len(set(S)):\n\n    print(\"yes\")\n\nelse:\n\n    print(\"no\")\n"
+    },
+    {
+        "problem_id": "p03698",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nimport collections\n\nc = collections.Counter(s)\n\nprint(\"yes\" if all(x == 1 for x in c.values()) else \"no\")",
+        "output": "s = input()\n\nimport collections\n\nc = collections.Counter(s)\n\nprint(\"yes\" if all(x == 1 for x in c.values()) else \"no\")"
+    },
+    {
+        "problem_id": "p03698",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s=input()\n\nprint(\"no\" if len(s)-len(set(s)) else \"yes\")",
+        "output": "S = input()\n\nprint(\"no\" if len(S)-len(set(S)) else \"yes\")"
+    },
+    {
+        "problem_id": "p03698",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = input()\n\nif len(set(S)) == len(S):\n\n    print(\"yes\")\n\nelse:\n\n    print((\"no\"))",
+        "output": "S = input()\n\n\n\nif len(set(S)) == len(S):\n\n    print(\"yes\")\n\nelse:\n\n    print((\"no\"))"
+    },
+    {
+        "problem_id": "p03698",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s=input();print('yneos'[len(s)!=len(set(s))::2])",
+        "output": "s=input();print('yneos'[len(s)>len(set(s))::2])"
+    },
+    {
+        "problem_id": "p03698",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "# -*- coding: utf-8 -*-\n\n\n\ns = input()\n\n\n\nprint('yes' if len(s) == len(set(s)) else 'no')",
+        "output": "# -*- coding: utf-8 -*-\n\n\n\ns = input()\n\n\n\nprint('yes' if len(s) == len(set(s)) else 'no')"
+    },
+    {
+        "problem_id": "p03698",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = input()\n\nfor s in S:\n\n  if(S.count(s) != 1):\n\n    print('no')\n\n    break\n\nelse:\n\n  print('yes')",
+        "output": "S = input()\n\n\n\nif(len(set(S)) == len(S)):\n\n  print(\"yes\")\n\nelse:\n\n  print(\"no\")"
+    },
+    {
+        "problem_id": "p03698",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nprint('yes' if len(s) == len(set(s)) else 'no')",
+        "output": "s = input()\n\ns2 = set(s)\n\nprint('yes' if len(s) == len(s2) else 'no')"
+    },
+    {
+        "problem_id": "p02553",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b, c, d = map(int, input().split())\n\nans = max(a * c, a * d, b * c, b * d)\n\nprint(ans)\n",
+        "output": "from itertools import product\n\na, b, c, d = map(int, input().split())\n\nprint(max(v[0] * v[1] for v in product((a, b), (c, d))))\n"
+    },
+    {
+        "problem_id": "p02553",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b,c,d = map(int,input().split())\n\nprint(max([a*c,a*d,b*c,b*d]))\n",
+        "output": "a,b,c,d = map(int,input().split())\n\nans=[]\n\nfor X in [a,b]:\n\n  for Y in [c,d]:\n\n    ans.append(X*Y)\n\nprint(max(ans))\n"
+    },
+    {
+        "problem_id": "p02553",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b,c,d=map(int,input().split())\n\nans=max(max(a*c,a*d),max(b*c,b*d))\n\nprint(ans)",
+        "output": "a,b,c,d=map(int,input().split())\n\nans=max(max(a*c,a*d),max(b*c,b*d))\n\nprint(ans)"
+    },
+    {
+        "problem_id": "p02553",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b, c, d = map(int, input().split())\n\nprint(max(a*c,a*d,b*c,b*d))\n",
+        "output": "a,b,c,d=map(int,input().split())\n\nprint(max(a*c,a*d,b*c,b*d))\n"
+    },
+    {
+        "problem_id": "p02553",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b,c,d=map(int,input().split())\n\nprint(max(max(max(a*c,a*d),b*c),b*d))",
+        "output": "a,b,c,d=map(int,input().split())\n\nl=[a*c,a*d,b*c,b*d]\n\nprint(max(l))"
+    },
+    {
+        "problem_id": "p02553",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b, c, d = map(int, input().split())\n\nprint(max(a*c, a*d, b*c, b*d))",
+        "output": "a, b, c, d = map(int, input().split())\n\nans = max(a*c, a*d, b*c, b*d)\n\nprint(ans)\n"
+    },
+    {
+        "problem_id": "p02553",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b, c, d = map(int, input().split())\n\nprint(max(a * c, a * d, b * c, b * d))",
+        "output": "a, b, c, d = map(int,input().split())\n\nprint(max(a*c, a*d, b*c, b*d))"
+    },
+    {
+        "problem_id": "p02553",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b, c, d = map(int, input().split())\n\nprint(max(a*c, a*d, b*c, b*d))",
+        "output": "a, b, c, d = map(int, input().split())\n\nprint(max(a*c, a*d, b*c, b*d))"
+    },
+    {
+        "problem_id": "p02553",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b, c, d = map(int, input().split())\n\nprint(max(a*c, a*d, b*c, b*d))",
+        "output": "a, b, c, d = map(int, input().split())\n\nprint(max(a*c, a*d, b*c, b*d))"
+    },
+    {
+        "problem_id": "p03481",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "X,Y=map(int,input().split())\n\nans=0\n\nfor i in range(10000):\n\n  if X*2**i > Y:\n\n    print(i)\n\n    break",
+        "output": "X,Y=map(int,input().split())\n\nans=0\n\nfor i in range(100):\n\n  if X*(2**i) > Y:\n\n    print(i)\n\n    break"
+    },
+    {
+        "problem_id": "p03481",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "X,Y = map(int, input().split())\n\n\n\nans = 0\n\nwhile X <= Y:\n\n    ans += 1\n\n    X = X << 1\n\n    \n\nprint(ans)\n",
+        "output": "x,y = map(int, input().split())\n\n\n\ncnt = 0\n\nwhile x <= y:\n\n    x *= 2\n\n    cnt += 1\n\nprint(cnt)\n"
+    },
+    {
+        "problem_id": "p03481",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "X,Y = map(int,input().split())\n\nk = 0\n\nwhile X<=Y:\n\n    k += 1\n\n    X = X*2\n\nprint(k)",
+        "output": "X,Y = map(int,input().split())\n\nk = 0\n\nwhile X*2**k<=Y:\n\n    k += 1\n\nprint(k)"
+    },
+    {
+        "problem_id": "p03481",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "X,Y = map(int,input().split())\n\nans = 0\n\nwhile X <= Y:\n\n    X *= 2\n\n    ans += 1\n\nprint(ans)",
+        "output": "X,Y = map(int,input().split())\n\nans = 0\n\nwhile X <= Y:\n\n    ans += 1\n\n    X *= 2\n\nprint(ans)"
+    },
+    {
+        "problem_id": "p03481",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "x, y = map(int, input().split())\n\nans = 0\n\nwhile x <= y:\n\n    x *= 2\n\n    ans += 1\n\nprint(ans)",
+        "output": "x, y = map(int, input().split())\n\n\n\nans = 0\n\nwhile x <= y:\n\n    ans += 1\n\n    x *= 2\n\n\n\nprint(ans)"
+    },
+    {
+        "problem_id": "p03481",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "x, y = map(int, input().split())\n\nans = 0\n\nwhile x <= y:\n\n    x *= 2\n\n    ans += 1\n\nprint(ans)\n",
+        "output": "x, y = map(int, input().split())\n\nans = 0\n\nwhile x <= y:\n\n    x *= 2\n\n    ans += 1\n\nprint(ans)\n"
+    },
+    {
+        "problem_id": "p03481",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "X, Y = map(int, input().split())\n\nans = 0\n\nwhile X <= Y:\n\n    X *= 2\n\n    ans += 1\n\n\n\nprint(ans)\n",
+        "output": "X, Y = map(int, input().split())\n\nans = 0\n\nwhile X <= Y:\n\n    X *= 2\n\n    ans += 1\n\n\n\nprint(ans)\n"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print([700,800,900,1000][input().count('o')])",
+        "output": "print(700+sum([100 for i in input() if i=='o']))"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a=input();print((a.count(\"o\")+7)*100)",
+        "output": "print((input().count(\"o\")+7)*100)"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nex = s.count(\"o\")\n\nprint(700 + 100 * ex)",
+        "output": "s = input()\n\nex = s.count(\"o\")\n\nprint(700 + 100 * ex)"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nex = s.count(\"o\")\n\nprint(700 + 100 * ex)",
+        "output": "s = input()\n\nex = int(s.count(\"o\"))\n\nprint(700 + 100 * ex)"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = input()\n\nN = 700\n\nfor i in range(3):\n\n    if S[i] == 'o':\n\n        N = N + 100\n\nprint (N)",
+        "output": "S = input()\n\nN = 700\n\nfor i in range(3):\n\n    if S[i] == 'o':\n\n        N = N + 100\n\nprint (N)"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nnum = s.count(\"o\")\n\nans = 700 + num*100\n\nprint(ans)",
+        "output": "S = input()\n\nprint(700+S.count(\"o\")*100)\n"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nc = s.count(\"o\")\n\nprint(700 + 100 * c)",
+        "output": "s = input()\n\np = 700\n\nfor c in s:\n\n    if c == 'o':\n\n        p += 100\n\n\n\nprint(p)"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print(input().count(\"o\")*100+700)",
+        "output": "print((input().count(\"o\")+7)*100)"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a = input()\n\nans = 700\n\nc = list(filter(lambda b: b == 'o', a))\n\nprint(ans + 100*len(c))\n",
+        "output": "a = input()\n\nans = 700\n\nc = list(filter(lambda b: b == 'o', a))\n\nprint(ans + 100*len(c))\n"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "# ABC 095: A \u2013 Something on It\n\ns = input()\n\nprint(700 + 100 * s.count('o'))",
+        "output": "# ABC 095: A \u2013 Something on It\n\ns = input()\n\nprint(700 + s.count('o') * 100)"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = input()\n\nprint(700+100*S.count(\"o\"))",
+        "output": "S = input()\n\nprint(700+100*S.count(\"o\"))"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s=input()\n\nco=s.count(\"o\")\n\nvalue=700+100*co\n\nprint(value)\n",
+        "output": "s=input()\n\nco=s.count(\"o\")\n\nvalue=700+100*co\n\nprint(value)\n"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = input()\n\n\n\nanswer = 700\n\nfor s in S:\n\n  if s == \"o\":\n\n    answer += 100\n\n\n\nprint(answer)",
+        "output": "S = input()\n\n\n\nanswer = 700\n\nfor s in S:\n\n  if s == \"o\":\n\n    answer += 100\n\n\n\nprint(answer)"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A = input().count(\"o\")\n\nprint(700+A*100)",
+        "output": "print(700+input().count(\"o\")*100)"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = input()\n\n\n\nprint(700 + (100*S.count('o')))\n",
+        "output": "S = input()\n\nprint(700 + (100 * S.count('o')))\n"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print(700+100*int(input().count(\"o\")))",
+        "output": "print(700+100*input().count(\"o\"))"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "toppingu = input()\n\ntoppingu = toppingu.count(\"o\")\n\n\n\nprint(700+int(100 * int(toppingu)))",
+        "output": "S=input()\n\nT=S.count(\"o\")\n\nprint(700+T*100)\n"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s=input()\n\nprice=700\n\nfor j in range(len(s)):\n\n  if s[j]=='o':\n\n    price+=100\n\nprint(price)\n",
+        "output": "s=input()\n\n\n\nnum=s.count('o')\n\nprice=700+100*num\n\nprint(price)"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print(input().count('o')*100+700)",
+        "output": "print(700+input().count('o')*100)"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = input()\n\ns = S.count('o')*100\n\n \n\nprint(700+s)",
+        "output": "S = input()\n\ns = S.count(\"o\")*100\n\n \n\nprint(700+s)"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nprint(700 + s.count('o')*100)",
+        "output": "s = input()\n\nprint(700+s.count('o')*100)"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nprint(700+100*int(s.count('o')))",
+        "output": "S = input()\n\nprice = 700\n\nfor i in range(len(S)):\n\n    if S[i] == 'o':\n\n        price += 100\n\n    elif S[i] == 'x':\n\n        pass\n\nprint(price)"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print(700+100*input().count(\"o\"))",
+        "output": "print(700+100*input().count(\"o\"))"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print(700+input().count('o')*100)",
+        "output": "print(700+input().count('o')*100)"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print(700+100*input().count(\"o\"))",
+        "output": "print(700+100*input().count(\"o\"))"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print(700+100*(input().count(\"o\")))",
+        "output": "print(700+100*input().count(\"o\"))"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = list(input())\n\nsum = 700\n\nfor i in range(3):\n\n    if S[i] == \"o\":\n\n        sum += 100\n\nprint(sum)\n\n#go\n",
+        "output": "S = list(input())\n\nsum = 700\n\nfor i in range(3):\n\n    if S[i] == \"o\":\n\n        sum += 100\n\nprint(sum)"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = list(input())\n\nsum = 700\n\nfor i in range(3):\n\n    if S[i] == \"o\":\n\n        sum += 100\n\nprint(sum)",
+        "output": "print(700 + input().count(\"o\") * 100)\n"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nprint(700 + s.count(\"o\") * 100)\n",
+        "output": "s = input()\n\nprint(700 + s.count(\"o\") * 100)"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a = input()\n\nb = 700\n\nfor i in a:\n\n    if i == \"o\":\n\n        b += 100\n\nprint(b)",
+        "output": "a = input()\n\nb = 700\n\nfor i in a:\n\n    if i == \"o\":\n\n        b += 100\n\nprint(b)"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a = input().count(\"o\")\n\nprint(700 + 100 * a)",
+        "output": "\n\nprint(700 + 100 * input().count(\"o\"))"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print(700+input().count(\"o\")*100)",
+        "output": "print([7,8,9,10][input().count(\"o\")]*100)"
+    },
+    {
+        "problem_id": "p03369",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = input()\n\nfrom collections import Counter\n\nc = Counter(S)\n\nanswer = 700 + 100 * c['o']\n\nprint(answer)",
+        "output": "print(700+100*input().count(\"o\"))"
+    },
+    {
+        "problem_id": "p04047",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "n = int(input())\n\nl = tuple(sorted(map(int, input().split())))\n\n\n\nprint(sum(l[::2]))",
+        "output": "input()\n\nprint(sum(sorted(map(int, input().split()))[::2]))\n\n\n"
+    },
+    {
+        "problem_id": "p04047",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "input();print(sum(sorted(map(int,input().split()))[::2]))",
+        "output": "n,l=open(0);print(sum(sorted(map(int,l.split()))[::2]))"
+    },
+    {
+        "problem_id": "p03852",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print(['consonant','vowel'][input() in list('aiueo')])",
+        "output": "print(['consonant','vowel'][input() in'aiueo'])"
+    },
+    {
+        "problem_id": "p03852",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "c = input()\n\nprint(\"vowel\" if c in \"aiueo\" else \"consonant\")",
+        "output": "print((\"consonant\", \"vowel\")[input() in \"aiueo\"])"
+    },
+    {
+        "problem_id": "p03852",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "c = input()\n\nif c in \"aeiou\":\n\n  print(\"vowel\")\n\nelse:\n\n  print(\"consonant\")",
+        "output": "c = input()\n\nprint(\"vowel\" if c in \"aeiou\" else \"consonant\")"
+    },
+    {
+        "problem_id": "p03852",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "#coding: utf-8\n\nprint(\"vowel\" if input() in \"aiueo\" else \"consonant\")\n",
+        "output": "#coding: utf-8\n\nprint([\"consonant\",\"vowel\"][input() in \"aiueo\"])"
+    },
+    {
+        "problem_id": "p03852",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "c=input()\n\nprint('vowel' if c in 'aiueo' else 'consonant')",
+        "output": "c=input()\n\nprint([\"consonant\",\"vowel\"][c in \"aiueo\"])"
+    },
+    {
+        "problem_id": "p03852",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "c=input()\n\nprint(['consonant','vowel'][c in ['a','i','e','o','u']])",
+        "output": "print(['consonant','vowel'][input() in 'aieou'])"
+    },
+    {
+        "problem_id": "p03852",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "val = input()\n\narray = [\"a\", \"i\", \"u\", \"e\", \"o\"]\n\nprint(\"vowel\" if val in array else \"consonant\")",
+        "output": "a = input()\n\narray = [\"a\", \"i\", \"u\", \"e\", \"o\"]\n\nprint(\"vowel\" if a in array else \"consonant\")"
+    },
+    {
+        "problem_id": "p03852",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print(['consonant','vowel'][input()in['a','e','i','o','u']])",
+        "output": "print(['consonant','vowel'][input() in 'aiueo'])"
+    },
+    {
+        "problem_id": "p03852",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "C = input()\n\nprint(\"vowel\" if C in \"aiueo\" else \"consonant\")",
+        "output": "C = input()\n\nprint(\"vowel\" if C in \"aiueo\" else \"consonant\")\n"
+    },
+    {
+        "problem_id": "p03852",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "c = input()\n\nprint(\"vowel\" if c in \"aiueo\" else \"consonant\")",
+        "output": "c = input()\n\nif c in \"aiueo\":\n\n  print(\"vowel\")\n\nelse:\n\n  print(\"consonant\")"
+    },
+    {
+        "problem_id": "p03852",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "list=[\"a\",\"i\",\"u\",\"e\",\"o\"]\n\nif input() in list:\n\n    print(\"vowel\")\n\nelse:\n\n    print(\"consonant\")",
+        "output": "list=[\"a\",\"i\",\"u\",\"e\",\"o\"]\n\nif input() in list:\n\n    print(\"vowel\")\n\nelse:\n\n    print(\"consonant\")"
+    },
+    {
+        "problem_id": "p03852",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "c = input()\n\n\n\nlist = ['a','i','u','e','o']\n\n\n\nif c in list:\n\n  print('vowel')\n\nelse:\n\n  print('consonant')",
+        "output": "s = input()\n\na = {'a','i','u','e','o'}\n\n\n\nif s in a:\n\n  print('vowel')\n\nelse:\n\n  print('consonant')"
+    },
+    {
+        "problem_id": "p03852",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "c = str(input())\n\nv = ['a','e','i','o','u']\n\n\n\nif c in v:\n\n  print('vowel')\n\nelse:print('consonant')",
+        "output": "c = str(input())\n\n\n\nif (c=='a' or c=='i' or c=='u' or c=='e' or c=='o'):\n\n  print('vowel')\n\nelse:print('consonant')"
+    },
+    {
+        "problem_id": "p03852",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "C = input()\n\n\n\nif C in [\"a\",\"i\",\"u\",\"e\",\"o\"]:\n\n    print(\"vowel\")\n\nelse:\n\n    print(\"consonant\")",
+        "output": "c = input()\n\nif c in [\"a\",\"i\",\"u\",\"e\",\"o\"]:\n\n     print(\"vowel\")\n\nelse:\n\n    print(\"consonant\")"
+    },
+    {
+        "problem_id": "p03852",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "c=input()\n\nprint(\"vowel\" if c in \"aiueo\" else \"consonant\")",
+        "output": "c = input()\n\nif c in \"aiueo\":\n\n    print(\"vowel\")\n\nelse:\n\n    print(\"consonant\")"
+    },
+    {
+        "problem_id": "p03852",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print('vowel'*(input()in'aiueo')or'consonant')",
+        "output": "print(('consonant','vowel')[input()in'aiueo'])"
+    },
+    {
+        "problem_id": "p03852",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "c=input()\n\nif c in \"aiueo\":\n\n    print(\"vowel\")\n\nelse:\n\n    print(\"consonant\")",
+        "output": "c=input()\n\nif c in \"aiueo\":\n\n    print(\"vowel\")\n\nelse:\n\n    print(\"consonant\")\n"
+    },
+    {
+        "problem_id": "p03852",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print('vowel' if input() in list('aeiou') else 'consonant')",
+        "output": "print('vowel' if input() in 'aeiou' else 'consonant')"
+    },
+    {
+        "problem_id": "p03852",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "letter = input()\n\n\n\nif letter in \"aeiou\":\n\n  print(\"vowel\")\n\nelse:\n\n  print(\"consonant\")",
+        "output": "s = input()\n\n\n\nif s in \"aeiou\":\n\n  print(\"vowel\")\n\nelse:\n\n  print(\"consonant\")"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "N = int(input())\n\nx = N * 800\n\ny = (N // 15) * 200\n\nprint(x-y)",
+        "output": "N = int(input())\n\nprint(N*800-N//15*200)"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "n=int(input())\n\nans=800*n-200*(n//15)\n\nprint(ans)",
+        "output": "n=int(input())\n\nans=800*n-200*(n//15)\n\nprint(ans)"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "meals = int(input())\n\n\n\nprint(800 * meals - meals // 15 * 200)\n",
+        "output": "unit_price = 800\n\nreward_money = 200\n\n\n\nmeals = int(input())\n\n\n\nprint(unit_price * meals - meals // 15 * reward_money)\n"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "n = int(input())\n\nprint(n*800-n//15*200)",
+        "output": "n=int(input());print(n*800-n//15*200)\n"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "n = int(input())\n\nans = n * 800 - n//15 * 200\n\nprint (ans)",
+        "output": "n = int(input())\n\nx = 800*n\n\ny = int(n/15)\n\nprint (x-200*y)"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "# A - Restaurant\n\nn = int(input())\n\nprint(800 * n - n // 15 * 200)",
+        "output": "# ABC 055: A \u2013 Restaurant\n\nn = int(input())\n\nprint(n * 800 - n // 15 * 200)"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "n=int(input());print(n*800-n//15*200)",
+        "output": "n=int(input());print(n*800-n//15*200)"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "x = int(input())\n\n\n\nans =( 800*x) - ((x//15)*200)\n\n\n\nprint( ans)",
+        "output": "n = int(input())\n\nx = n*800\n\ny = 200*(n//15)\n\nprint(x-y)\n"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "n = int(input())\n\nx = n * 800\n\ny = (n // 15) * 200\n\nprint(x - y)",
+        "output": "def main():\n\n    N = int(input())\n\n    prices = N * 800\n\n    discount = (N // 15) * 200\n\n    print(prices - discount)\n\n\n\nif __name__ == '__main__':\n\n    main()"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "n=int(input())\n\nprint(n*800-200*(n//15))",
+        "output": "n=int(input())\n\nprint(n*800-n//15*200)"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "n=int(input())\n\nx,y=n*800,n//15*200\n\nprint(x-y)",
+        "output": "n=int(input())\n\nprint(n*800-n//15*200)"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "N = int(input())\n\nx = N*800\n\ny = (N//15)*200\n\nprint(x-y)",
+        "output": "N = int(input())\n\nx = 800*N\n\ny = (N//15)*200\n\nprint(x-y)"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "N = int(input())\n\nx = 800*N\n\ny = (N//15)*200\n\nprint(x-y)",
+        "output": "N = int(input())\n\na = N//15\n\nprint(N*800-a*200)"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "N = int(input())\n\nprint(800 * N - N // 15 * 200)",
+        "output": "print((lambda N: 800 * N - N // 15 * 200)(int(input())))"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a = int(input())\n\nb = int(a/15)\n\nprint(800*a-200*b)",
+        "output": "n = int(input())\n\nprint(n * 800 - (n // 15) * 200)"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "N = int(input())\n\nprint(800*N-(N//15)*200)",
+        "output": "# coding: utf-8\n\n\n\nN = int(input())\n\nans = 800*N - N//15*200\n\nprint(ans)"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "n=int(input());print(n*800-n//15*200)",
+        "output": "n=int(input());print(int(40/3*(n*59+n%15)))"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "N= int(input())\n\nprint(N*800-(N//15)*200)",
+        "output": "N= int(input())\n\nprint(N*800-(N//15)*200)\n"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "N = int(input())\n\n\n\nprint(800*N - 200*(N//15))",
+        "output": "n = int(input())\n\nprint(n*800 - n//15*200)\n"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a=int(input())\n\nprint(a*800-200*(a//15))",
+        "output": "a=int(input())\n\nprint(a*800-a//15*200)\n"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "N = int(input())\n\nx = N * 800\n\ny = (N//15)*200\n\nprint(x - y)",
+        "output": "N = int(input())\n\nprint(N*800 - 200*(N//15))"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "N = int(input())\n\n\n\nx = N*800\n\ny = (N//15)*200\n\nprint(x-y)",
+        "output": "N = int(input())\n\nx = 800*N\n\ny = (N//15)*200\n\nprint(x-y)\n"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "n=int(input())\n\ny=(n//15)*200\n\nx=n*800\n\nprint(x-y)",
+        "output": "n=int(input())\n\ny=(n//15)*200\n\nx=n*800\n\nprint(x-y)\n"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "# ABC055 A - Restaurant\n\nn = int(input())\n\nx = 800*n \n\ny = (n//15)*200\n\nprint(int(x-y))\n",
+        "output": "n=int(input())\n\nx=800*n\n\ny=(n//15)*200\n\nprint(x-y)"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "n = int(input())\n\nprint((n*800)-((n//15)*200))",
+        "output": "n = int(input())\n\nprint((n*800)-(n//15*200))"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "n = int(input())\n\nprint((n * 800) - (n // 15 * 200))",
+        "output": "N = int(input())\n\nprint(N * 800 - N // 15 * 200)"
+    },
+    {
+        "problem_id": "p03795",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a = int(input())\n\nb = 800*a\n\nc = a//15*200\n\nprint(b-c)",
+        "output": "a = int(input())\n\nb = 800*a\n\nc = a//15*200\n\nprint(b-c)"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b=map(int,input().split())\n\nk=a-1\n\nif b>=a:\n\n  k+=1\n\nprint(k)",
+        "output": "a,b=map(int,input().split())\n\nif a<=b:\n\n  print(a)\n\nelse:\n\n  print(a-1)"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b=map(int,input().split())\n\nprint(a-(a>b))",
+        "output": "a,b=map(int,input().split())\n\nprint(a-(a>b))"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "(a, b) = map(int, input().split())\n\nif a <= b:\n\n    print(a)\n\nelse:\n\n    print(a - 1)",
+        "output": "a, b = map(int, input().split())\n\nif b >= a:\n\n    ans = a\n\nelse:\n\n    ans = a-1\n\nprint(ans)"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "x,y = map(int,input().split())\t\n\nprint([x,x-1][y < x])\n",
+        "output": "x,y = map(int,input().split())\t\n\nprint([x,x-1][y < x])\n"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b = map(int,input().split())\n\nans = a\n\nif a > b:\n\n    ans -= 1\n\nprint(ans)",
+        "output": "a, b = map(int,input().split())\n\nans = a\n\nif a > b:\n\n    ans -= 1\n\nprint(ans)"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b = map(int, input().split())\n\n\n\nif a > b:\n\n\tprint(a - 1)\n\nelse:\n\n\tprint(a)",
+        "output": "a, b = map(int, input().split())\n\n\n\nif a > b:\n\n\tprint(a - 1)\n\nelse:\n\n\tprint(a)\n"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b = map(int,input().split())\n\nif a <= b:\n\n    print(a)\n\nelse:\n\n    print(a-1)",
+        "output": "a,b = map(int,input().split())\n\nif a <= b:\n\n    print(a)\n\nelse:\n\n    print(a-1)"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b= map(int,input().split())\n\nprint(a-1 + (1 if a <= b else 0))",
+        "output": "a,b = map(int, input().split())\n\nprint(a - (1 if b < a else 0))"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b = map(int, input().split())\n\nprint(a if a <= b else a - 1)",
+        "output": "a, b = map(int, input().split())\n\nfor i in range(1, 13):\n\n    if a > b:\n\n        ans = a - 1\n\n    else:\n\n        ans = a\n\nprint(ans)"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b=map(int,input().split())\n\nif a<=b:\n\n    print(a)\n\nelse:\n\n    print(a-1)",
+        "output": "a,b=map(int,input().split())\n\nif b>=a:\n\n    print(a)\n\nelse:\n\n    print(a-1)"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b = map(int, input().split())\n\nif a > b:\n\n    print(a-1)\n\nelse:\n\n    print(a)",
+        "output": "a, b = map(int, input().split())\n\nif b >= a:\n\n    print(a)\n\nelse:\n\n    print(a-1)"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b=map(int,input().split())\n\nif b<a:\n\n    print(a-1)\n\nelse:\n\n    print(a)\n",
+        "output": "a,b=map(int,input().split())\n\nif b<a:\n\n    print(a-1)\n\nelse:\n\n    print(a)\n"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b = map(int, input().split())\n\nif a <= b:\n\n    print(a)\n\nelse:\n\n    print(a-1)",
+        "output": "a, b = map(int, input().split())\n\nans = -1\n\nif (a <= b):\n\n    ans = a\n\nelse:\n\n    ans = a - 1\n\nprint(ans)"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b = map(int, input().split())\n\nans = -1\n\nif (a <= b):\n\n    ans = a\n\nelse:\n\n    ans = a - 1\n\nprint(ans)",
+        "output": "a, b = map(int, input().split())\n\nprint(a if a <= b else a - 1)"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b=map(int,input().split())\n\nprint(a-1 if a>b else a)",
+        "output": "a,b=map(int,input().split())\n\nprint(a-(a>b))"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b = map(int, input().split())\n\nprint(a-1 if a > b else a)",
+        "output": "a,b=map(int,input().split())\n\nprint(a-(a>b))"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "A, B= map(int, input().split())\n\n\n\nprint(A if A <= B else A-1)",
+        "output": "A, B= map(int, input().split())\n\n\n\nprint(A - (A>B))"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b=(int(i) for i in input().split())\n\nif a<=b:\n\n  print(a)   \n\nelse:\n\n  print(a-1)\n\n\n",
+        "output": "a,b=(int(i) for i in input().split())\n\nprint(a if a<=b else a-1)   \n"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b = map(int,input().split())\n\nif b >= a:\n\n  print(a)\n\nelse:\n\n  print(a-1)",
+        "output": "a,b= map(int,input().split())\n\nif b >= a:\n\n    print(a)\n\nelse:\n\n    print(a-1)"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b = list(map(int,input().split()))\n\n\n\nif a<=b:\n\n  print(a)\n\nelse:\n\n  print(a-1)",
+        "output": "a,b = list(map(int,input().split()))\n\n\n\nif a<=b:\n\n  print(a)\n\nelse:\n\n  print(a-1)"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b = list(map(int,input().split()))\n\n\n\nif a<=b:\n\n  print(a)\n\nelse:\n\n  print(a-1)",
+        "output": "a,b = map(int,input().split())\n\nprint(a-(a>b))"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b = map(int,input().split())\n\nif a<=b:\n\n    print(a)\n\n    exit()\n\nprint(a-1)\n",
+        "output": "a,b = map(int,input().split())\n\nif a<=b:\n\n    print(a)\n\n    exit()\n\nprint(a-1)\n"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b = map(int,input().split())\n\nif(a <= b):\n\n  print(a)\n\nelif(a > b):\n\n  print(a-1)",
+        "output": "a, b = map(int,input().split())\n\n\n\nif(a <= b):\n\n  print(a)\n\nelif(a > b):\n\n  print(a-1)"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b = map(int, input().split())\n\nout = a if a<=b else a-1\n\nprint(out)",
+        "output": "def main():\n\n    a, b = map(int, input().split())\n\n    print(a-(a>b))\n\n    \n\nif __name__ == \"__main__\":\n\n    main()"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b = map(int, input().split())\n\nif a > b:\n\n    print(a - 1)\n\nelse:\n\n    print(a)",
+        "output": "a, b = map(int, input().split())\n\nif b >= a:\n\n    print(a)\n\nelse:\n\n    print(a-1)"
+    },
+    {
+        "problem_id": "p03359",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b = map(int, input().split())\n\n\n\nif a > b:\n\n    print(a - 1)\n\nelse:\n\n    print(a)",
+        "output": "a, b = map(int, input().split())\n\nprint(a if a <= b else a - 1)"
+    },
+    {
+        "problem_id": "p00312",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "D, L = map(int, input().split())\n\nprint(sum(divmod(D, L)))",
+        "output": "D, L = map(int, input().split())\n\nprint(D//L + D%L)"
+    },
+    {
+        "problem_id": "p03815",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a=int(input())\n\nn=2*(a//11)+a%11//7+min(1,a%11)\n\nprint(n)",
+        "output": "print((2*int(input())-2)//11+1)"
+    },
+    {
+        "problem_id": "p03815",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "n=int(input());print((n//11)*2+([0]+[1]*6+[2]*4)[n%11])",
+        "output": "n=int(input());print(n//11*2+(n%11-1)//6+1)"
+    },
+    {
+        "problem_id": "p03456",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b=input().split();print('YNeos'[int(a+b)!=int((int(a+b)**.5))**2::2])",
+        "output": "a,b=input().split();print('YNeos'[int(a+b)!=int(int(a+b)**.5)**2::2])"
+    },
+    {
+        "problem_id": "p03456",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "import numpy as np\n\nn = np.sqrt(int(''.join(input().split())))\n\nprint('Yes' if n == int(n) else 'No')",
+        "output": "from math import sqrt\n\na, b = input().split()\n\nn = int(a+b)\n\nprint('Yes' if sqrt(n) == int(sqrt(n)) else 'No')\n"
+    },
+    {
+        "problem_id": "p03456",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "x,y = map(str,input().split())\n\n\n\nif int(x+y)**0.5%1 == 0:\n\n    print(\"Yes\")\n\nelse:\n\n    print(\"No\")",
+        "output": "a,b = map(str,input().split())\n\nif int(a+b)**0.5%1 == 0:\n\n  print(\"Yes\")\n\nelse:\n\n  print(\"No\")"
+    },
+    {
+        "problem_id": "p03456",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a = input().replace(' ','')\n\nif int(a)**0.5 % 1 == 0:\n\n    print('Yes')\n\nelse:\n\n    print('No')\n",
+        "output": "a = input().replace(' ','')\n\nprint('Yes' if int(a)**0.5 % 1 == 0 else 'No')"
+    },
+    {
+        "problem_id": "p03456",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a, b = input().split()\n\nc = int(a + b)\n\nprint(\"Yes\" if c ** 0.5 % 1 == 0 else \"No\")\n",
+        "output": "a, b = map(str, input().split())\n\nc = int(a + b)\n\nif c ** 0.5 == int(c ** 0.5):\n\n    print(\"Yes\")\n\nelse:\n\n    print(\"No\")\n"
+    },
+    {
+        "problem_id": "p03456",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b=input().split()\n\nz=int(a+b)\n\nprint(\"Yes\" if z**.5==int(z**.5) else \"No\")",
+        "output": "print(\"No\" if int(input().replace(\" \",\"\"))**.5%1 else \"Yes\")"
+    },
+    {
+        "problem_id": "p03456",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b=input().split()\n\nprint('Yes' if (int(a+b)**.5).is_integer() else 'No')",
+        "output": "print('No' if int(input().replace(' ',''))**.5%1 else 'Yes')"
+    },
+    {
+        "problem_id": "p03456",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "x = int(\"\".join(input().split()))\n\nfor i in range(1000):\n\n  if i**2 == x:\n\n    print(\"Yes\")\n\n    exit()\n\n    \n\nprint(\"No\")",
+        "output": "x = int(\"\".join(input().split()))\n\nfor i in range(1000):\n\n  if i**2 == x:\n\n    print(\"Yes\")\n\n    exit()\n\n    \n\nprint(\"No\")"
+    },
+    {
+        "problem_id": "p03456",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "x = int(input().replace(' ',''))\n\ny = int(x**0.5)\n\nprint('Yes' if y*y==x else 'No')",
+        "output": "a = int(input().replace(' ',''))\n\ns = int(a**0.5)\n\nprint('Yes' if s*s == a else 'No')"
+    },
+    {
+        "problem_id": "p03456",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "import math\n\na,b = input().split()\n\nprint('Yes' if math.sqrt(int(a+b)) == int(math.sqrt(int(a+b))) else 'No')",
+        "output": "a,b = input().split()\n\nn = int(a+b)\n\nprint('Yes' if n**0.5 == int(n**0.5) else 'No')"
+    },
+    {
+        "problem_id": "p03456",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "import math\n\n\n\nab = int(input().replace(' ', ''))\n\n\n\nr = round(math.sqrt(ab))\n\nprint('Yes' if r**2 == ab else 'No')\n",
+        "output": "import math\n\n\n\nab = int(input().replace(' ', ''))\n\n\n\nprint('Yes' if math.sqrt(ab).is_integer() else 'No')\n"
+    },
+    {
+        "problem_id": "p03456",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "a,b=map(str,input().split())\n\nab=int(a+b)\n\nprint(\"Yes\" if (ab**0.5).is_integer() else \"No\")",
+        "output": "a,b=map(str,input().split())\n\nab=int(a+b)\n\nprint(\"Yes\" if (ab**0.5).is_integer() else \"No\")"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = input()\n\nif S == \"AAA\" or S == \"BBB\":\n\n  print(\"No\")\n\nelse:\n\n  print(\"Yes\")\n",
+        "output": "S = input()\n\nif S == \"AAA\" or S == \"BBB\":\n\n  print(\"No\")\n\nelse:\n\n  print(\"Yes\")"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = list(input())\n\nif (S[0] == S[1]) & (S[1] == S[2]):\n\n  print('No')\n\nelse:\n\n  print(\"Yes\")",
+        "output": "# coding: utf-8\n\nS = input()\n\nif (S[0] == S[1]) & (S[1] == S[2]):\n\n    print('No')\n\nelse:\n\n    print('Yes')"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nif s == \"AAA\" or s == \"BBB\":\n\n  print(\"No\")\n\nelse:\n\n  print(\"Yes\")",
+        "output": "S = input()\n\n\n\nif S[0] == S[1] and S[1] == S[2] :\n\n\tprint(\"No\")\n\nelse:\n\n\tprint(\"Yes\")"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s=input()\n\nif 'A' in s and 'B' in s:\n\n  print('Yes')\n\nelse:\n\n  print('No')",
+        "output": "a,b,c=input()\n\nprint('No' if a==b==c else 'Yes')"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "# N\n\nn = input()\n\nif \"AB\" in n or \"BA\" in n:\n\n  print(\"Yes\")\n\nelse:\n\n  print(\"No\")\n\n\n",
+        "output": "#!/usr/bin/env python3\n\n\n\nn = input()\n\nif \"AB\" in n or \"BA\" in n:\n\n    print(\"Yes\")\n\nelse:\n\n    print(\"No\")\n"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nif s == \"AAA\" or s == \"BBB\":\n\n    print(\"No\")\n\nelse:\n\n    print(\"Yes\")",
+        "output": "a = input()\n\n\n\nif a == \"AAA\" or a == \"BBB\":\n\n  print(\"No\")\n\nelse:\n\n  print(\"Yes\")\n"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s=list(input())\n\nif len(set(s))==2:\n\n    print(\"Yes\")\n\nelse:\n\n    print(\"No\")\n",
+        "output": "if input() in [\"AAA\",\"BBB\"]:\n\n  print(\"No\")\n\nelse:\n\n  print(\"Yes\")"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nif s[0] == s[1] == s[2]:\n\n    print('No')\n\nelse:\n\n    print('Yes')\n",
+        "output": "s=input()\n\nif s[0]==s[1]==s[2]:\n\n  print('No')\n\nelse:\n\n  print('Yes')"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = list(input())\n\nif S[0] == S[1] and S[0] == S[2]:\n\n    print(\"No\")\n\nelse:\n\n    print(\"Yes\")\n",
+        "output": "S = list(input())\n\nif S[0] == S[1] and S[0] == S[2]:\n\n    print(\"No\")\n\nelse:\n\n    print(\"Yes\")\n"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = input()\n\n\n\nif S == 'AAA' or S == 'BBB':\n\n  print('No')\n\nelse:\n\n  print('Yes')",
+        "output": "S = input()\n\n\n\nif S == 'AAA' or S == 'BBB':\n\n  print('No')\n\nelse:\n\n  print('Yes')\n"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print(\"YNeos\"[len(set(input()))%2::2])",
+        "output": "print(\"YNeos\"[len(set(input()))==1::2])"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "data = input()\n\nif 'A' in data and 'B' in data:\n\n  print('Yes')\n\nelse:\n\n  print('No')",
+        "output": "S = input()\n\nif (\"A\" in S) and (\"B\" in S):\n\n    print(\"Yes\")\n\nelse:\n\n    print(\"No\")"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = list(input())\n\ns = set(S)\n\n\n\nif len(s) == 1:\n\n    print ('No')\n\nelse:\n\n    print ('Yes')",
+        "output": "S = list(input())\n\n\n\nif len(set(S)) == 1:\n\n    print ('No')\n\nelse:\n\n    print ('Yes')"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S=input()\n\nif S == \"AAA\" or S == \"BBB\":\n\n  print(\"No\")\n\nelse:\n\n  print(\"Yes\")",
+        "output": "s=input()\n\nif s==\"AAA\" or s==\"BBB\":\n\n  print(\"No\")\n\nelse:\n\n  print(\"Yes\")"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = input()\n\n \n\nif S == 'AAA' or S == 'BBB': print('No')\n\nelse: print('Yes')",
+        "output": "S = input()\n\n \n\n# AAA\u304bBBB\u306a\u3089No\u3001\u305d\u308c\u4ee5\u5916\u3067Yes\n\nif S[0] == S[1] and S[1] == S[2]: print('No')\n\nelse: print('Yes')"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = input()\n\nif S[0] == S[1] and S[1] == S[2]:\n\n    print(\"No\")\n\nelse:\n\n    print(\"Yes\")\n",
+        "output": "S = input()\n\nif S[0] == S[1] and S[1] == S[2]:\n\n    print(\"No\")\n\nelse:\n\n    print(\"Yes\")\n"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S=list(input())\n\nif S[0]==S[1] and S[0]==S[2]:\n\n    print('No')\n\nelse:\n\n    print('Yes')",
+        "output": "S=list(input())\n\nif S[0]==S[1] and S[0]==S[2]:\n\n    print('No')\n\nelse:\n\n    print('Yes')"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S=list(input())\n\nif S[0]==S[1] and S[0]==S[2]:\n\n    print('No')\n\nelse:\n\n    print('Yes')",
+        "output": "S=input()\n\nif 'A' in S and 'B' in S:\n\n    print('Yes')\n\nelse:\n\n    print('No')"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = input()\n\n\n\nif 'A' in S and 'B' in S:\n\n  print('Yes')\n\nelse:\n\n  print('No')\n",
+        "output": "S = input()\n\n\n\nif len(set(S)) < 2:\n\n    print('No')\n\nelse:\n\n    print('Yes')\n"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = input()\n\nif S[0] == S[1] == S[2]:\n\n    print(\"No\")\n\nelse:\n\n    print(\"Yes\")\n",
+        "output": "S = list(input())\n\n\n\n#print(set(S))\n\nsetS = set(S)\n\n\n\nif len(setS) == 2:\n\n    print(\"Yes\")\n\nelse:\n\n    print(\"No\")\n"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nif 'A' in s and 'B' in s:\n\n    print('Yes')\n\nelse:\n\n    print('No')",
+        "output": "s = input()\n\nif 'A' in s and 'B' in s:\n\n    print('Yes')\n\nelse:\n\n    print('No')"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s=sorted(set(input()))\n\nprint('Yes' if ['A','B'] == s else 'No')",
+        "output": "print('Yes' if ['A','B'] == sorted(set(input())) else 'No')"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "st = input()\n\nif st == \"AAA\":\n\n  print(\"No\")\n\nelif st == \"BBB\":\n\n  print(\"No\")\n\nelse:\n\n  print(\"Yes\")",
+        "output": "S = input()\n\nif S[0] == S[1] and S[1] == S[2]:\n\n\tprint('No')\n\nelse:\n\n\tprint('Yes')"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = list(i for i in input())\n\n\n\nif 'A' in S and 'B' in S:\n\n  print('Yes')\n\nelse:\n\n  print('No')",
+        "output": "S = input()\n\n\n\nS_list = [i for i in S]\n\nS_set = set(S_list)\n\n\n\nif len(S_set) == 2:\n\n  print('Yes')\n\nelse:\n\n  print('No')"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "def main():\n\n    a = input()\n\n    if a.count(\"A\") in [0, 3]:\n\n        print(\"No\")\n\n    else:\n\n        print(\"Yes\")\n\n\n\n\n\nmain()\n",
+        "output": "def main():\n\n    a = input()\n\n    if a.count(\"A\") in [0, 3]:\n\n        print(\"No\")\n\n    else:\n\n        print(\"Yes\")\n\n\n\n\n\nmain()\n"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "# A - Station and Bus\n\n\n\nS = input()\n\nprint('Yes' if 'A' in S and 'B' in S else 'No')\n",
+        "output": "# A - Station and Bus\n\n\n\nS = input()\n\nprint('Yes' if 'A' in S and 'B' in S else 'No')\n"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nif \"AB\" in s or \"BA\" in s:\n\n    print(\"Yes\")\n\nelse:\n\n    print(\"No\")\n",
+        "output": "print(\"Yes\"if len(set(input()))>1else\"No\")"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = input()\n\nprint('Yes' if 'A' in S and 'B' in S else 'No')",
+        "output": "print('No' if len(set(list(input())))==1 else 'Yes')"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s=input()\n\n\n\nif s[0]==s[1] and s[1]==s[2]:\n\n  print(\"No\")\n\nelse:\n\n  print(\"Yes\")\n",
+        "output": "s=input()\n\n\n\nif \"A\" in s and \"B\" in s:\n\n  print(\"Yes\")\n\nelse:\n\n  print(\"No\")"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nif \"A\" in s and \"B\" in s:\n\n    print(\"Yes\")\n\nelse:\n\n    print(\"No\")\n",
+        "output": "s = input()\n\nif \"A\" in s and \"B\" in s:\n\n    print(\"Yes\")\n\nelse:\n\n    print(\"No\")\n"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nif \"A\" in s and \"B\" in s:\n\n    print(\"Yes\")\n\nelse:\n\n    print(\"No\")\n",
+        "output": "s = input()\n\nif \"A\" in s and \"B\" in s:\n\n    print(\"Yes\")\n\nelse:\n\n    print(\"No\")\n"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nif s=='AAA' or s=='BBB':\n\n    print('No')\n\nelse:\n\n    print('Yes')",
+        "output": "s = input()\n\nif s == 'AAA' or s == 'BBB':\n\n  print('No')\n\nelse:\n\n  print('Yes')"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\n\n\nif s == \"AAA\" or s == \"BBB\":\n\n    print(\"No\")\n\nelse:\n\n    print(\"Yes\")",
+        "output": "s = input()\n\n\n\nprint(\"Yes\" if len(set(s)) == 2 else \"No\")"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "print('YNeos'[len(set(input()))<2::2])",
+        "output": "print('YNeos'[len({*input()})<2::2])"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S=input()\n\nif(S=='AAA' or S=='BBB'):\n\n\n\n    print('No')\n\nelse:\n\n    print('Yes')\n",
+        "output": "a=input()\n\n\n\nif(a=='AAA' or a=='BBB'):\n\n    print('No')\n\nelse:\n\n    print('Yes')\n"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S=set(input())\n\nprint(\"Yes\" if len(S)==2 else \"No\")",
+        "output": "S = [c for c in input()]\n\nprint(\"Yes\" if len(set(S))==2 else \"No\")"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = list(input())\n\n\n\nif 'A' not in s or 'B' not in s:\n\n    print('No')\n\nelse:\n\n    print('Yes')\n",
+        "output": "s = input()\n\n\n\nif s[0] != s[1] or s[1] != s[2]:\n\n\tprint('Yes')\n\nelse:\n\n\tprint('No')\n"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "def resolve():\n\n    a = input()\n\n    if a ==\"AAA\" or a == \"BBB\":\n\n        print(\"No\")\n\n    else:\n\n        print(\"Yes\")\n\nresolve()",
+        "output": "s = input()\n\nif s == \"AAA\" or s == \"BBB\":\n\n\tprint(\"No\")\n\nelse:\n\n\tprint(\"Yes\")"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = input()\n\nif s[0]==s[1] and s[1]==s[2]:\n\n    print(\"No\")\n\nelse:\n\n    print(\"Yes\")",
+        "output": "s = input()\n\nif s[0]==s[1] and s[1]==s[2]:\n\n    print(\"No\")\n\nelse:\n\n    print(\"Yes\")\n"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S=input()\n\nif S[0]==S[1] and S[1]==S[2]:\n\n    print(\"No\")\n\nelse:\n\n    print(\"Yes\")",
+        "output": "S=input()\n\nif \"A\" in S and \"B\" in S:print(\"Yes\")\n\nelse:print(\"No\")"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s = set(input())\n\nif len(s) == 1:\n\n    print(\"No\")\n\nelse:\n\n    print(\"Yes\")",
+        "output": "s = set(input())\n\nif len(s) == 1:\n\n    print(\"No\")\n\nelse:\n\n    print(\"Yes\")"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "s=list(input())\n\nS=set(s)\n\nif len(S)==1:\n\n    print(\"No\")\n\nelse:\n\n    print(\"Yes\")",
+        "output": "s=list(input())\n\nS=set(s)\n\nif len(S)==1:\n\n    print(\"No\")\n\nelse:\n\n    print(\"Yes\")\n"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = list(input())\n\nif S[0]==S[1] and S[0]==S[2]:\n\n    print('No')\n\nelse:\n\n    print('Yes') ",
+        "output": "print('Yes' if len(set(input()))==2 else 'No')"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = input()\n\nif len(set(S)) == 1:\n\n    print(\"No\")\n\nelse:\n\n    print(\"Yes\")",
+        "output": "S = input()\n\nans = \"Yes\" if len(set(S)) == 2 else \"No\"\n\nprint(ans)"
+    },
+    {
+        "problem_id": "p02753",
+        "instruction": "Provide an optimized version of the following code snippet.",
+        "input": "S = input()\n\nif len(set(S)) == 1:\n\n    print(\"No\")\n\nelse:\n\n    print(\"Yes\")\n",
+        "output": "S = input()\n\nif len(set(S)) == 1:\n\n    print(\"No\")\n\nelse:\n\n    print(\"Yes\")\n"
+    }
+]
