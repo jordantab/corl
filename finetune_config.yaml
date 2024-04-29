@@ -28,11 +28,11 @@ model:
 # Tokenizer
 tokenizer:
   _component_: torchtune.models.llama3.llama3_tokenizer
-  path: /tmp/Llama-3-8B-Instruct/original/tokenizer.model
+  path: /tmp/original/tokenizer.model
 
 checkpointer:
   _component_: torchtune.utils.FullModelMetaCheckpointer
-  checkpoint_dir: /tmp/Llama-3-8B-Instruct/original/
+  checkpoint_dir: /tmp/original/
   checkpoint_files: [
     consolidated.00.pth
   ]

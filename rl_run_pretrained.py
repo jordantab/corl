@@ -4,6 +4,7 @@ import torch.optim as optim
 from torch.optim.adam import Adam
 from torch.nn.functional import log_softmax
 from transformers import AutoModelForCausalLM, AutoTokenizer
+import pandas as pd
 import random
 import argparse
 import matplotlib.pyplot as plt
@@ -32,7 +33,7 @@ def parse_args():
         help="Path to the model checkpoint file",
     )
     parser.add_argument(
-        "--num_episodes", type=int, default=3, help="Number of training episodes."
+        "--num_episodes", type=int, default=1, help="Number of training episodes."
     )
     parser.add_argument(
         "--dataset_path", type=str, required=True, help="Path to the dataset file."
