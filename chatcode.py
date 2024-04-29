@@ -9,8 +9,8 @@ os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 
 def load_checkpoint(checkpoint):
-    import torch
-    from transformers import AutoModelForCausalLM, AutoTokenizer
+    
+    global model, tokenizer
 
     tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3-8B-Instruct")
     model = AutoModelForCausalLM.from_pretrained(
@@ -102,7 +102,8 @@ def generate_code(input_code, pipeline, temperature=0.8):
     return generated_code
 
 
-def generate_response(model, tokenizer, input_text):
+def generate_response(input_text, history):
+    
     """
     Generate text based on the input using the loaded model and tokenizer.
     """
@@ -116,9 +117,8 @@ def generate_response(model, tokenizer, input_text):
     )
     print("\nSet up pipeline!")
     model = pipeline.model
-    print("Got model from pipeline")
+    print("Updated model from pipeline")
     
-    # Generate and return the output text
     output_text = generate_code(input_text, pipeline)
     print(f"Output: {output_text}")
     return output_text
@@ -135,7 +135,7 @@ def main():
     print(f"Using model: {checkpoint}, device: {device}")
 
     print("\nLoading tokenizer and base model")
-    model, tokenizer = load_checkpoint("hi")
+    load_checkpoint("hi")
     print("Loaded tokenizer and base model")
 
     # Set up Gradio interface
