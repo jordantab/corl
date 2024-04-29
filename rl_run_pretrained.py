@@ -1,6 +1,7 @@
 import config
 import torch
 import torch.optim as optim
+import pandas as pd
 from torch.optim.adam import Adam
 from torch.nn.functional import log_softmax
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -33,13 +34,13 @@ def parse_args():
         help="Path to the model checkpoint file",
     )
     parser.add_argument(
-        "--num_episodes", type=int, default=1, help="Number of training episodes."
+        "--num_episodes", type=int, default=2, help="Number of training episodes."
     )
     parser.add_argument(
         "--dataset_path", type=str, required=True, help="Path to the dataset file."
     )
     parser.add_argument(
-        "--max_length", type=int, default=256, help="Maximum length of the input code."
+        "--max_length", type=int, default=100, help="Maximum length of the input code."
     )
     parser.add_argument(
         "--R1", type=float, default=-1.0, help="Reward for compilation failure."
@@ -266,7 +267,7 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
                 # input_code_tokens = tokenize_code(input_code)
 
                 candidate_samples = []
-                num_samples = 3
+                num_samples = 2
                 rewards = []
 
                 for i in range(num_samples):
@@ -427,7 +428,7 @@ if __name__ == "__main__":
         model=model,
         tokenizer=tokenizer,
         model_kwargs={"torch_dtype": torch.bfloat16},
-        device_map="auto",
+        device_map="cuda",
     )
 
     print("set up pipeline")

@@ -181,6 +181,25 @@ def load_checkpoint(checkpoint):
     return model, tokenizer
 
 
+def load_rl():
+    import torch
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+
+    tokenizer = AutoTokenizer.from_pretrained(config.DEFAULT_MODEL)
+    model = AutoModelForCausalLM.from_pretrained(
+        config.DEFAULT_MODEL,
+        load_in_8bit=True,  # Optional: Load in 8-bit mode for better performance
+        device_map="auto",  # Optional: Load the model on the appropriate device
+    )
+    rl_checkpoint = "models/rl-checkpoint/llama-rl-trained.pt"
+
+    # state_dict = torch.load(rl_checkpoint, map_location="cpu")
+    state_dict = torch.load(rl_checkpoint)
+    model.load_state_dict(state_dict, strict=False)
+
+    return model, tokenizer
+
+
 def main():
     args = parse_args()
     checkpoint = args.checkpoint
@@ -190,7 +209,12 @@ def main():
     with open(file_path, "r") as json_file:
         data = json.load(json_file)
 
-    model, tokenizer = load_checkpoint(checkpoint)
+    # TODO: use this to load the checkpoint
+    # model, tokenizer = load_checkpoint(checkpoint)
+
+    # TODO: use this to load the rl checkpoint
+    model, tokenizer = load_rl()
+
     results = eval_model(model, tokenizer, data, device)
 
     results_dir = "model_results"
