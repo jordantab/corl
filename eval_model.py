@@ -60,11 +60,12 @@ def count_lines_in_string(text: str):
     return len(lines)
 
 
-def eval_model(checkpoint, dataset, device):
+def eval_model(checkpoint, tokenizer, dataset, device):
     results = []
     pipeline = transformers.pipeline(
         "text-generation",
         model=checkpoint,
+        tokenizer=tokenizer,
         model_kwargs={"torch_dtype": torch.bfloat16},
         device_map=device,
     )
@@ -154,6 +155,51 @@ def calculate_model_metrics(
     )
 
 
+def load_checkpoint(checkpoint):
+    import torch
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+
+    tokenizer = AutoTokenizer.from_pretrained(config.DEFAULT_MODEL)
+    model = AutoModelForCausalLM.from_pretrained(
+        config.DEFAULT_MODEL,
+        load_in_8bit=True,  # Optional: Load in 8-bit mode for better performance
+        device_map="auto",  # Optional: Load the model on the appropriate device
+    )
+
+    # Specify the paths to the checkpoint files
+    model_path = "models/checkpoints/python_leq_60_tokens_finetune/meta_model_0.pt"
+    adapter_path = "models/checkpoints/python_leq_60_tokens_finetune/adapter_0.pt"
+
+    # Load the base model state dictionary
+    model_state_dict = torch.load(model_path, map_location="cpu")
+    model.load_state_dict(model_state_dict, strict=False)
+
+    # Load the adapter state dictionary and apply it to the model
+    adapter_state_dict = torch.load(adapter_path, map_location="cpu")
+    model.load_state_dict(adapter_state_dict, strict=False)
+
+    return model, tokenizer
+
+
+def load_rl():
+    import torch
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+
+    tokenizer = AutoTokenizer.from_pretrained(config.DEFAULT_MODEL)
+    model = AutoModelForCausalLM.from_pretrained(
+        config.DEFAULT_MODEL,
+        load_in_8bit=True,  # Optional: Load in 8-bit mode for better performance
+        device_map="auto",  # Optional: Load the model on the appropriate device
+    )
+    rl_checkpoint = "models/rl-checkpoint/llama-rl-trained.pt"
+
+    # state_dict = torch.load(rl_checkpoint, map_location="cpu")
+    state_dict = torch.load(rl_checkpoint)
+    model.load_state_dict(state_dict, strict=False)
+
+    return model, tokenizer
+
+
 def main():
     args = parse_args()
     checkpoint = args.checkpoint
@@ -163,7 +209,13 @@ def main():
     with open(file_path, "r") as json_file:
         data = json.load(json_file)
 
-    results = eval_model(checkpoint, data, device)
+    # TODO: use this to load the checkpoint
+    # model, tokenizer = load_checkpoint(checkpoint)
+
+    # TODO: use this to load the rl checkpoint
+    model, tokenizer = load_rl()
+
+    results = eval_model(model, tokenizer, data, device)
 
     results_dir = "model_results"
     os.makedirs(results_dir, exist_ok=True)

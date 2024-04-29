@@ -1,8 +1,11 @@
-import io
+import config
 import torch
 import torch.optim as optim
+import pandas as pd
 from torch.optim.adam import Adam
+from torch.nn.functional import log_softmax
 from transformers import AutoModelForCausalLM, AutoTokenizer
+import pandas as pd
 import random
 import argparse
 import matplotlib.pyplot as plt
@@ -31,13 +34,13 @@ def parse_args():
         help="Path to the model checkpoint file",
     )
     parser.add_argument(
-        "--num_episodes", type=int, default=10, help="Number of training episodes."
+        "--num_episodes", type=int, default=2, help="Number of training episodes."
     )
     parser.add_argument(
         "--dataset_path", type=str, required=True, help="Path to the dataset file."
     )
     parser.add_argument(
-        "--max_length", type=int, default=256, help="Maximum length of the input code."
+        "--max_length", type=int, default=100, help="Maximum length of the input code."
     )
     parser.add_argument(
         "--R1", type=float, default=-1.0, help="Reward for compilation failure."
@@ -173,7 +176,7 @@ def generate_code(input_code, temperature=0.6):
     return generated_code
 
 
-def calculate_score(generated_code_tokens, input_code_tokens):
+def calculate_score(generated_code, input_code):
     """
     Calculate the score of the generated code based on Equation 9.
     This score represents how likely the model is to generate that particular code sample.
@@ -188,23 +191,53 @@ def calculate_score(generated_code_tokens, input_code_tokens):
     print("Calculating score...")
     log_probs = []
 
-    if isinstance(generated_code_tokens, list):
-        generated_code_tokens = torch.tensor(
-            generated_code_tokens, dtype=torch.long, device=device
-        )
+    print("\n===========================================")
+    print(f"input code: {input_code}")
 
-    # Get the model's output logits for the input code tokens
+    print("\n===========================================")
+    print(f"generated code: {generated_code}")
+
+    # Ensure input_code_tokens is a tensor, on the correct device, and has a batch dimension
+    # if not isinstance(input_code, torch.Tensor):
+    #     input_code = torch.tensor(input_code, dtype=torch.long, device=device)
+    # input_code = input_code.to(device)
+    # if input_code.dim() == 1:
+    #     input_code = input_code.unsqueeze(0)
+
+    input_code_tokens = tokenize_code(input_code)
+    generated_code_tokens = tokenize_code(generated_code)
+
+    print("\n===========================================")
+    print(f"input code tokens: {input_code_tokens}")
+
+    print("\n===========================================")
+    print(f"generated code tokens: {generated_code_tokens}")
+
+    # Generate logits from the model
     logits = model(input_ids=input_code_tokens).logits
+    print
 
-    # Loop over each token_id in the generated code and calculate log probability
+    # Convert generated_code_tokens to a tensor if it's a list
+    # if isinstance(generated_code_tokens, list):
+    #     generated_code_tokens = torch.tensor(generated_code_tokens, dtype=torch.long, device=device)
+
+    # Calculate the log probability for each token in the generated code
     for token_id in generated_code_tokens:
-        log_prob = torch.log_softmax(logits[0], dim=-1)
-        if token_id.item() >= log_prob.size(0):
-            continue  # skip if token_id is out of range of logits
-        log_prob = log_prob[token_id.item()].item()
-        log_probs.append(log_prob)
+        # data_list = data.to('cuda').tolist()
+        data = token_id.to("cuda").tolist()
+        for token in data:
+            token_logits = log_softmax(
+                logits[0], dim=-1
+            )  # Compute softmax over the logits of the first (and only) batch item
+            if token >= token_logits.size(1):
+                continue  # Skip if token is out of the valid range for logits
+            log_prob = token_logits[
+                0, token
+            ]  # Access log probability of the specific token
+            log_probs.append(log_prob.item())
 
-    score = sum(log_probs) / len(generated_code_tokens) if generated_code_tokens else 0
+    # Calculate the average log probability (score) if there are any valid log probabilities
+    score = sum(log_probs) / len(log_probs) if log_probs else 0
     print(f"Calculated sample likelihood score: {score:.4f}")
     return score
 
@@ -230,23 +263,25 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
             try:
                 input_code = entry["input"]
                 pid = entry["problem_id"]
-                input_code_tokens = tokenize_code(input_code)
+                print("pid: ", pid)
+                # input_code_tokens = tokenize_code(input_code)
 
                 candidate_samples = []
-                num_samples = 1
+                num_samples = 2
                 rewards = []
 
                 for i in range(num_samples):
                     print(f"\nGenerating candidate sample {i + 1}/{num_samples}")
                     generated_code = generate_code(input_code, temperature=0.8)
-                    generated_code_tokens = tokenizer.encode(
-                        generated_code, add_special_tokens=True
-                    )
-                    candidate_samples.append(generated_code_tokens)
+
+                    # generated_code_tokens = tokenizer.encode(
+                    #     generated_code, add_special_tokens=True
+                    # )
+                    candidate_samples.append(generated_code)
                     print(f"\nGenerated code: {generated_code}")
 
-                    if isinstance(generated_code, list):
-                        generated_code = generated_code[0]
+                    # if isinstance(generated_code, list):
+                    #     generated_code = generated_code[0]
 
                     reward = get_reward(generated_code, entry["input"], pid)
                     print(f"reward is {reward}")
@@ -257,10 +292,10 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
                     for j in range(len(candidate_samples)):
                         if rewards[i] < rewards[j]:
                             log_prob_i = calculate_score(
-                                candidate_samples[i], input_code_tokens
+                                candidate_samples[i], input_code
                             )
                             log_prob_j = calculate_score(
-                                candidate_samples[j], input_code_tokens
+                                candidate_samples[j], input_code
                             )
                             ranking_loss += max(0, log_prob_i - log_prob_j)
 
@@ -290,20 +325,23 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
         avg_ranking_loss = sum(episode_ranking_losses) / len(episode_ranking_losses)
         avg_tuning_loss = sum(episode_tuning_losses) / len(episode_tuning_losses)
 
+        print(avg_total_loss, avg_reward_score, avg_ranking_loss, avg_tuning_loss)
+
         # Update model parameters
+        loss_tensor = torch.tensor(avg_total_loss, requires_grad=True)
         optimizer.zero_grad()
-        avg_total_loss.backward()
+        loss_tensor.backward()
         optimizer.step()
 
         # Collect data for plotting
-        total_losses.append(avg_total_loss.item())
+        total_losses.append(avg_total_loss)
         reward_scores.append(avg_reward_score)
         ranking_losses.append(avg_ranking_loss)
         tuning_losses.append(avg_tuning_loss)
-        print(f"Average combined loss for episode: {avg_total_loss.item():.4f}")
+        print(f"Average combined loss for episode: {avg_total_loss:.4f}")
 
     # Save the model checkpoint only after all episodes
-    checkpoints_dir = "../checkpoints"
+    checkpoints_dir = "./models/rl-checkpoint"
     os.makedirs(checkpoints_dir, exist_ok=True)
     model_checkpoint_path = os.path.join(checkpoints_dir, "llama-rl-trained.pt")
     torch.save(model.state_dict(), model_checkpoint_path)
@@ -349,67 +387,60 @@ def train(model, tokenizer, optimizer, num_episodes, dataset):
     print("Training completed.")
 
 
+def load_checkpoint(checkpoint):
+    import torch
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+
+    tokenizer = AutoTokenizer.from_pretrained(config.DEFAULT_MODEL)
+    model = AutoModelForCausalLM.from_pretrained(
+        config.DEFAULT_MODEL,
+        load_in_8bit=True,  # Optional: Load in 8-bit mode for better performance
+        device_map="auto",  # Optional: Load the model on the appropriate device
+    )
+
+    # Specify the paths to the checkpoint files
+    model_path = "models/checkpoints/python_leq_60_tokens_finetune/meta_model_0.pt"
+    adapter_path = "models/checkpoints/python_leq_60_tokens_finetune/adapter_0.pt"
+
+    # Load the base model state dictionary
+    model_state_dict = torch.load(model_path, map_location="cpu")
+    model.load_state_dict(model_state_dict, strict=False)
+
+    # Load the adapter state dictionary and apply it to the model
+    adapter_state_dict = torch.load(adapter_path, map_location="cpu")
+    model.load_state_dict(adapter_state_dict, strict=False)
+
+    return model, tokenizer
+
+
 if __name__ == "__main__":
     args = parse_args()
     print("load args")
     checkpoint = args.model_name
     device = "cuda" if torch.cuda.is_available() else "cpu"
+
     print("load tokenizer and base model")
-    model = AutoModelForCausalLM.from_pretrained(checkpoint)
-    tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 
-    # Load and apply each chunk separately
-    chunk_index = 0
-    while True:
-        chunk_path = f"models/checkpoints/split_state_dict/chunk_{chunk_index}.pt"
-        try:
-            # Load the chunk
-            chunk_state_dict = torch.load(chunk_path, map_location="cpu")
-            # Apply the chunk to the model
-            print(f"applying chunk {chunk_path}...")
-            model.load_state_dict(chunk_state_dict, strict=False)
-            print(f"done")
-            chunk_index += 1
-        except FileNotFoundError:
-            break
+    model, tokenizer = load_checkpoint("hi")
 
-    print(f"applied chunks to model")
-    # model_path = os.path.join(args.checkpoint_path, "meta_model_0.pt")
-    adaptor_path = os.path.join(args.checkpoint_path, "adapter_0.pt")
-
-    # Load the model state dict
-    print("loading state dict 1")
-    # model_state_dict = torch.load(model_path, map_location="cpu")
-
-    print("loading state dict 2")
-    # model.load_state_dict(model_state_dict, strict=False)
-    print("Model state dict loaded!")
-
-    # Load the adaptor state dict
-    adaptor_state_dict = torch.load(adaptor_path)
-    # Apply the adaptor state dict to the model
-    for name, param in adaptor_state_dict.items():
-        if name in model.state_dict():
-            model.state_dict()[name].copy_(param)
-    print("Adaptor state dict loaded!")
     pipeline = transformers.pipeline(
-        "text-generation", model=model, tokenizer=tokenizer, device=device
+        "text-generation",
+        model=model,
+        tokenizer=tokenizer,
+        model_kwargs={"torch_dtype": torch.bfloat16},
+        device_map="cuda",
     )
-    ## the below commented part is for using a pretrained model from huggingface
-    # pipeline = transformers.pipeline(
-    #     "text-generation",
-    #     model=checkpoint,
-    #     model_kwargs={"torch_dtype": torch.bfloat16},
-    #     device_map="auto",
-    # )
-    # print("set up pipeline")
-    # model = pipeline.model
-    # print("get model from pipeline")
+
+    print("set up pipeline")
+    model = pipeline.model
+    print("get model from pipeline")
+
     optimizer = Adam(model.parameters(), lr=1e-5)
     print("set up optimizer, loading dataset")
     dataset = load_dataset(args.dataset_path)
     print(
         f"Loaded dataset with {len(dataset)} entries, input code is: {dataset[0]['input']}"
     )
+
     # Start training
     train(model, tokenizer, optimizer, args.num_episodes, dataset)
