@@ -1,4 +1,5 @@
-# data-science-team7-s2024
+# Code Optimization using Reinforcement Learning (CORL) 
+18668 Data Science for Software Engineering Team 7
 
 ## Setup
 
